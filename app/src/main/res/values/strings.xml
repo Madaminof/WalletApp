@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">WalletApp</string>
+    <string name="default_web_client_id">244487532885-o5gflknt481n4q037f24t4pql83te3hh.apps.googleusercontent.com</string>
+
+
+    <string name="title_Charts">Statistika</string>
+    <string name="title_Budgets">Budjetlar</string>
+    <string name="title_Account">Hamyon</string>
+
+    <string name="bottom_home">Home</string>
+    <string name="bottom_charts">Charts</string>
+    <string name="bottom_budjets">Budjets</string>
+    <string name="bottom_account">Account</string>
+
+    <string name="quick_budjets">Budjetlar</string>
+    <string name="quick_shoppingList">Xaridlar ro‘yxati</string>
+    <string name="quick_Debts">Qarzdorlik</string>
+    <string name="quick_Balance">Balance</string>
+    <string name="quick_Goals">Maqsadlar</string>
+
+
+
+
+
+
+
+
+
+
+</resources>

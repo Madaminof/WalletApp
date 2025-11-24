@@ -1,0 +1,109 @@
+[versions]
+# --- Asosiy versiyalar ---
+agp = "8.7.2"
+kotlin = "2.0.21"
+composeCompiler = "1.5.14"
+
+# --- AndroidX ---
+coreKtx = "1.15.0"
+lifecycleRuntimeKtx = "2.8.6"
+activityCompose = "1.9.3"
+composeBom = "2024.09.00"
+appcompat = "1.7.1"
+constraintlayout = "2.2.1"
+constraintlayoutCompose = "1.1.1"
+navigationFragmentKtx = "2.9.4"
+navigationUiKtx = "2.9.4"
+workRuntimeKtx = "2.10.4"
+
+# --- Room ---
+room = "2.7.0"
+
+# --- Hilt ---
+hilt = "2.51.1"
+
+# --- Firebase ---
+firebaseDatabaseKtx = "22.0.1"
+firebaseFirestoreKtx = "26.0.2"
+firebaseCrashlyticsBuildtools = "3.0.6"
+
+# --- Google Play ---
+playServicesLocation = "21.3.0"
+
+# --- Material ---
+material = "1.12.0"
+
+# --- Test ---
+junit = "4.13.2"
+junitExt = "1.1.6"
+espressoCore = "3.5.1"
+
+# --- Qo‘shimcha kutubxonalar ---
+uiGraphicsJvmstubs = "1.9.1"
+runtime = "1.0.0-alpha05"
+navigationCommonAndroid = "2.9.6"
+foundationAndroid = "1.7.2"
+
+
+[libraries]
+# --- Asosiy AndroidX ---
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+# --- Compose ---
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+# --- Lifecycle & Activity ---
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+
+# --- Navigation ---
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+
+# --- WorkManager ---
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
+
+# --- Room ---
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+# --- Hilt ---
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+
+# --- Firebase ---
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
+firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+
+# --- Google Play Services ---
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+
+# --- Material ---
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# --- Qo‘shimcha AndroidX ---
+androidx-ui-graphics-jvmstubs = { group = "androidx.compose.ui", name = "ui-graphics-jvmstubs", version.ref = "uiGraphicsJvmstubs" }
+androidx-runtime = { group = "androidx.xr.runtime", name = "runtime", version.ref = "runtime" }
+androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose-android", version.ref = "constraintlayoutCompose" }
+
+# --- Testing ---
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-navigation-common-android = { group = "androidx.navigation", name = "navigation-common-android", version.ref = "navigationCommonAndroid" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
