@@ -32,8 +32,8 @@ import com.example.walletapp.core.AppStatusBarColor
 import com.example.walletapp.wallet.domain.model.TransactionType
 import com.example.walletapp.wallet.presentation.ui.home.addTransaction.addversion1.bottomShetts.AccountSelectorSheet
 import com.example.walletapp.wallet.presentation.ui.home.addTransaction.addversion1.bottomShetts.CategorySelectorSheet
-import com.example.walletapp.wallet.presentation.viewmodel.AddTransactionViewModel
 import com.example.walletapp.wallet.presentation.viewmodel.AddTransactionUiState
+import com.example.walletapp.wallet.presentation.viewmodel.AddTransactionViewModel
 import kotlinx.coroutines.launch
 import rememberCalculatorState
 import java.text.DecimalFormat
@@ -128,7 +128,7 @@ fun AddTransactionScreenV1(
                         val type = if (index == 0) TransactionType.EXPENSE else TransactionType.INCOME
                         viewModel.onTypeChange(type)
                     },
-                    amount = calcState.display // CalculatorState bilan ishlaydi
+                    amount = calcState.display
                 )
                 Spacer(modifier = Modifier.height(4.dp))
             }
@@ -164,8 +164,9 @@ fun AddTransactionScreenV1(
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) showCategorySheet = false
                         }
-                    }
+                    },
                 )
+            }
             }
         }
 
@@ -197,7 +198,6 @@ fun AddTransactionScreenV1(
             )
         }
     }
-}
 
 @Composable
 fun TypeAndAmountDisplay(
@@ -297,7 +297,7 @@ fun TypeAndAmountDisplay(
                 overflow = TextOverflow.Clip,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 70.dp, bottom = 4.dp),
+                    .padding(top = 50.dp, bottom = 4.dp),
                 onTextLayout = { result ->
                     if (result.didOverflowWidth) {
                         amountFontSize *= 0.9f
@@ -369,7 +369,7 @@ fun DetailChip(
 
     Card(
         modifier = modifier
-            .height(45.dp)
+            .height(35.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = background)
@@ -382,8 +382,6 @@ fun DetailChip(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-
-            // ICON
             when (icon) {
                 is ImageVector -> Icon(
                     imageVector = icon,

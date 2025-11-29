@@ -6,8 +6,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,15 +19,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.walletapp.wallet.presentation.viewmodel.CategoryData
 import java.text.DecimalFormat
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.unit.Dp
+import androidx.compose.foundation.layout.FlowColumn
+import androidx.compose.ui.text.style.TextOverflow
 
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -36,109 +34,117 @@ import androidx.compose.ui.unit.Dp
 fun DoughnutChart(
     data: List<CategoryData>,
     totalAmount: Double,
-    chartSize: Dp = 220.dp // default qiymat
+    chartSize: Dp = 130.dp,
+    strokeWidthFraction: Float = 0.15f
 ) {
-
     val safeTotal = if (totalAmount == 0.0) 1.0 else totalAmount
 
     val animatedProgress by animateFloatAsState(
         targetValue = 1f,
-        animationSpec = tween(600),
-        label = ""
+        animationSpec = tween(800),
+        label = "DoughnutChartAnimation"
     )
 
     val formatter = remember { DecimalFormat("#,###.##") }
-
-    Card(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer),
-        shape = RectangleShape
+            .wrapContentHeight()
+            .background(Color.Transparent)
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround
     ) {
-        Column(
-            modifier = Modifier.padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (data.isEmpty() || totalAmount == 0.0) {
-                Text("Chiqim ma'lumotlari mavjud emas", color = Color.Gray)
-            } else {
-                Box(contentAlignment = Alignment.Center) {
+        if (data.isEmpty() || totalAmount == 0.0) {
+            Box(
+                modifier = Modifier
+                    .size(chartSize + 20.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "Ma'lumotlar mavjud emas",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 14.sp
+                )
+            }
+        } else {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(chartSize)
+            ) {
+                Canvas(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    val diameter = size.minDimension
+                    val currentStrokeWidth = diameter * strokeWidthFraction
+                    val topLeft = Offset(currentStrokeWidth / 2, currentStrokeWidth / 2)
+                    val arcSize = Size(diameter - currentStrokeWidth, diameter - currentStrokeWidth)
 
-                    Canvas(
-                        modifier = Modifier
-                            .size(chartSize)
-                            .padding(8.dp)
-                    ) {
-                        val diameter = size.minDimension
-                        val strokeWidth = (chartSize.value / 6).dp.toPx()
-                        val topLeft = Offset(strokeWidth / 2, strokeWidth / 2)
-                        val arcSize = Size(diameter - strokeWidth, diameter - strokeWidth)
+                    var startAngle = 0f
 
-                        var startAngle = 0f
+                    data.forEach { item ->
+                        val percent = item.amount.toDouble() / safeTotal
+                        val sweep = (percent * 360f) * animatedProgress
 
-                        data.forEach { item ->
-                            val percent = item.amount.toDouble() / safeTotal
-                            val sweep = (percent * 360f) * animatedProgress
-
-                            drawArc(
-                                color = item.color,
-                                startAngle = startAngle,
-                                sweepAngle = sweep.toFloat(),
-                                useCenter = false,
-                                topLeft = topLeft,
-                                size = arcSize,
-                                style = Stroke(
-                                    width = strokeWidth,
-                                    cap = StrokeCap.Butt
-                                )
+                        drawArc(
+                            color = item.color,
+                            startAngle = startAngle,
+                            sweepAngle = sweep.toFloat(),
+                            useCenter = false,
+                            topLeft = topLeft,
+                            size = arcSize,
+                            style = Stroke(
+                                width = currentStrokeWidth,
+                                cap = StrokeCap.Butt
                             )
-                            startAngle += sweep.toFloat()
-                        }
-                    }
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        val titleFontSize = (chartSize.value / 13).sp      // "Jami" matni
-                        val amountFontSize = (chartSize.value / 16).sp     // summa matni
-
-                        Text(
-                            "Jami",
-                            color = Color.Gray,
-                            fontSize = titleFontSize
                         )
-                        Text(
-                            "${formatter.format(totalAmount)} UZS",
-                            fontSize = amountFontSize,
-                            color = MaterialTheme.colorScheme.onTertiary
-                        )
+                        startAngle += sweep.toFloat()
                     }
-
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        "Jami",
+                        color = MaterialTheme.colorScheme.onTertiary,
+                        fontSize = (chartSize.value / 8).sp,
+                        fontWeight = FontWeight.Normal
+                    )
+                    Text(
+                        "${formatter.format(totalAmount)} UZS",
+                        fontSize = (chartSize.value / 13).sp,
+                        color = MaterialTheme.colorScheme.onTertiary,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
-
-            Spacer(modifier = Modifier.height(4.dp))
-
+            Spacer(modifier = Modifier.width(16.dp))
             FlowRow(
-                maxItemsInEachRow = 3,
-                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .weight(1f)
+                    .wrapContentHeight(),
                 verticalArrangement = Arrangement.spacedBy(0.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
+                horizontalArrangement = Arrangement.Start,
+                maxItemsInEachRow = 2,
+                ) {
                 data.forEach { item ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(horizontal = 4.dp)
+                        modifier = Modifier.padding(end = 8.dp)
                     ) {
                         Box(
                             modifier = Modifier
                                 .size(8.dp)
                                 .background(item.color, CircleShape)
                         )
-                        Spacer(Modifier.width(4.dp))
+                        Spacer(Modifier.width(6.dp))
                         Text(
                             text = item.categoryName,
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.Gray
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = MaterialTheme.colorScheme.onTertiary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }

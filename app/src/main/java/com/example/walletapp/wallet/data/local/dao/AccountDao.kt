@@ -23,7 +23,6 @@ interface AccountDao {
     @Query("SELECT * FROM accounts")
     fun getAllAccounts(): Flow<List<AccountEntity>>
 
-    // ID bo'yicha yagona hisobni oladi
     @Query("SELECT * FROM accounts WHERE id = :id")
     suspend fun getAccountEntityById(id: String): AccountEntity?
 }

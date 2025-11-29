@@ -1,12 +1,9 @@
 package com.example.walletapp.wallet.presentation.ui.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
@@ -115,12 +111,12 @@ fun TitleSection(
             text = user?.displayName ?: "Username",
             color = MaterialTheme.colorScheme.onTertiary,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 14.sp,
+            fontSize = 13.sp,
             letterSpacing = 0.2.sp
         )
         Spacer(modifier = Modifier.height(1.dp))
         Surface(
-            color = Color.White.copy(alpha = 0.3f),
+            color = MaterialTheme.colorScheme.primary.copy(0.07f),
             shape = MaterialTheme.shapes.small,
         ) {
             Row(
@@ -133,7 +129,7 @@ fun TitleSection(
                 Text(
                     text = "${selectedBalance?.title ?: "Loading"}: ${selectedBalance?.amount ?: "0 UZS"}",
                     color = MaterialTheme.colorScheme.onTertiary,
-                    fontSize = 12.sp
+                    fontSize = 11.sp
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(

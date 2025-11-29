@@ -12,7 +12,7 @@ import com.example.walletapp.wallet.domain.model.Category
 import com.example.walletapp.wallet.domain.model.TransactionType
 import com.example.walletapp.wallet.domain.repository.BudgetRepository
 import com.example.walletapp.wallet.domain.usecase.budjets.GetBudgetStatusUseCase
-import com.example.walletapp.wallet.domain.usecase.category.GetCategoriesByType // ⭐️ ZARUR: Kategoriya UseCase'ini import qilamiz
+import com.example.walletapp.wallet.domain.usecase.category.GetCategoriesByType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -27,11 +27,9 @@ private const val TAG = "BudgetViewModel"
 class BudgetViewModel @Inject constructor(
     private val budgetRepository: BudgetRepository,
     private val getBudgetStatusUseCase: GetBudgetStatusUseCase,
-    // ⭐️ YANGI: Kategoriya ma'lumotlarini olish uchun kiritildi
     private val getCategoriesByType: GetCategoriesByType,
 ) : ViewModel() {
 
-    // ⭐️ YANGI: Chiqim (Expense) kategoriyalarini olish uchun stateflow. AddBudjetScreen uchun kerak.
     val expenseCategories: StateFlow<List<Category>> = getCategoriesByType(TransactionType.EXPENSE)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
@@ -42,16 +40,12 @@ class BudgetViewModel @Inject constructor(
                 if (budgets.isEmpty()) {
                     flowOf(emptyList())
                 } else {
-                    // Har bir Budget obyekti uchun Status Flow'ini yaratish
                     val statusFlows: List<Flow<BudgetStatus>> = budgets.map { budget ->
-                        getBudgetStatusUseCase(budget) // Bu Flow<BudgetStatus> qaytarishi kerak
+                        getBudgetStatusUseCase(budget)
                     }
-
-                    // Dinamik Flow'larni birlashtirish (combine)
                     kotlinx.coroutines.flow.combine(
-                        flows = statusFlows, // List<Flow<BudgetStatus>> turini uzatamiz
+                        flows = statusFlows,
                         transform = { statusArray: Array<BudgetStatus> ->
-                            // Transform lambda kirish turini (Array<BudgetStatus>) belgilash.
                             statusArray.toList()
                         }
                     )

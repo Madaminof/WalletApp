@@ -175,7 +175,6 @@ fun handleCalculatorInput(
     }
 }
 
-// Natijani .0 dan tozalash
 fun formatResult(value: Double): String {
     return if (value % 1.0 == 0.0) value.toInt().toString() else value.toString()
 }

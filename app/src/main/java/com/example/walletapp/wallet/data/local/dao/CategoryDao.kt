@@ -15,7 +15,6 @@ interface CategoryDao {
     @Query("SELECT * FROM categories WHERE type = :type")
     fun getCategoriesByType(type: String): Flow<List<CategoryEntity>>
 
-    // ID bo'yicha yagona kategoriyani oladi
     @Query("SELECT * FROM categories WHERE id = :id")
     suspend fun getCategoryEntityById(id: String): CategoryEntity?
 

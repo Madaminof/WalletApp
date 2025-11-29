@@ -104,7 +104,7 @@ fun DrawerBody(
                         when (route) {
                             Screen.Home.route -> onBottomBarScreenSelected(0)
                             Screen.Charts.route -> onBottomBarScreenSelected(1)
-                            Screen.Budgets.route -> onBottomBarScreenSelected(2)
+                            Screen.Category.route -> onBottomBarScreenSelected(2)
                             Screen.Settings.route -> onBottomBarScreenSelected(3)
 
                             else -> navController.navigate(route) {

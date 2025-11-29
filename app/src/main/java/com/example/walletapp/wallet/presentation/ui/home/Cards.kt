@@ -49,8 +49,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.walletapp.ui.theme.expenseColor
 import com.example.walletapp.ui.theme.goals
 import com.example.walletapp.ui.theme.incomeColor
-import com.example.walletapp.wallet.presentation.ui.home.diogramCharts.DoughnutChart
-import com.example.walletapp.wallet.presentation.viewmodel.CategoryData
 import com.example.walletapp.wallet.presentation.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import java.text.DecimalFormat
@@ -97,7 +95,7 @@ fun IncomeExpenseCard(
 
     val animatedProgress by animateFloatAsState(
         targetValue = expenseRatio,
-        animationSpec = tween(durationMillis = 800)
+        animationSpec = tween(durationMillis = 600)
     )
     val neutralColor = Color.Gray
     val balanceColor = when {
@@ -123,8 +121,7 @@ fun IncomeExpenseCard(
                     }
                 )
             },
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
@@ -137,14 +134,15 @@ fun IncomeExpenseCard(
             Text(
                 text = "Sof Balance",
                 fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onTertiary
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
             )
             Spacer(Modifier.height(6.dp))
 
             Text(
                 text = "${if (totalBalance >= 0) "+" else ""}${"%,d".format(totalBalance)} UZS",
                 color = balanceColor,
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.ExtraBold
             )
 
@@ -179,7 +177,7 @@ fun IncomeExpenseCard(
     }
 }
 @Composable
-fun SummaryDetail(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, amount: Int, color: Color, isPositive: Boolean) {
+fun SummaryDetail(icon: ImageVector, label: String, amount: Int, color: Color, isPositive: Boolean) {
     Column(horizontalAlignment = Alignment.Start) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -200,8 +198,8 @@ fun SummaryDetail(icon: androidx.compose.ui.graphics.vector.ImageVector, label: 
         Text(
             text = "${if(isPositive) "+" else "-"}${"%,d".format(amount)} UZS",
             color = color,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.ExtraBold
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
         )
     }
 }
@@ -232,7 +230,7 @@ fun CustomProgressBar(progress: Float, incomeColor: Color, expenseColor: Color) 
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .background(incomeColor.copy(alpha = 0.4f), RoundedCornerShape(4.dp))
+                .background(incomeColor.copy(alpha = 0.5f), RoundedCornerShape(4.dp))
         ) {
             Box(
                 modifier = Modifier
@@ -270,10 +268,9 @@ fun QuickInCards(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = bgColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (pressed) 0.dp else 2.dp),
         modifier = Modifier
             .scale(scale)
-            .padding(vertical = 2.dp)
+            .padding(vertical = 0.dp)
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
@@ -294,7 +291,7 @@ fun QuickInCards(
         ) {
             Box(
                 modifier = Modifier
-                    .size(28.dp)
+                    .size(26.dp)
                     .background(color = color.copy(alpha = 0.1f), shape = CircleShape),
                 contentAlignment = Alignment.Center
             ) {
@@ -302,13 +299,13 @@ fun QuickInCards(
                     imageVector = icon,
                     contentDescription = title,
                     tint = color,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(16.dp)
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = title,
-                fontSize = 13.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onTertiary
             )
@@ -316,251 +313,3 @@ fun QuickInCards(
     }
 }
 
-@Composable
-fun ExpenseStatisticCard(
-    expenseData: List<CategoryData>,
-    totalAmount: Double,
-    period: String = "Oxirgi 30 kun",
-    onMoreClick: () -> Unit = {}
-) {
-    var isPressed by remember { mutableStateOf(false) }
-
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
-    )
-
-    val formatter = remember { DecimalFormat("#,###.00") }
-    val formattedTotalAmount = formatter.format(totalAmount)
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 0.dp)
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-            }
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onPress = {
-                        isPressed = true
-                        tryAwaitRelease()
-                        isPressed = false
-                    }
-                )
-            },
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Xarajatlar Statistikasi",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        color = MaterialTheme.colorScheme.onTertiary
-                    )
-                    IconButton(onClick = onMoreClick) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = "Batafsil sozlamalar",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-                Spacer(Modifier.height(2.dp))
-                Text(
-                    text = period,
-                    color = Color.Gray,
-                    fontSize = 12.sp
-                )
-                Spacer(Modifier.height(2.dp))
-                Text(
-                    text = "$formattedTotalAmount UZS",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-
-                Spacer(Modifier.height(8.dp))
-            }
-            if (expenseData.isNotEmpty() && totalAmount > 0.0) {
-                DoughnutChart(
-                    data = expenseData,
-                    totalAmount = totalAmount
-                )
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(220.dp)
-                        .padding(horizontal = 20.dp, vertical = 16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Chiqimlar hali kiritilmagan.",
-                        color = Color.Gray
-                    )
-                }
-            }
-            Spacer(Modifier.height(8.dp))
-            TextButton(
-                onClick = onMoreClick,
-                modifier = Modifier.align(Alignment.End).padding(end = 12.dp)
-            ) {
-                Text(
-                    text = "Batafsil Ko'rish",
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp
-                )
-                Icon(
-                    imageVector = Icons.Default.ArrowForward,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .size(16.dp)
-                )
-            }
-            Spacer(Modifier.height(8.dp))
-        }
-    }
-}
-
-
-@Composable
-fun GoalsCard(
-    onCreateGoalClick: () -> Unit
-) {
-    var isPressed by remember { mutableStateOf(false) }
-
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
-    )
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 0.dp, vertical = 8.dp)
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-            }
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onPress = {
-                        isPressed = true
-                        tryAwaitRelease()
-                        isPressed = false
-                    }
-                )
-            },
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(72.dp)
-                        .background(
-                            brush = Brush.linearGradient(
-                                listOf(goals, goals)
-                            ),
-                            shape = RoundedCornerShape(18.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.TrackChanges,
-                        contentDescription = "Goals Icon",
-                        tint = Color.White,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        text = "Maqsadlar",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        color = MaterialTheme.colorScheme.onTertiary
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Birinchi maqsadingizni belgilang va uni osonlik bilan kuzating.",
-                        color = Color.Gray,
-                        fontSize = 14.sp,
-                        lineHeight = 18.sp
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-            LinearProgressIndicator(
-                progress = 0.0f,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(6.dp)
-                    .clip(RoundedCornerShape(50)),
-                color = Color(0xFF66BB6A),
-                trackColor = Color(0xFFE0E0E0)
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Tugma
-            TextButton(
-                onClick = onCreateGoalClick,
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text(
-                    text = "Yaratish",
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp
-                )
-                Icon(
-                    imageVector = Icons.Default.ArrowForward,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .size(16.dp)
-                )
-            }
-        }
-    }
-}

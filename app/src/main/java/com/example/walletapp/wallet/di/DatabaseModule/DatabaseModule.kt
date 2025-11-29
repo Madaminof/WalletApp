@@ -54,4 +54,5 @@ object DatabaseModule {
 
     @Provides
     fun provideBudjetTransactionDao(db: AppDatabase): BudjetTransactionDao = db.budjetTransactionDao()
+
 }

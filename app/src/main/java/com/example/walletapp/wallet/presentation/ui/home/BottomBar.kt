@@ -32,7 +32,7 @@ fun HomeBottomBar(
     val items = listOf(
         BottomBarItem(title = stringResource(R.string.bottom_home), Icons.Default.Home),
         BottomBarItem(title = stringResource(R.string.bottom_charts), Icons.Default.PieChart),
-        BottomBarItem(title = stringResource(R.string.bottom_budjets), Icons.Default.AccountBalanceWallet),
+        BottomBarItem(title = stringResource(R.string.bottom_budget), Icons.Default.AccountBalanceWallet),
         BottomBarItem(title = stringResource(R.string.bottom_account), Icons.Default.Wallet)
     )
     NavigationBar(

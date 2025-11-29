@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF05A18D),
+    primary = Color(0xFF4759C1),
     primaryContainer = Color(0xFF212A34), // topbarContainer va background color default(0xFF1E262F)
     onPrimaryContainer = Color(0xFF1B2228),// cardContainer  0xFF212A34
     secondary = PurpleGrey80,
@@ -28,13 +28,13 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF05A18D),
-    primaryContainer = Color(0xFFE1E5E7),// topbarContainer va background color 0xFFECF3F6, 0xFFE3EDF1
-    onPrimaryContainer = Color(0xFFF7F8F8),// cardContainer
+    primary = Color(0xFF4759C1),
+    primaryContainer = Color(0xFFE6EAEE),// topbarContainer va background color 0xFFECF3F6, 0xFFE3EDF1
+    onPrimaryContainer = Color(0xFFFDFDFD),// cardContainer
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    background = Color(0xFFE1E5E7),
-    onBackground = Color(0xFFD7DADB),
+    background = Color(0xFFE6EAEE),
+    onBackground = Color(0xFFDBE1E2),
     surface = Color(0xFFFFFFFF),
     onPrimary = Color.White,
     onSecondary = Color.White,

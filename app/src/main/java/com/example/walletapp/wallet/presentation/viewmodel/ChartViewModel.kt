@@ -14,26 +14,42 @@ data class CategoryData(
     val amount: Double,
     val color: Color
 )
-
 val categoryColors = mapOf(
-    "Oziq-ovqat" to Color(0xFF4CAF50),      // Yashil – fresh food
-    "Transport" to Color(0xFF03A9F4),       // Ko‘k – transport mavzusi
-    "Kiyim-kechak" to Color(0xFFE91E63),    // Pushti – fashion vibe
-    "Uy-joy" to Color(0xFFFF9800),          // To‘q sariq – home / warmth
-    "Ta'lim" to Color(0xFF3F51B5),          // Moviy – education stability
-    "Sog‘liq" to Color(0xFF8BC34A),         // Yengil yashil – health
-    "Dam olish" to Color(0xFF00BCD4),       // Ko‘k–yashil – vacation
-    "Kommunal to'lov" to Color(0xFF9C27B0), // Binafsha – utilities
-    "Internet" to Color(0xFF2196F3),        // Moviy – internet
-    "Sport" to Color(0xFFFF5722),           // To‘q qizil–sariq – sport energy
-    "Hayriya" to Color(0xFF795548),         // Jigarrang – charity
-    "Taxi" to Color(0xFFFFC107),            // Sariq – taxi color
+    "Oziq-ovqat" to Color(0xFFE53935),
+    "Restoran/Kafe" to Color(0xFFEF5350),
+    "Uy-joy" to Color(0xFF43A047),
+    "Kommunal" to Color(0xFF00ACC1),
+    "Kiyim-kechak" to Color(0xFF1E88E5),
+    "Sog‘liq/Dori" to Color(0xFFD81B60),
+    "Ta'lim/Kurslar" to Color(0xFFFDD835),
+    "Internet/TV" to Color(0xFF546E7A),
+    "Telefon balansi" to Color(0xFF8D6E63),
+    "Shaxsiy Xaridlar" to Color(0xFF673AB7),
+    "Dam olish/O'yin" to Color(0xFF66BB6A),
+    "Sug'urta to'lovi" to Color(0xFF03A9F4),
+    "Uy hayvonlari" to Color(0xFF7CB342),
+    "Transport" to Color(0xFFFF7043),
+    "Avto yoqilg'i" to Color(0xFFFB8C00),
+    "Boshqa Xarajat" to Color(0xFF9E9E9E),
 
-    // INCOME
-    "Oylik" to Color(0xFF4CAF50),           // Yashil – salary
-    "Investitsiya" to Color(0xFF009688),    // Teal – investment
-    "Qo'shimcha" to Color(0xFF8E24AA),      // Purple – extra income
-    "Bonus" to Color(0xFFFF7043)            // Soft orange – bonus
+    // YANGI QO'SHILGAN XARAJATLAR:
+    "Abonent/Obuna" to Color(0xFFFBC02D),
+    "Qarzni to'lash" to Color(0xFFB71C1C),
+    "Avto xizmat" to Color(0xFF4DD0E1),
+    "Bog'chas" to Color(0xFF8E24AA),
+    "Bank" to Color(0xFF78909C),
+    "ta'mirlash" to Color(0xFF689F38),
+    "Tozalash" to Color(0xFF07F6E0),
+    "Jarima/Soliq" to Color(0xFFC2185B),
+    "Kredit to'lovi" to Color(0xFF3949AB),
+
+    // DAROMADLAR:
+    "Oylik Maosh" to Color(0xFF4CAF50),
+    "Qo'shimcha" to Color(0xFF8BC34A),
+    "Investitsiya" to Color(0xFF00BFA5),
+    "Bonuslar" to Color(0xFFFFC107),
+    "Sovg'a/Yutuq" to Color(0xFF5C6BC0),
+    "Daromad" to Color(0xFF4FC3F7)
 )
 
 

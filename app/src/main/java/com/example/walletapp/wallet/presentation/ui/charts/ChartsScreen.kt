@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -100,6 +101,7 @@ fun TransactionsTab(
     selectedCategory: String? = null,
     currentTab: ChartTab
 ) {
+    var selectedTransaction by remember { mutableStateOf<Transaction?>(null) }
     val filteredTransactions = transactions
         .filter { it.type.name == currentTab.name }
         .let { list ->
@@ -122,13 +124,26 @@ fun TransactionsTab(
     val totalAmount = categoryData.sumOf { it.amount }
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.onBackground)) {
         if (categoryData.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(4.dp))
-
-            DoughnutChart(
-                data = categoryData,
-                totalAmount = totalAmount,
-                chartSize = 150.dp
-            )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 2.dp),
+                shape = RectangleShape,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    DoughnutChart(
+                        data = categoryData,
+                        totalAmount = totalAmount,
+                        chartSize = 130.dp
+                    )
+                }
+            }
         }
 
 
@@ -148,16 +163,32 @@ fun TransactionsTab(
             }
         } else {
             LazyColumn(
-                modifier = Modifier.fillMaxSize()
-                    .background(MaterialTheme.colorScheme.onBackground),
-                contentPadding = PaddingValues(vertical = 4.dp)
+                modifier = Modifier.fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentPadding = PaddingValues(vertical = 0.dp)
             ) {
                 items(filteredTransactions, key = { it.id }) { transaction ->
                     ExpenseTransactionItem(
                         transaction = transaction,
-                        onDelete = { viewModel.deleteTransaction(transaction.id) }
+                        onItemClick = { selectedTransaction = it }
                     )
                 }
+            }
+            selectedTransaction?.let { transaction ->
+                TransactionDetailBottomSheet(
+                    transaction = transaction,
+                    onDismiss = { selectedTransaction = null },
+                    onUpdate = {
+                        selectedTransaction = null
+                    },
+                    onDelete = {
+                        viewModel.deleteTransaction(
+                            transactionId = transaction.id
+                        )
+                        selectedTransaction = null
+
+                    }
+                )
             }
         }
     }

@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
             entity = AccountEntity::class,
             parentColumns = ["id"],
             childColumns = ["accountId"],
-            onDelete = ForeignKey.CASCADE // ✅ Account o'chirilganda, bog'liq tranzaksiyalar ham o'chadi
+            onDelete = ForeignKey.CASCADE
         ),
     ],
     indices = [
@@ -28,21 +28,4 @@ data class TransactionEntity(
     val accountId: String,
     val note: String? = null,
     val date: Long
-)
-
-@Entity(tableName = "categories")
-data class CategoryEntity(
-    @PrimaryKey val id: String,
-    val name: String,
-    val type: String,
-    val iconResId: Int? = null
-)
-@Entity(tableName = "accounts")
-data class AccountEntity(
-    @PrimaryKey val id: String,
-    val name: String,
-    val balance: Double = 0.0,
-    val colorHex: String? = null,
-    val iconResId: Int? = null
-
 )

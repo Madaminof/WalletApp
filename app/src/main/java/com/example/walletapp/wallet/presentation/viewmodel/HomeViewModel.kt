@@ -1,6 +1,5 @@
 package com.example.walletapp.wallet.presentation.viewmodel
 
-import androidx.compose.material.icons.Icons
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.walletapp.wallet.domain.model.Transaction
@@ -13,10 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
-import androidx.compose.material.icons.filled.AccountBalance
-import androidx.compose.material.icons.filled.AccountBalanceWallet
-import androidx.compose.material.icons.filled.CreditCard
-import androidx.compose.material.icons.filled.Savings
 import androidx.compose.ui.graphics.Color
 import com.example.walletapp.R
 import com.example.walletapp.wallet.domain.model.Account
@@ -31,6 +26,7 @@ data class BalanceItem(
     val title: String,
     val amountDouble: Double,
     val amount: String,
+    val color: String?
 )
 
 fun formatAmount(amount: Double): String {
@@ -100,21 +96,17 @@ class HomeViewModel @Inject constructor(
                 title = "Balance",
                 amountDouble = totalBalanceValue,
                 amount = formatAmount(totalBalanceValue),
+                color = Color.Gray.toString()
             )
 
             val individualBalances = accountsList.map { account ->
 
-                val iconResId = when (account.name.lowercase()) {
-                    "naqd pul (cash)", "naqd pul", "cash" -> R.drawable.ic_cash
-                    "karta", "bank hisob", "card" -> R.drawable.ic_card
-                    else -> account.iconResId ?: R.drawable.ic_wallet
-                }
-
                 BalanceItem(
-                    iconResId = iconResId,
+                    iconResId = account.iconResId?: R.drawable.ic_wallet,
                     title = account.name,
                     amountDouble = account.initialBalance,
                     amount = formatAmount(account.initialBalance),
+                    color = account.colorHex
                 )
             }
 

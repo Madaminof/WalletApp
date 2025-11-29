@@ -37,5 +37,6 @@ fun CategoryEntity.toDomain(): Category {
         name = this.name,
         type = TransactionType.valueOf(this.type),
         iconResId = this.iconResId,
+        colorArgb = this.colorArgb
     )
 }

@@ -1,6 +1,8 @@
 package com.example.walletapp.wallet.presentation.ui.home
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -17,15 +19,12 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.TrackChanges
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.walletapp.R
 import com.example.walletapp.navigation.Screen
@@ -34,26 +33,21 @@ import com.example.walletapp.ui.theme.budjets
 import com.example.walletapp.ui.theme.debts
 import com.example.walletapp.ui.theme.goals
 import com.example.walletapp.ui.theme.shoppingList
-import com.example.walletapp.wallet.presentation.viewmodel.ChartViewModel
+import com.example.walletapp.wallet.presentation.ui.home.cardGoals.GoalsCard
+import com.example.walletapp.wallet.presentation.ui.home.cardStatistics.ExpenseStatisticCardPremium
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun HomeScreen(
     onActionClick: (Int) -> Unit,
     navController: NavController,
 ) {
-    val chartViewModel: ChartViewModel = hiltViewModel()
-    val totalChartsExpense by chartViewModel.totalExpenseFlow.collectAsState()
-    val expenseChartData by chartViewModel.expenseDataForChart.collectAsState()
-
     val listState = rememberLazyListState()
-
     val scrollOffset = listState.firstVisibleItemScrollOffset
     val progress = (scrollOffset / 180f).coerceIn(0f, 1f)
-
     val cardAlpha by animateFloatAsState(1f - progress)
     val cardOffset by animateDpAsState((progress * (-40)).dp)
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +59,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .clipToBounds()
                 .animateContentSize(),
-            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 2.dp),
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
         ) {
             item { IncomeExpenseCard(
                 modifier = Modifier
@@ -73,20 +67,17 @@ fun HomeScreen(
                     .offset(y = cardOffset)
             ) }
             item { QuickActionsRow(onActionClick,navController) }
-            item { ExpenseStatisticCard(
+            item { ExpenseStatisticCardPremium(
                 onMoreClick = {navController.navigate(Screen.ExpenseList.route)},
-                totalAmount = totalChartsExpense,
-                expenseData = expenseChartData
             ) }
             item { GoalsCard(onCreateGoalClick = {navController.navigate(Screen.Goals.route)}) }
         }
     }
 }
 
-
 @Composable
 fun QuickActionsRow(onActionClick: (Int) -> Unit,navController: NavController) {
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         item {
             QuickInCards(
                 Icons.Default.AccountBalanceWallet,

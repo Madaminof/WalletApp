@@ -3,12 +3,14 @@ package com.example.walletapp.wallet.presentation.ui.budjets
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -17,15 +19,16 @@ import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Category
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -67,15 +70,12 @@ fun AddBudjetScreen(
     val scrollState = rememberScrollState()
 
     val expenseCategories by viewModel.expenseCategories.collectAsState()
-
-    // --- Holatni boshqarish (State Management) ---
     var selectedCategory by remember { mutableStateOf<Category?>(null) }
     var maxAmountInput by remember { mutableStateOf("") }
     var selectedPeriod by remember { mutableStateOf(BudgetPeriod.MONTHLY) }
     var startDateMillis by remember { mutableStateOf(System.currentTimeMillis()) }
     var endDateMillis by remember { mutableStateOf<Long?>(null) }
 
-    // UI holatlari
     val openStartDateDialog = remember { mutableStateOf(false) }
     val openEndDateDialog = remember { mutableStateOf(false) }
     val showCategorySheet = remember { mutableStateOf(false) }
@@ -194,8 +194,6 @@ fun AddBudjetScreen(
                     maxAmountInput = newValue.filter { char -> char.isDigit() || (char == '.' && !maxAmountInput.contains('.')) }
                 }
             )
-
-            // 3. Budjet Davri (Period) tanlash
             PeriodSelector(
                 selectedPeriod = selectedPeriod,
                 onPeriodSelected = { period ->
@@ -205,8 +203,6 @@ fun AddBudjetScreen(
                     }
                 }
             )
-
-            // 4. Sanalarni kiritish (faqat CUSTOM uchun)
             if (selectedPeriod == BudgetPeriod.CUSTOM) {
                 DateRangeSelector(
                     startDateMillis = startDateMillis,
@@ -220,9 +216,6 @@ fun AddBudjetScreen(
     }
 }
 
-// =================================================================================================
-// KOMPONENTLAR: BOTTOM SHEET (GRID)
-// =================================================================================================
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategorySelectionBottomSheet(
@@ -234,7 +227,7 @@ fun CategorySelectionBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
         tonalElevation = 8.dp
     ) {
         Column(modifier = Modifier.fillMaxWidth().heightIn(max = 500.dp)) {
@@ -260,8 +253,8 @@ fun CategorySelectionBottomSheet(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    items(expenseCategories) { category ->
-                        val isSelected = selectedCategory == category
+                    items(expenseCategories, key = { it.id }) { category ->
+                        val isSelected = selectedCategory?.id == category.id
                         CategoryGridItem(
                             category = category,
                             isSelected = isSelected,
@@ -281,70 +274,72 @@ fun CategoryGridItem(
     isSelected: Boolean,
     onCategoryClick: () -> Unit
 ) {
-    val primaryColor = MaterialTheme.colorScheme.primary
+    val customCategoryColor: Color = Color(category.colorArgb)
     val onSurfaceColor = MaterialTheme.colorScheme.onTertiary
-    val primaryContainer = MaterialTheme.colorScheme.primaryContainer
-    val surfaceContainer = MaterialTheme.colorScheme.onBackground
+    val selectionBorder = if (isSelected) 2.dp else 0.dp
+    val selectionBorderColor = if (isSelected) customCategoryColor else Color.Transparent
+    val fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+    val iconBackgroundColor = customCategoryColor.copy(alpha = 0.15f)
 
-    val containerColor by animateColorAsState(
-        targetValue = if (isSelected) primaryContainer else surfaceContainer,
-        label = "CategoryContainerColor"
-    )
     val iconTint by animateColorAsState(
-        targetValue = if (isSelected) primaryColor else onSurfaceColor.copy(0.7f),
+        targetValue = customCategoryColor,
         label = "CategoryIconTint"
     )
     val textColor by animateColorAsState(
-        targetValue = if (isSelected) primaryColor else onSurfaceColor,
+        targetValue = if (isSelected) customCategoryColor else onSurfaceColor,
         label = "CategoryTextColor"
     )
 
-    Card(
+    Column(
         modifier = Modifier
-            .aspectRatio(1f)
-            .fillMaxWidth()
-            .clickable(onClick = onCategoryClick),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = containerColor,
-            contentColor = textColor
-        ),
-        border = if (isSelected) BorderStroke(2.dp, primaryColor) else null,
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(onClick = onCategoryClick)
+            .border(
+                width = selectionBorder,
+                color = selectionBorderColor,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .padding(vertical = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize().padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        Box(
+            modifier = Modifier
+                .size(56.dp)
+                .clip(CircleShape)
+                .background(iconBackgroundColor),
+            contentAlignment = Alignment.Center
         ) {
-            Icon(
-                painter = painterResource(category.iconResId ?: R.drawable.ic_home),
-                contentDescription = null,
-                modifier = Modifier.size(32.dp),
-                tint = iconTint
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = category.name,
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                color = textColor,
-                lineHeight = 12.sp
-            )
-            if (isSelected) {
+            if (category.iconResId != null && category.iconResId != 0) {
                 Icon(
-                    Icons.Default.Check,
-                    contentDescription = "Tanlangan",
-                    tint = primaryColor,
-                    modifier = Modifier.size(16.dp).padding(top = 2.dp)
+                    painter = painterResource(id = category.iconResId),
+                    contentDescription = category.name,
+                    tint = iconTint,
+                    modifier = Modifier.size(28.dp)
+                )
+            } else {
+                Icon(
+                    Icons.Default.Category,
+                    contentDescription = category.name,
+                    tint = iconTint,
+                    modifier = Modifier.size(28.dp)
                 )
             }
         }
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = category.name,
+            fontSize = 10.sp,
+            fontWeight = fontWeight,
+            color = textColor,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(horizontal = 2.dp)
+        )
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -42,7 +42,7 @@ fun SplashScreen(
         )
     }
     LaunchedEffect(currentUser) {
-        delay(1500)
+        delay(800)
         isContentVisible = false
         if (currentUser != null) {
             navController.navigate(Screen.Home.route) {
@@ -77,9 +77,7 @@ fun SplashScreen(
                     tint = Color.Unspecified,
                     modifier = Modifier.size(100.dp)
                 )
-
                 Spacer(modifier = Modifier.height(30.dp))
-
                 LinearProgressIndicator(
                     modifier = Modifier.width(180.dp),
                     color = MaterialTheme.colorScheme.onBackground,

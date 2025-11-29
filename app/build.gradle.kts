@@ -52,6 +52,9 @@ dependencies {
     implementation(libs.androidx.navigation.common.android)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.foundation.android)
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
     debugImplementation(libs.androidx.ui.tooling)
     implementation("androidx.compose.material:material-icons-extended")
 
@@ -112,6 +115,8 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0") // so‘nggi
+
+
 
 
 }

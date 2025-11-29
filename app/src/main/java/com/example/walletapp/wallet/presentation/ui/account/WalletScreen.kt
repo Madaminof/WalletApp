@@ -20,16 +20,40 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.walletapp.navigation.Screen
-import com.example.walletapp.ui.theme.shoppingList
 import com.example.walletapp.wallet.domain.model.Account
 import com.example.walletapp.wallet.presentation.viewmodel.AccountViewModel
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 
 private const val MAX_ACCOUNTS = 4
+
+private fun parseColor(colorHex: String?): Color {
+    return try {
+        if (colorHex.isNullOrBlank() || !colorHex.startsWith("#")) {
+            Color(0xFF8D6E63)
+        } else {
+            Color(android.graphics.Color.parseColor(colorHex))
+        }
+    } catch (e: IllegalArgumentException) {
+        Color(0xFF8D6E63)
+    }
+}
+@Composable
+private fun formatBalance(balance: Double): String {
+    val currencyFormatter = remember {
+        NumberFormat.getCurrencyInstance(Locale("uz", "UZ")).apply {
+            minimumFractionDigits = 0
+            maximumFractionDigits = 0
+        }
+    }
+    return currencyFormatter.format(balance)
+}
 
 @Composable
 fun WalletScreen(
@@ -82,8 +106,8 @@ fun WalletScreen(
                 .padding(bottom = 16.dp),
             snackbar = { data ->
                 Snackbar(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    contentColor = shoppingList
+                    containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
                 ) {
                     Text(text = data.visuals.message)
                 }
@@ -100,34 +124,125 @@ fun WalletCard(
     onItemClick: (Account) -> Unit
 ) {
     val canAddMore = accounts.size < MAX_ACCOUNTS
+    val borderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.15f)
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)),
-        shape = RoundedCornerShape(16.dp)
+            .padding(8.dp, 8.dp, 8.dp, 8.dp)
+            .border(
+                width = 1.dp,
+                color = borderColor,
+                shape = RoundedCornerShape(20.dp)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onBackground),
+
+        shape = RoundedCornerShape(20.dp),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                contentPadding = PaddingValues(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(accounts.size) { index ->
                     WalletCardItem(account = accounts[index]) { onItemClick(it) }
                 }
-                item {
-                    WalletCardAdd(
-                        canAddMore = canAddMore,
-                        onClick = {
-                            if (canAddMore) {
-                                navController.navigate(Screen.addAccound.route)
-                            } else {
-                                onLimitReached()
+                if (accounts.size < MAX_ACCOUNTS) {
+                    item {
+                        WalletCardAdd(
+                            canAddMore = canAddMore,
+                            onClick = {
+                                if (canAddMore) {
+                                    navController.navigate(Screen.addAccound.route)
+                                } else {
+                                    onLimitReached()
+                                }
                             }
-                        }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+@Composable
+fun WalletCardItem(account: Account, onClick: (Account) -> Unit) {
+    val baseColor = parseColor(account.colorHex)
+    val lightColor = lerp(baseColor, Color.White, 0.2f)
+    val darkColor = lerp(baseColor, Color.Black, 0.2f)
+
+    val contentColor = if (isLightColor(baseColor)) Color.Black else Color.White
+    val secondaryContentColor = contentColor.copy(alpha = 0.8f)
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .clickable { onClick(account) },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(lightColor, darkColor),
+                        startY = 0f,
+                        endY = 500f
+                    ),
+                    shape = RoundedCornerShape(16.dp)
+                )
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(12.dp),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                // Ikonka
+                account.iconResId?.let {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(Color.White.copy(alpha = 0.9f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = it),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp),
+                            tint = darkColor
+                        )
+                    }
+                }
+
+                Column(horizontalAlignment = Alignment.Start) {
+                    Text(
+                        text = "Balans",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = secondaryContentColor,
+                        modifier = Modifier.padding(bottom = 2.dp)
+                    )
+                    Text(
+                        text = formatBalance(account.initialBalance),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = contentColor,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = account.name,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = secondaryContentColor,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -140,88 +255,26 @@ fun WalletCardAdd(canAddMore: Boolean, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp)
-            .clickable { onClick() }
-            .border(
-                width = 2.dp,
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        if (canAddMore) Color.Green.copy(alpha = 0.3f) else Color.Gray.copy(alpha = 0.2f),
-                        Color.Transparent
-                    )
-                ),
-                shape = RoundedCornerShape(16.dp)
-            ),
+            .height(150.dp)
+            .clickable(enabled = canAddMore) { onClick() },
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onBackground),
     ) {
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .border(
+                    width = 1.dp,
+                    color = if (canAddMore) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                    shape = RoundedCornerShape(16.dp)
+                )
+        ) {
             Icon(
                 Icons.Default.Add,
                 contentDescription = "Add Account",
                 modifier = Modifier.size(40.dp),
-                tint = if (canAddMore) Color.Green else Color.Gray
-            )
-        }
-    }
-}
-
-@Composable
-fun WalletCardItem(account: Account, onClick: (Account) -> Unit) {
-    val baseColor = account.colorHex?.let { Color(android.graphics.Color.parseColor(it)) }
-        ?: MaterialTheme.colorScheme.surface
-    val lightColor = lerp(baseColor, Color.White, 0.3f)
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(140.dp)
-            .clickable { onClick(account) },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = baseColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            account.iconResId?.let {
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(CircleShape)
-                        .background(lightColor),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(id = it),
-                        contentDescription = null,
-                        modifier = Modifier.size(40.dp),
-                        tint = Color.Unspecified
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = account.name,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (isLightColor(baseColor)) Color.Black else Color.White
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = "${account.initialBalance} UZS",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
-                color = if (isLightColor(baseColor)) Color.Black.copy(0.8f) else Color.White.copy(0.8f)
+                tint = if (canAddMore) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
             )
         }
     }

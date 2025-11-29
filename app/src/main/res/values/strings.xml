@@ -6,10 +6,12 @@
     <string name="title_Charts">Statistika</string>
     <string name="title_Budgets">Budjetlar</string>
     <string name="title_Account">Hamyon</string>
+    <string name="title_Category">Kategoriyalar</string>
+
 
     <string name="bottom_home">Home</string>
     <string name="bottom_charts">Charts</string>
-    <string name="bottom_budjets">Budjets</string>
+    <string name="bottom_budget">Budgets</string>
     <string name="bottom_account">Account</string>
 
     <string name="quick_budjets">Budjetlar</string>
@@ -17,6 +19,12 @@
     <string name="quick_Debts">Qarzdorlik</string>
     <string name="quick_Balance">Balance</string>
     <string name="quick_Goals">Maqsadlar</string>
+
+
+    <string name="default_naqd_pul">Naqd pul</string>
+    <string name="default_karta">Karta</string>
+
+
 
 
 

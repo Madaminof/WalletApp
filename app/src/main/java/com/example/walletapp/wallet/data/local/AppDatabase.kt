@@ -27,7 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
 
 
     companion object {
-        const val DATABASE_NAME = "wallet_room_v1"
+        const val DATABASE_NAME = "wallet_room_v1.1.0"
     }
 }
 

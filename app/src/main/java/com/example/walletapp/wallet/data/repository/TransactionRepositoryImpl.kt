@@ -12,7 +12,6 @@ import com.example.walletapp.wallet.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.io.IOException
-import java.util.Date
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
@@ -47,7 +46,7 @@ class TransactionRepositoryImpl @Inject constructor(
                 val category = categoryResult.getOrThrow()
                 val account = accountResult.getOrThrow()
 
-                entity.toDomain(category, account) // Birlashgan Domain modelini qaytarish
+                entity.toDomain(category, account)
             }
         }
     }
@@ -67,11 +66,19 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     override fun getTransactionsByDateRange(
-        startDate: Date,
-        endDate: Date,
+        startDate: Long,
+        endDate: Long,
     ): Flow<List<Transaction>> {
         TODO("TransactionDao da Date Range metodini yaratish kerak")
     }
+
+    override suspend fun countTransactionsByDateRange(
+        startDateMillis: Long,
+        endDateMillis: Long
+    ): Int {
+        return transactionDao.countTransactionsByDateRange(startDateMillis, endDateMillis)
+    }
+
 
     override suspend fun getTransactionById(id: String): Result<Transaction> = runCatching {
         val entity = transactionDao.getTransactionEntityById(id)

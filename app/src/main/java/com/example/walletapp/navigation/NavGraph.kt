@@ -38,9 +38,9 @@ import com.example.walletapp.wallet.presentation.viewmodel.HomeViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
-const val TRANSITION_DURATION = 600
+const val TRANSITION_DURATION = 400
 const val QUICK_TRANSITION_DURATION = 250
-const val MODAL_TRANSITION_DURATION = 700
+const val MODAL_TRANSITION_DURATION = 750
 
 val StandardEasing = FastOutSlowInEasing
 val ModalEasing = FastOutSlowInEasing
@@ -48,14 +48,15 @@ val ModalEasing = FastOutSlowInEasing
 sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Charts : Screen("charts")
-    object Budgets : Screen("budgets")
     object Wallet : Screen("wallet")
+    object Category : Screen("categories")
 
+
+    object Budgets : Screen("budgets")
     object ShoppingLists : Screen("shopping_lists")
     object Goals : Screen("goals")
     object ExpenseList: Screen("expense_list")
 
-    object CurrencyRates : Screen("currency_rates")
     object Settings : Screen("settings")
 
     object Add : Screen("add")
@@ -65,8 +66,7 @@ sealed class Screen(val route: String) {
     object addTransaction: Screen("add_transaction")
     object addAccound: Screen("add_accound")
 
-    val isModalRoute: Boolean
-        get() = this == Add || this == budjetAdd || this == addTransaction || this == addAccound
+
 }
 
 
@@ -122,7 +122,7 @@ fun NavGraph(
     viewModel1: AddTransactionViewModel,
     authViewModel: AuthViewModel,
     addAccountViewModel: AccountViewModel,
-    budgetViewModel: BudgetViewModel
+    budgetViewModel: BudgetViewModel,
 ) {
     val accounts by viewModel.accounts.collectAsState()
     val navController = rememberAnimatedNavController()
@@ -196,7 +196,8 @@ fun NavGraph(
         }
         val slideScreens = listOf(
             Screen.Charts.route, Screen.Budgets.route, Screen.Wallet.route,
-            Screen.ShoppingLists.route, Screen.Goals.route, Screen.ExpenseList.route
+            Screen.ShoppingLists.route, Screen.Goals.route, Screen.ExpenseList.route,
+            Screen.Category.route
         )
 
         slideScreens.forEach { route ->

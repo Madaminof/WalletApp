@@ -35,7 +35,8 @@ fun Category.toCategoryEntity(): CategoryEntity {
         id = this.id,
         name = this.name,
         type = this.type.name,
-        iconResId = this.iconResId
+        iconResId = this.iconResId,
+        colorArgb = this.colorArgb
     )
 }
 fun CategoryEntity.toCategory(): Category {
@@ -43,9 +44,12 @@ fun CategoryEntity.toCategory(): Category {
         id = this.id,
         name = this.name,
         type = TransactionType.valueOf(this.type),
-        iconResId = this.iconResId
+        iconResId = this.iconResId,
+        colorArgb = this.colorArgb
+
     )
 }
+
 fun Account.toAccountEntity(): AccountEntity {
     return AccountEntity(
         id = this.id,

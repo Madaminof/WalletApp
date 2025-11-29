@@ -23,4 +23,15 @@ interface TransactionDao {
 
     @Query("DELETE FROM transactions WHERE id = :id")
     suspend fun deleteTransactionById(id: String)
+
+    @Query("""
+        SELECT COUNT(id) FROM transactions 
+        WHERE date >= :startDateMillis 
+        AND date < :endDateMillis
+    """)
+    suspend fun countTransactionsByDateRange(
+        startDateMillis: Long,
+        endDateMillis: Long
+    ): Int
+
 }

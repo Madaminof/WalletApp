@@ -13,7 +13,8 @@ data class Category(
     val id: String,
     val name: String,
     val type: TransactionType,
-    val iconResId: Int? = null
+    val iconResId: Int? = null,
+    val colorArgb: Long
 )
 data class Account(
     val id: String,
@@ -23,8 +24,6 @@ data class Account(
     val iconResId: Int? = null
 
 )
-
-
 
 enum class TransactionType {
     INCOME, EXPENSE
