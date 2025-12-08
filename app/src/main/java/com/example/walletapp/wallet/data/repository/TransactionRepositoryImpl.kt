@@ -9,7 +9,9 @@ import com.example.walletapp.wallet.domain.model.TransactionType
 import com.example.walletapp.wallet.domain.repository.AccountRepository
 import com.example.walletapp.wallet.domain.repository.CategoryRepository
 import com.example.walletapp.wallet.domain.repository.TransactionRepository
+import kotlinx.coroutines.Dispatchers // Dispatchers for IO thread
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn // Function to change Flow dispatcher
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
@@ -30,6 +32,10 @@ class TransactionRepositoryImpl @Inject constructor(
         }
         accountRepository.updateAccountBalance(transaction.account.id, amountChange).getOrThrow()
     }
+
+    // ===================================================================
+    //  OPTIMAL: Flow processing moved to IO thread for faster UI update
+    // ===================================================================
     override fun getAllTransactions(type: TransactionType?): Flow<List<Transaction>> {
         val entityFlow: Flow<List<TransactionEntity>> = if (type == null) {
             transactionDao.getAllTransactions()
@@ -38,8 +44,10 @@ class TransactionRepositoryImpl @Inject constructor(
             transactionDao.getTransactionsByType(typeString)
         }
         return entityFlow.map { entities ->
+            // Mapping from Entity list to Domain model list
             entities.map { entity ->
 
+                // Fetching Category and Account (Slow, blocking database operations)
                 val categoryResult = categoryRepository.getCategoryById(entity.categoryId)
                 val accountResult = accountRepository.getAccountById(entity.accountId)
 
@@ -49,7 +57,11 @@ class TransactionRepositoryImpl @Inject constructor(
                 entity.toDomain(category, account)
             }
         }
+            // This moves the slow mapping work off the Main thread,
+            // ensuring the UI remains responsive after an update.
+            .flowOn(Dispatchers.IO)
     }
+    // ===================================================================
 
     override suspend fun deleteTransaction(id: String): Result<Unit> = runCatching {
         val transaction = getTransactionById(id).getOrThrow()
@@ -64,6 +76,33 @@ class TransactionRepositoryImpl @Inject constructor(
 
         transactionDao.deleteTransactionById(id)
     }
+
+
+    override suspend fun updateTransaction(transaction: Transaction): Result<Unit> = runCatching {
+        // 1. Get the old transaction record
+        val oldTransaction = getTransactionById(transaction.id).getOrThrow()
+
+        // 2. Reverse the effect of the old transaction on its account balance
+        val oldAmountReverse = if (oldTransaction.type == TransactionType.INCOME) {
+            -oldTransaction.amount
+        } else {
+            oldTransaction.amount
+        }
+        accountRepository.updateAccountBalance(oldTransaction.account.id, oldAmountReverse).getOrThrow()
+
+        // 3. Apply the effect of the new transaction to its account balance
+        val newAmountChange = if (transaction.type == TransactionType.INCOME) {
+            transaction.amount
+        } else {
+            -transaction.amount
+        }
+        accountRepository.updateAccountBalance(transaction.account.id, newAmountChange).getOrThrow()
+
+        // 4. Update the transaction record itself
+        val entity = transaction.toEntity()
+        transactionDao.updateTransaction(entity)
+    }
+
 
     override fun getTransactionsByDateRange(
         startDate: Long,

@@ -14,9 +14,11 @@ import androidx.compose.material3.Surface
 import androidx.core.view.WindowCompat
 import com.example.walletapp.auth.presentation.AuthViewModel
 import com.example.walletapp.navigation.NavGraph
+import com.example.walletapp.wallet.domain.model.TransactionType
 import com.example.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
 import com.example.walletapp.wallet.presentation.viewmodel.AccountViewModel
 import com.example.walletapp.wallet.presentation.viewmodel.AddTransactionViewModel
+import com.example.walletapp.wallet.presentation.viewmodel.DebtsViewModel
 import com.example.walletapp.wallet.presentation.viewmodel.HomeViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -27,10 +29,12 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject lateinit var googleSignInClient: GoogleSignInClient
+    /*
+        private val authViewModel: AuthViewModel by viewModels()
+    */
 
-    private val authViewModel: AuthViewModel by viewModels()
 
-    private val signInLauncher =
+    /*private val signInLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
@@ -42,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     }
                 } catch (_: Exception) {}
             }
-        }
+        }*/
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,23 +56,20 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             WalletAppTheme {
+
                 Surface(color = MaterialTheme.colorScheme.background) {
                     val homeViewModel: HomeViewModel = hiltViewModel()
                     val addTransactionViewModel: AddTransactionViewModel = hiltViewModel()
                     val addAccountViewModel: AccountViewModel = hiltViewModel()
                     val budgetViewModel: BudgetViewModel = hiltViewModel()
+                    val debtsViewModel: DebtsViewModel = hiltViewModel()
 
                     NavGraph(
-                        onSignInClicked = {
-                            val intent = googleSignInClient.signInIntent
-                            signInLauncher.launch(intent)
-                        },
                         viewModel = homeViewModel,
                         viewModel1 = addTransactionViewModel,
-                        authViewModel = authViewModel,
                         addAccountViewModel = addAccountViewModel,
                         budgetViewModel = budgetViewModel,
-
+                        debtsViewModel = debtsViewModel,
                     )
                 }
             }

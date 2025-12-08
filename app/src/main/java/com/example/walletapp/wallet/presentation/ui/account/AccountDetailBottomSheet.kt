@@ -47,7 +47,7 @@ fun AccountDetailBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
         contentColor = MaterialTheme.colorScheme.onTertiary,
         tonalElevation = 16.dp,
         dragHandle = {
@@ -58,7 +58,7 @@ fun AccountDetailBottomSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(18.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -68,8 +68,8 @@ fun AccountDetailBottomSheet(
                 Text(
                     text = account.name,
                     fontWeight = FontWeight.ExtraBold,
-                    fontSize = 28.sp,
-                    color = MaterialTheme.colorScheme.onTertiary,
+                    fontSize = 24.sp,
+                    color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
                     modifier = Modifier.weight(1f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -136,10 +136,11 @@ fun AccountDetailBottomSheet(
                         color = MaterialTheme.colorScheme.onTertiary
                     )
                     Text(
-                        text = formattedBalance, // Formatlangan balans
+                        text = formattedBalance,
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.ExtraBold,
-                        color = MaterialTheme.colorScheme.onTertiary
+                        color = MaterialTheme.colorScheme.onTertiary,
+                        fontSize = 16.sp
                     )
                 }
             }

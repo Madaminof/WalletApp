@@ -118,7 +118,7 @@ class StatisticsViewModel @Inject constructor(
         val expenseTransactions = transactions.filter { it.type == TransactionType.EXPENSE }
 
         val categoryMap = expenseTransactions
-            .groupBy { it.category.id }
+            .groupBy { it.category?.id }
             .mapValues { (_, transactions) -> transactions.sumOf { it.amount } }
 
         val categoryLookup = categories.associateBy { it.id }

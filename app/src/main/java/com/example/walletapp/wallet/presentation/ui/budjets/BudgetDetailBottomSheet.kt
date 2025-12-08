@@ -14,8 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.walletapp.wallet.domain.model.Budget
 import com.example.walletapp.wallet.domain.model.BudgetStatus
+import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.DeleteConfirmationDialog
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -31,11 +33,13 @@ fun BudgetDetailBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val budget = budgetStatus.budget
     val dateFormatter = remember { SimpleDateFormat("dd MMM yyyy", Locale.getDefault()) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
         contentColor = MaterialTheme.colorScheme.onTertiary,
         tonalElevation = 16.dp,
         dragHandle = {
@@ -66,9 +70,10 @@ fun BudgetDetailBottomSheet(
                         color = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        text = "Budjet ma'lumotlari",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = "Budget ma'lumotlari",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+
                     )
                 }
                 Row {
@@ -80,7 +85,7 @@ fun BudgetDetailBottomSheet(
                         )
                     }
                     Spacer(Modifier.width(8.dp))
-                    IconButton(onClick = { onDelete(budgetStatus) }) {
+                    IconButton(onClick = { showDeleteDialog =true }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Budjetni o'chirish",
@@ -90,10 +95,14 @@ fun BudgetDetailBottomSheet(
                 }
             }
             Spacer(Modifier.height(8.dp))
+
             BudgetSummaryCard(status = budgetStatus)
+
             Spacer(Modifier.height(24.dp))
+
             Divider(color = MaterialTheme.colorScheme.outlineVariant)
             Spacer(Modifier.height(16.dp))
+
             Column(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -127,6 +136,16 @@ fun BudgetDetailBottomSheet(
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))
+        }
+
+
+        if (showDeleteDialog){
+            DeleteConfirmationDialog(
+                onDismiss = {showDeleteDialog = false},
+                onConfirmDelete = {onDelete(budgetStatus)},
+                title = "Budgetni o'chirish",
+                text = "Rostdan ham budgetni o'chirishni hohlaysizmi?"
+            )
         }
     }
 }
@@ -190,19 +209,23 @@ fun DetailRow(label: String, value: String, icon: ImageVector) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Icon(imageVector = icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(24.dp))
+            Icon(imageVector = icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
             Text(
                 text = label,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onTertiary
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onTertiary,
+                fontSize = 14.sp
             )
         }
 
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onTertiary
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.onTertiary.copy(0.7f),
+            modifier = Modifier.weight(1f, fill = false)
         )
     }
 }
@@ -214,20 +237,23 @@ fun DetailSummaryRow(label: String, value: String, icon: ImageVector, valueColor
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Icon(imageVector = icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(24.dp))
+            Icon(imageVector = icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
             Text(
                 text = label,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onTertiary
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onTertiary,
+                fontSize = 14.sp
             )
         }
 
         Text(
             text = value,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.ExtraBold,
-            color = valueColor
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp,
+            color = valueColor,
+            modifier = Modifier.weight(1f, fill = false)
         )
     }
 }

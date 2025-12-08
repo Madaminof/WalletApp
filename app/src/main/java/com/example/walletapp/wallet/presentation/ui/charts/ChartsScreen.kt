@@ -16,19 +16,21 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.walletapp.wallet.domain.model.Transaction
+import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.EditTransactionDialog
 import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.ExpenseTransactionItem
 import com.example.walletapp.wallet.presentation.ui.charts.tabRowComponents.BalanceTab
 import com.example.walletapp.wallet.presentation.ui.charts.tabRowComponents.ReportsTab
 import com.example.walletapp.wallet.presentation.ui.home.diogramCharts.DoughnutChart
+import com.example.walletapp.wallet.presentation.ui.otherScreens.topbar.CustomTopBar
 import com.example.walletapp.wallet.presentation.viewmodel.CategoryData
 import com.example.walletapp.wallet.presentation.viewmodel.HomeViewModel
 import com.example.walletapp.wallet.presentation.viewmodel.categoryColors
 
 enum class ChartTab(val title: String) {
     BALANCE("Balance"),
-    EXPENSE("Chiqim"),
-    INCOME("Kirim"),
-    REPORTS("Hisobotlar")
+    EXPENSE("Expense"),
+    INCOME("Income"),
+    REPORTS("Reports")
 }
 
 @Composable
@@ -37,26 +39,31 @@ fun ChartsScreen(
     navController: NavController
 ) {
     val transactions by viewModel.transactions.collectAsState()
-    val accounts by viewModel.accounts.collectAsState()
     var selectedTab by remember { mutableStateOf(ChartTab.BALANCE) }
     var selectedCategory by remember { mutableStateOf<String?>(null) }
-
-
     val allCategories by viewModel.allCategories.collectAsState()
 
-
-
-    Column(
+    Scaffold(
+        topBar = {
+            CustomTopBar(
+                navController = navController,
+                title = "Statistics",
+                onBackClick = {navController.popBackStack()},
+            )
+        }
+    ) {paddingValues ->
+        Column(
             modifier = Modifier
+                .padding(paddingValues)
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.onBackground)
+                .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             val tabs = ChartTab.values()
             TabRow(
                 selectedTabIndex = tabs.indexOf(selectedTab),
                 modifier = Modifier.fillMaxWidth(),
                 containerColor = MaterialTheme.colorScheme.primaryContainer
-                ) {
+            ) {
                 tabs.forEachIndexed { index, tab ->
                     Tab(
                         selected = selectedTab == tab,
@@ -71,7 +78,7 @@ fun ChartsScreen(
                 }
             }
             when (selectedTab) {
-                ChartTab.BALANCE -> BalanceTab(accounts,transactions)
+                ChartTab.BALANCE -> BalanceTab()
                 ChartTab.EXPENSE -> TransactionsTab(
                     transactions.filter { it.type.name == "EXPENSE" },
                     viewModel,
@@ -93,6 +100,7 @@ fun ChartsScreen(
             }
         }
     }
+}
 
 @Composable
 fun TransactionsTab(
@@ -101,35 +109,39 @@ fun TransactionsTab(
     selectedCategory: String? = null,
     currentTab: ChartTab
 ) {
+    var showEditDialog by remember { mutableStateOf(false) }
+    var currentTransaction by remember { mutableStateOf<Transaction?>(null) }
+
+
     var selectedTransaction by remember { mutableStateOf<Transaction?>(null) }
     val filteredTransactions = transactions
         .filter { it.type.name == currentTab.name }
         .let { list ->
             selectedCategory?.let { category ->
-                list.filter { it.category.name == category }
+                list.filter { it.category?.name == category }
             } ?: list
         }
         .sortedByDescending { it.date }
 
     val categoryData = filteredTransactions
-        .groupBy { it.category.name }
+        .groupBy { it.category?.name }
         .map { (name, list) ->
             CategoryData(
-                categoryName = name,
+                categoryName = name?:"",
                 amount = list.sumOf { it.amount },
                 color = categoryColors[name] ?: Color.Gray
             )
         }
 
     val totalAmount = categoryData.sumOf { it.amount }
-    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.onBackground)) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primaryContainer)) {
         if (categoryData.isNotEmpty()) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 2.dp),
                 shape = RectangleShape,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             ) {
                 Box(
                     modifier = Modifier
@@ -140,7 +152,6 @@ fun TransactionsTab(
                     DoughnutChart(
                         data = categoryData,
                         totalAmount = totalAmount,
-                        chartSize = 130.dp
                     )
                 }
             }
@@ -179,7 +190,8 @@ fun TransactionsTab(
                     transaction = transaction,
                     onDismiss = { selectedTransaction = null },
                     onUpdate = {
-                        selectedTransaction = null
+                        currentTransaction = transaction   // MUHIM
+                        showEditDialog = true
                     },
                     onDelete = {
                         viewModel.deleteTransaction(
@@ -187,6 +199,17 @@ fun TransactionsTab(
                         )
                         selectedTransaction = null
 
+                    }
+                )
+            }
+
+            if (showEditDialog && currentTransaction != null) {
+                EditTransactionDialog(
+                    transaction = currentTransaction!!,
+                    homeViewModel = viewModel,
+                    onClose = {
+                        showEditDialog = false
+                        currentTransaction = null
                     }
                 )
             }

@@ -10,4 +10,6 @@ interface CategoryRepository {
     suspend fun addCategory(category: Category): Result<Unit>
     suspend fun deleteCategory(categoryId: String): Result<Unit>
     suspend fun getCategoryById(categoryId: String): Result<Category>
+
+    fun getCategoryByNameAndType(name: String, type: TransactionType): Flow<Category?>
 }

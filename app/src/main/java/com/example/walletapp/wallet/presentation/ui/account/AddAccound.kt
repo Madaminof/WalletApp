@@ -108,7 +108,7 @@ fun AddAccountScreen(
                 name = trimmedName,
                 initialBalance = balance,
                 colorHex = colorHex,
-                iconResId = selectedIcon
+                iconResId = selectedIcon,
             )
             onSave(account)
             navController.popBackStack()

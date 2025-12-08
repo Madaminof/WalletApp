@@ -2,7 +2,6 @@ package com.example.walletapp.wallet.presentation.ui.charts
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,7 +20,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.walletapp.wallet.domain.model.Transaction
+import com.example.walletapp.wallet.domain.model.TransactionType
+import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.EditTransactionDialog
 import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.ExpenseTransactionItem
+import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.SortSelectionDialog
+import com.example.walletapp.wallet.presentation.ui.home.addTransaction.addtransactionScreen2.AddTransactionBottomSheet
 import com.example.walletapp.wallet.presentation.ui.home.diogramCharts.DoughnutChart
 import com.example.walletapp.wallet.presentation.ui.otherScreens.topbar.CustomTopBar
 import com.example.walletapp.wallet.presentation.viewmodel.CategoryData
@@ -29,8 +32,8 @@ import com.example.walletapp.wallet.presentation.viewmodel.HomeViewModel
 import com.example.walletapp.wallet.presentation.viewmodel.categoryColors
 
 enum class TabItem(val title: String) {
-    EXPENSE("Chiqimlar"),
-    INCOME("Daromadlar"),
+    EXPENSE("Xarajat"),
+    INCOME("Daromad"),
 }
 
 enum class SortState {
@@ -51,14 +54,15 @@ fun ExpensesListScreen(
 
     var sortState by remember { mutableStateOf(SortState.DATE_DESC) }
     var showSortDialog by remember { mutableStateOf(false) }
-
+    var showEditDialog by remember { mutableStateOf(false) }
+    var currentTransaction by remember { mutableStateOf<Transaction?>(null) }
     var selectedTransaction by remember { mutableStateOf<Transaction?>(null) }
 
     Scaffold(
         topBar = {
             CustomTopBar(
                 navController = navController,
-                title = "Hisobotlar",
+                title = "Transactions",
                 onBackClick = { navController.popBackStack() },
                 actions = {
                     IconButton(onClick = { showSortDialog = true }) {
@@ -103,23 +107,39 @@ fun ExpensesListScreen(
                 val filteredTransactions = transactions
                     .filter { it.type.name == tabs[selectedTabIndex].name }
 
-                val currentTransactions = when (sortState) {
-                    SortState.DATE_DESC -> filteredTransactions.sortedByDescending { it.date }
-                    SortState.AMOUNT_DESC -> filteredTransactions.sortedByDescending { it.amount }
-                    SortState.AMOUNT_ASC -> filteredTransactions.sortedBy { it.amount }
+                val currentTransactions by remember(filteredTransactions, sortState) {
+                    derivedStateOf {
+                        when (sortState) {
+                            SortState.DATE_DESC -> filteredTransactions.sortedByDescending { it.date }
+                            SortState.AMOUNT_DESC -> filteredTransactions.sortedByDescending { it.amount }
+                            SortState.AMOUNT_ASC -> filteredTransactions.sortedBy { it.amount }
+                        }
+                    }
+                }
+                val categoryData by remember(currentTransactions) {
+                    derivedStateOf {
+                        currentTransactions.groupBy { it.category?.name }
+                            .map { (name, list) ->
+                                CategoryData(
+                                    categoryName = name ?: "Noma'lum",
+                                    amount = list.sumOf { it.amount },
+                                    color = categoryColors[name] ?: Color.Gray
+                                )
+                            }
+                    }
+                }
+                val totalAmount by remember(categoryData) {
+                    derivedStateOf {
+                        categoryData.sumOf { it.amount }
+                    }
                 }
 
-                val categoryData = currentTransactions
-                    .groupBy { it.category.name }
-                    .map { (name, list) -> CategoryData(name, list.sumOf { it.amount }, categoryColors[name] ?: Color.Gray) }
-
-                val totalAmount = categoryData.sumOf { it.amount }
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 2.dp),
                     shape = RectangleShape,
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 ) {
                     Box(
                         modifier = Modifier
@@ -171,12 +191,16 @@ fun ExpensesListScreen(
             onDismiss = { showSortDialog = false }
         )
     }
+
+
+
     selectedTransaction?.let { transaction ->
         TransactionDetailBottomSheet(
             transaction = transaction,
             onDismiss = { selectedTransaction = null },
             onUpdate = {
-                selectedTransaction = null
+                currentTransaction = transaction
+                showEditDialog = true
             },
             onDelete = {
                 viewModel.deleteTransaction(transactionId = transaction.id)
@@ -185,66 +209,17 @@ fun ExpensesListScreen(
         )
     }
 
-}
-@Composable
-fun SortSelectionDialog(
-    currentSortState: SortState,
-    onSortSelected: (SortState) -> Unit,
-    onDismiss: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Saralash usulini tanlang", fontWeight = FontWeight.Bold) },
-        text = {
-            Column {
-                SortOptionItem(
-                    label = "Sana bo'yicha (Eng yangisi avval)",
-                    state = SortState.DATE_DESC,
-                    current = currentSortState,
-                    onClick = onSortSelected
-                )
-                SortOptionItem(
-                    label = "Miqdor bo'yicha (Eng kattasi avval)",
-                    state = SortState.AMOUNT_DESC,
-                    current = currentSortState,
-                    onClick = onSortSelected
-                )
-                SortOptionItem(
-                    label = "Miqdor bo'yicha (Eng kichigi avval)",
-                    state = SortState.AMOUNT_ASC,
-                    current = currentSortState,
-                    onClick = onSortSelected
-                )
+    if (showEditDialog && currentTransaction != null) {
+        EditTransactionDialog(
+            transaction = currentTransaction!!,
+            homeViewModel = viewModel,
+            onClose = {
+                showEditDialog = false
+                currentTransaction = null
             }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Yopish")
-            }
-        }
-    )
-}
-
-@Composable
-fun SortOptionItem(
-    label: String,
-    state: SortState,
-    current: SortState,
-    onClick: (SortState) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick(state) }
-            .padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        RadioButton(
-            selected = current == state,
-            onClick = { onClick(state) },
-            colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary)
         )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(label)
     }
+
+
+
 }

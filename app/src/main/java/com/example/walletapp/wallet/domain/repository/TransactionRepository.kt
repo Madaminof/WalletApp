@@ -10,6 +10,8 @@ interface TransactionRepository {
     fun getAllTransactions(type: TransactionType? = null): Flow<List<Transaction>>
     fun getTransactionsByDateRange(startDate: Long, endDate: Long): Flow<List<Transaction>>
     suspend fun deleteTransaction(transactionId: String): Result<Unit>
+    suspend fun updateTransaction(transaction: Transaction): Result<Unit>
+
 
     suspend fun countTransactionsByDateRange(startDateMillis: Long, endDateMillis: Long): Int
 }

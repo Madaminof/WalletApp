@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.TrackChanges
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,6 +24,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.walletapp.navigation.Screen
+import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.CircularIconButton
+import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.primaryAccent
 
 @Composable
 fun GoalsCard(
@@ -42,16 +46,6 @@ fun GoalsCard(
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
-            }
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onPress = {
-                        isPressed = true
-                        tryAwaitRelease()
-                        isPressed = false
-                    },
-                    onTap = { onCreateGoalClick() }
-                )
             },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -62,7 +56,7 @@ fun GoalsCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp)
+                .padding(16.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -70,23 +64,24 @@ fun GoalsCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Moliyaviy Maqsadlar",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onTertiary
+                    text = "Goals",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.8f)
                 )
-                IconButton(onClick = onCreateGoalClick) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowForward,
-                        contentDescription = "Batafsil Tahlil",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
+                CircularIconButton(
+                    onClick = onCreateGoalClick,
+                    icon = Icons.Default.ArrowForwardIos,
+                    contentDescription = "Go to goals list",
+                    tint = primaryAccent,
+                    backgroundColor = primaryAccent.copy(alpha = 0.1f),
+                    size = 32.dp
+                )
             }
             Text(
                 text = "Birinchi maqsadingizni belgilang va uni osonlik bilan kuzating.",
                 color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.4f),
-                fontSize = 13.sp,
+                fontSize = 12.sp,
                 lineHeight = 18.sp
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -97,7 +92,7 @@ fun GoalsCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(50.dp)
                         .background(
                             brush = Brush.verticalGradient(
                                 listOf(goalsPrimary, goalsSecondary)
@@ -110,7 +105,7 @@ fun GoalsCard(
                         imageVector = Icons.Default.TrackChanges,
                         contentDescription = "Goals Icon",
                         tint = Color.White,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(25.dp)
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))

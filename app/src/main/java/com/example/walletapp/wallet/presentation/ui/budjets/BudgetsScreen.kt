@@ -4,23 +4,29 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.walletapp.wallet.domain.model.BudgetStatus
 import androidx.navigation.NavController
+import com.example.walletapp.navigation.Screen
+import com.example.walletapp.wallet.presentation.ui.otherScreens.topbar.CustomTopBar
 import java.text.DecimalFormat
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -31,44 +37,72 @@ fun BudgetsScreen(
 ) {
     val budgetStatuses by viewModel.activeBudgetStatuses.collectAsState()
     var selectedBudget by remember { mutableStateOf<BudgetStatus?>(null) }
-    if (budgetStatuses.isEmpty()) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.onBackground),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                "Hozircha faol budjetlar yo'q.",
-                color = MaterialTheme.colorScheme.onTertiary
+
+    Scaffold(
+        topBar = {
+            CustomTopBar(
+                navController = navController,
+                title = "Budgets",
+                onBackClick = {navController.popBackStack()},
             )
-        }
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.onBackground),
-            contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
-            verticalArrangement = Arrangement.Top,
-        ) {
-            item {
-                ThisMonthBudgetCard(
-                    budgetStatuses = budgetStatuses,
-                    onBudgetClick = { status -> selectedBudget = status }
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navController.navigate(Screen.budjetAdd.route) },
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = Color.White,
+                shape = RoundedCornerShape(50)
+            ){
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Budgets"
                 )
             }
         }
-    }
-    selectedBudget?.let { status ->
-        BudgetDetailBottomSheet(
-            budgetStatus = status,
-            onDismiss = { selectedBudget = null },
-            onUpdate = { /* ... */ },
-            onDelete = { acc ->
-                viewModel.deleteBudjet(acc.budget)
-                selectedBudget = null
+    ) { paddingValues ->
+
+        if (budgetStatuses.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    "Hozircha faol budjetlar yo'q.",
+                    color = MaterialTheme.colorScheme.onTertiary
+                )
             }
-        )
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
+                verticalArrangement = Arrangement.Top,
+            ) {
+                item {
+                    ThisMonthBudgetCard(
+                        budgetStatuses = budgetStatuses,
+                        onBudgetClick = { status -> selectedBudget = status }
+                    )
+                }
+            }
+        }
+        selectedBudget?.let { status ->
+            BudgetDetailBottomSheet(
+                budgetStatus = status,
+                onDismiss = { selectedBudget = null },
+                onUpdate = { /* ... */ },
+                onDelete = { acc ->
+                    viewModel.deleteBudjet(acc.budget)
+                    selectedBudget = null
+                }
+            )
+        }
+
     }
 }
 
@@ -84,6 +118,11 @@ fun ThisMonthBudgetCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.onTertiary.copy(0.07f),
+                shape = RectangleShape
+            )
             .padding(horizontal = 0.dp, vertical = 8.dp)
             .background(MaterialTheme.colorScheme.primaryContainer.copy(0.7f))
     ) {

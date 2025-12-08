@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -30,6 +30,8 @@ import java.util.Locale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
+import com.example.walletapp.R
+import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.DeleteConfirmationDialog
 import java.text.NumberFormat
 
 
@@ -48,12 +50,14 @@ fun TransactionDetailBottomSheet(
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val dateTimeFormatter = remember { SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onSurface,
+        containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        contentColor = MaterialTheme.colorScheme.onTertiary,
         tonalElevation = 16.dp,
         dragHandle = {
             Box(
@@ -73,7 +77,7 @@ fun TransactionDetailBottomSheet(
             TransactionHeader(
                 transaction = transaction,
                 onUpdate = onUpdate,
-                onDelete = onDelete
+                onDelete = {showDeleteDialog = true}
             )
             Spacer(Modifier.height(16.dp))
             PremiumTransactionSummaryCard(transaction = transaction)
@@ -95,6 +99,14 @@ fun TransactionDetailBottomSheet(
 
             Spacer(modifier = Modifier.height(16.dp))
         }
+        if (showDeleteDialog){
+            DeleteConfirmationDialog(
+                onDismiss = { showDeleteDialog = false },
+                onConfirmDelete = {onDelete(transaction)},
+                title = "Tranzaksiyani o'chirish",
+                text = "Rostdan ham tranzaksiyani o'chirishni hohlaysizmi?"
+            )
+        }
     }
 }
 
@@ -107,7 +119,7 @@ fun DetailSectionCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
     ) {
         Column(
@@ -116,24 +128,46 @@ fun DetailSectionCard(
                 .padding(vertical = 8.dp),
         ) {
             PremiumDetailRow(
-                label = "Hamyon",
+                label = "Account",
                 value = transaction.account.name,
-                icon = Icons.Default.AccountBalanceWallet,
+                icon =
+                {
+                    Icon(
+                    painter = painterResource(id = transaction.account.iconResId?: R.drawable.ic_card_default),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(20.dp)
+                ) },
                 valueColor = MaterialTheme.colorScheme.onTertiary.copy(0.7f)
-
             )
             Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), modifier = Modifier.padding(horizontal = 16.dp))
+
             PremiumDetailRow(
-                label = "Turi",
-                value = if (transaction.type == TransactionType.EXPENSE) "Chiqim" else "Daromad",
-                icon = Icons.Default.Category,
+                label = "Type",
+                value = if (transaction.type == TransactionType.EXPENSE) "Expence" else "Income",
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_up_down),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                       },
                 valueColor = if (transaction.type == TransactionType.EXPENSE) expenseColor else incomeColor
             )
             Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), modifier = Modifier.padding(horizontal = 16.dp))
+
             PremiumDetailRow(
-                label = "Sana va vaqt",
+                label = "Date time",
                 value = dateTimeFormatter.format(Date(transaction.date)),
-                icon = Icons.Default.Schedule,
+                icon = {
+                    Icon(
+                       imageVector = Icons.Default.AccessTime,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                },
                 valueColor = MaterialTheme.colorScheme.onTertiary.copy(0.7f)
             )
         }
@@ -141,7 +175,12 @@ fun DetailSectionCard(
 }
 
 @Composable
-fun PremiumDetailRow(label: String, value: String, icon: ImageVector, valueColor: Color = MaterialTheme.colorScheme.onSurface) {
+fun PremiumDetailRow(
+    label: String,
+    value: String,
+    icon: @Composable () -> Unit,
+    valueColor: Color = MaterialTheme.colorScheme.onTertiary.copy(0.7f)
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -150,12 +189,7 @@ fun PremiumDetailRow(label: String, value: String, icon: ImageVector, valueColor
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(20.dp)
-            )
+            icon()
             Text(
                 text = label,
                 style = MaterialTheme.typography.titleMedium,
@@ -168,7 +202,7 @@ fun PremiumDetailRow(label: String, value: String, icon: ImageVector, valueColor
             text = value,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 13.sp,
+            fontSize = 12.sp,
             color = valueColor,
             modifier = Modifier.weight(1f, fill = false)
         )
@@ -180,7 +214,7 @@ fun PremiumDetailRow(label: String, value: String, icon: ImageVector, valueColor
 fun TransactionHeader(
     transaction: Transaction,
     onUpdate: (Transaction) -> Unit,
-    onDelete: (Transaction) -> Unit
+    onDelete: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -189,7 +223,7 @@ fun TransactionHeader(
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = transaction.category.name,
+                text = transaction.category?.name?:"",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.ExtraBold,
                 color = MaterialTheme.colorScheme.primary,
@@ -198,7 +232,7 @@ fun TransactionHeader(
             Text(
                 text = "Tranzaksiya ma'lumotlari",
                 style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
         }
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -206,13 +240,13 @@ fun TransactionHeader(
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = "Tahrirlash",
-                    tint = MaterialTheme.colorScheme.secondary
+                    tint = MaterialTheme.colorScheme.onTertiary.copy(0.6f)
                 )
             }
-            IconButton(onClick = { onDelete(transaction) }) {
+            IconButton(onClick = onDelete) {
                 Icon(
-                    imageVector = Icons.Default.DeleteForever,
-                    contentDescription = "O'chirish",
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete",
                     tint = MaterialTheme.colorScheme.error
                 )
             }
@@ -231,10 +265,10 @@ fun PremiumTransactionSummaryCard(transaction: Transaction) {
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = typeColor.copy(alpha = 0.15f),
-            contentColor = typeColor.copy(alpha = 0.9f)
+            containerColor = typeColor.copy(alpha = 0.09f),
+            contentColor = typeColor.copy(alpha = 0.8f)
         ),
     ) {
         Row(
@@ -247,7 +281,7 @@ fun PremiumTransactionSummaryCard(transaction: Transaction) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = typeColor,
+                tint = typeColor.copy(0.8f),
                 modifier = Modifier.size(30.dp)
             )
             Spacer(Modifier.width(20.dp))
@@ -256,7 +290,7 @@ fun PremiumTransactionSummaryCard(transaction: Transaction) {
                 Text(
                     text = "Umumiy Miqdor",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                    color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.8f),
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
@@ -290,7 +324,7 @@ fun ExpandableNoteCard(note: String) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
     ) {
         Column(
@@ -305,13 +339,13 @@ fun ExpandableNoteCard(note: String) {
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Notes,
-                    contentDescription = "Izoh",
+                    contentDescription = "Note",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(Modifier.width(16.dp))
                 Text(
-                    text = "Izoh",
+                    text = "Note",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onTertiary,
@@ -330,10 +364,10 @@ fun ExpandableNoteCard(note: String) {
             Text(
                 text = note,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.8f),
+                color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.6f),
                 maxLines = if (expanded) Int.MAX_VALUE else 1,
                 overflow = TextOverflow.Ellipsis,
-                fontSize = 12.sp,
+                fontSize = 11.sp,
             )
         }
     }

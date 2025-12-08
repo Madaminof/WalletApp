@@ -9,29 +9,18 @@ import com.example.walletapp.wallet.domain.usecase.transaction.GetAllTransaction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
-import androidx.compose.ui.graphics.Color
-import com.example.walletapp.R
 import com.example.walletapp.wallet.domain.model.Account
 import com.example.walletapp.wallet.domain.model.Category
 import com.example.walletapp.wallet.domain.usecase.category.GetCategoriesByType
 import com.example.walletapp.wallet.domain.usecase.transaction.DeleteTransaction
+import com.example.walletapp.wallet.domain.usecase.transaction.UpdateTransaction
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-data class BalanceItem(
-    val iconResId: Int,
-    val title: String,
-    val amountDouble: Double,
-    val amount: String,
-    val color: String?
-)
-
-fun formatAmount(amount: Double): String {
-    return String.format("%,.0f UZS", amount)
-}
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -39,10 +28,10 @@ class HomeViewModel @Inject constructor(
     private val getAllAccounts: GetAllAccounts,
     private val deleteTransactionUseCase: DeleteTransaction,
     private val getCategoriesByType: GetCategoriesByType,
+    private val updateTransactionUsecase: UpdateTransaction
 
     ) : ViewModel() {
     private val transactionsFlow = getAllTransactions(type = null)
-    private val accountsFlow = getAllAccounts()
 
     val incomeCategories: StateFlow<List<Category>> = getCategoriesByType(TransactionType.INCOME)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
@@ -65,59 +54,6 @@ class HomeViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    val incomeExpenseFlow: StateFlow<Pair<Double, Double>> = stateFlow()
-
-    private fun stateFlow() = transactionsFlow
-            .map { transactions ->
-                val totalIncome = transactions
-                    .filter { it.type == TransactionType.INCOME }
-                    .sumOf { it.amount }
-
-                val totalExpense = transactions
-                    .filter { it.type == TransactionType.EXPENSE }
-                    .sumOf { it.amount }
-
-                Pair(totalIncome, totalExpense)
-            }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = Pair(0.0, 0.0)
-            )
-
-    val balanceItemsFlow: StateFlow<List<BalanceItem>> = accountsFlow
-        .map { accountsList ->
-
-            val totalBalanceValue = accountsList.sumOf { it.initialBalance }
-
-            // Total
-            val totalBalanceItem = BalanceItem(
-                iconResId = R.drawable.ic_balance,
-                title = "Balance",
-                amountDouble = totalBalanceValue,
-                amount = formatAmount(totalBalanceValue),
-                color = Color.Gray.toString()
-            )
-
-            val individualBalances = accountsList.map { account ->
-
-                BalanceItem(
-                    iconResId = account.iconResId?: R.drawable.ic_wallet,
-                    title = account.name,
-                    amountDouble = account.initialBalance,
-                    amount = formatAmount(account.initialBalance),
-                    color = account.colorHex
-                )
-            }
-
-            listOf(totalBalanceItem) + individualBalances
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
-
     val accounts: StateFlow<List<Account>> = getAllAccounts()
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
@@ -131,4 +67,17 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateTransaction(transaction: Transaction) {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    updateTransactionUsecase(transaction)
+                }
+            } catch (e: Exception) {
+                println("Update error: ${e.message}")
+            }
+        }
+    }
+
 }

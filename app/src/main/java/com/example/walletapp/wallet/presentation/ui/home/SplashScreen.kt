@@ -1,7 +1,9 @@
 package com.example.walletapp.wallet.presentation.ui.home
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.EaseOutCubic
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideOutVertically
@@ -17,46 +19,37 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.walletapp.R
-import com.example.walletapp.auth.presentation.AuthViewModel
 import com.example.walletapp.core.AppStatusBarColor
 import com.example.walletapp.navigation.Screen
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    navController: NavHostController,
-    authViewModel: AuthViewModel
+    navController: NavHostController
 ) {
     AppStatusBarColor(MaterialTheme.colorScheme.background)
 
-    val currentUser by authViewModel.currentUser.collectAsState(initial = null)
     val scale = remember { Animatable(0.5f) }
     var isContentVisible by remember { mutableStateOf(true) }
+
     LaunchedEffect(Unit) {
         scale.animateTo(
             targetValue = 1f,
             animationSpec = tween(
-                durationMillis = 800,
+                durationMillis = 200,
                 easing = EaseOutCubic
             )
         )
-    }
-    LaunchedEffect(currentUser) {
-        delay(800)
+        delay(200)
         isContentVisible = false
-        if (currentUser != null) {
-            navController.navigate(Screen.Home.route) {
-                popUpTo("splash") { inclusive = true }
-            }
-        } else {
-            navController.navigate("login") {
-                popUpTo("splash") { inclusive = true }
-            }
+        navController.navigate(Screen.Home.route) {
+            popUpTo("splash") { inclusive = true }
         }
     }
+
     AnimatedVisibility(
         visible = isContentVisible,
-        enter = fadeIn(animationSpec = tween(500)),
+        enter = fadeIn(animationSpec = tween(300)),
         exit = fadeOut(tween(300)) + slideOutVertically(tween(300)) { fullHeight -> fullHeight / 2 },
         modifier = Modifier.fillMaxSize()
     ) {
@@ -72,18 +65,11 @@ fun SplashScreen(
                 modifier = Modifier.scale(scale.value)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.wallet_icon2),
+                    painter = painterResource(R.drawable.ic_wallet_analyst),
                     contentDescription = "Wallet App Logo",
                     tint = Color.Unspecified,
                     modifier = Modifier.size(100.dp)
                 )
-                Spacer(modifier = Modifier.height(30.dp))
-                LinearProgressIndicator(
-                    modifier = Modifier.width(180.dp),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    trackColor = MaterialTheme.colorScheme.primary
-                )
-
             }
         }
     }

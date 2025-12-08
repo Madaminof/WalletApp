@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,9 +17,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.TrackChanges
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,19 +31,18 @@ import com.example.walletapp.ui.theme.goals
 import com.example.walletapp.ui.theme.shoppingList
 import com.example.walletapp.wallet.presentation.ui.home.cardGoals.GoalsCard
 import com.example.walletapp.wallet.presentation.ui.home.cardStatistics.ExpenseStatisticCardPremium
+import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.TotalBalanceCard
+import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.TotalBalanceCardViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun HomeScreen(
-    onActionClick: (Int) -> Unit,
+    onActionClick: (String) -> Unit,
     navController: NavController,
+    totalBalanceCardViewModel: TotalBalanceCardViewModel
 ) {
     val listState = rememberLazyListState()
-    val scrollOffset = listState.firstVisibleItemScrollOffset
-    val progress = (scrollOffset / 180f).coerceIn(0f, 1f)
-    val cardAlpha by animateFloatAsState(1f - progress)
-    val cardOffset by animateDpAsState((progress * (-40)).dp)
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -61,29 +56,27 @@ fun HomeScreen(
                 .animateContentSize(),
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
         ) {
-            item { IncomeExpenseCard(
-                modifier = Modifier
-                    .alpha(cardAlpha)
-                    .offset(y = cardOffset)
-            ) }
-            item { QuickActionsRow(onActionClick,navController) }
+            item { TotalBalanceCard(onFilterClick = totalBalanceCardViewModel::onFilterClick) }
+            item { QuickActionsRow(onActionClick, navController) }
+            item { CashFlowCard() }
             item { ExpenseStatisticCardPremium(
                 onMoreClick = {navController.navigate(Screen.ExpenseList.route)},
             ) }
+            item { AccountCard(navController = navController) }
             item { GoalsCard(onCreateGoalClick = {navController.navigate(Screen.Goals.route)}) }
         }
     }
 }
 
 @Composable
-fun QuickActionsRow(onActionClick: (Int) -> Unit,navController: NavController) {
+fun QuickActionsRow(onActionClick: (String) -> Unit,navController: NavController) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         item {
             QuickInCards(
                 Icons.Default.AccountBalanceWallet,
                 title = stringResource(R.string.quick_budjets),
                 color = budjets,
-                onClick = { onActionClick(2) }
+                onClick = { onActionClick(Screen.Budgets.route) } // Route
             )
         }
         item {
@@ -91,7 +84,7 @@ fun QuickActionsRow(onActionClick: (Int) -> Unit,navController: NavController) {
                 Icons.Default.ShoppingCart,
                 title = stringResource(R.string.quick_shoppingList),
                 color = shoppingList,
-                onClick = { navController.navigate(Screen.ShoppingLists.route) }
+                onClick = { onActionClick(Screen.ShoppingLists.route) }
             )
         }
         item {
@@ -99,7 +92,7 @@ fun QuickActionsRow(onActionClick: (Int) -> Unit,navController: NavController) {
                 Icons.Default.Money,
                 title = stringResource(R.string.quick_Debts),
                 color = debts,
-                onClick = {  }
+                onClick = { onActionClick(Screen.DebtsScreen.route) }
             )
         }
         item {
@@ -107,7 +100,7 @@ fun QuickActionsRow(onActionClick: (Int) -> Unit,navController: NavController) {
                 Icons.Default.Balance,
                 title = stringResource(R.string.quick_Balance),
                 color = balance,
-                onClick = { onActionClick(3) }
+                onClick = { onActionClick(Screen.Charts.route) }
             )
         }
         item {
@@ -115,7 +108,7 @@ fun QuickActionsRow(onActionClick: (Int) -> Unit,navController: NavController) {
                 Icons.Default.TrackChanges,
                 title = stringResource(R.string.quick_Goals),
                 color = goals,
-                onClick = {navController.navigate(Screen.Goals.route)}
+                onClick = { onActionClick(Screen.Goals.route) } // Route
             )
         }
     }

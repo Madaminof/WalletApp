@@ -3,6 +3,7 @@ package com.example.walletapp.wallet.data.repository
 import com.example.walletapp.wallet.data.local.dao.CategoryDao
 import com.example.walletapp.wallet.data.mapper.toCategory
 import com.example.walletapp.wallet.data.mapper.toCategoryEntity
+import com.example.walletapp.wallet.data.mapper.toDomain
 import com.example.walletapp.wallet.domain.model.Category
 import com.example.walletapp.wallet.domain.model.TransactionType
 import com.example.walletapp.wallet.domain.repository.CategoryRepository
@@ -36,5 +37,12 @@ class CategoryRepositoryImpl @Inject constructor(
             ?: throw IOException("Kategoriya topilmadi: ID = $categoryId")
 
         entity.toCategory()
+    }
+
+    override fun getCategoryByNameAndType(name: String, type: TransactionType): Flow<Category?> {
+        return categoryDao.getCategoryByNameAndType(name, type)
+            .map { entity ->
+                entity?.toDomain()
+            }
     }
 }

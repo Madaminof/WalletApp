@@ -3,13 +3,18 @@ package com.example.walletapp.wallet.di.RepositoryModule
 import com.example.walletapp.wallet.data.repository.AccountRepositoryImpl
 import com.example.walletapp.wallet.data.repository.BudgetRepositoryImpl
 import com.example.walletapp.wallet.data.repository.CategoryRepositoryImpl
+import com.example.walletapp.wallet.data.repository.DebtsRepositoryImpl
+import com.example.walletapp.wallet.data.repository.ShoppingRepositoryImpl
 import com.example.walletapp.wallet.data.repository.impl.TransactionRepositoryImpl
 import com.example.walletapp.wallet.domain.repository.AccountRepository
 import com.example.walletapp.wallet.domain.repository.BudgetRepository
 import com.example.walletapp.wallet.domain.repository.CategoryRepository
+import com.example.walletapp.wallet.domain.repository.DebtsRepository
+import com.example.walletapp.wallet.domain.repository.ShoppingRepository
 import com.example.walletapp.wallet.domain.repository.TransactionRepository
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -39,5 +44,16 @@ abstract class RepositoryModule {
         budgetRepositoryImpl: BudgetRepositoryImpl
     ): BudgetRepository
 
+    @Binds
+    @Singleton
+    abstract fun provideShoppingRepository(
+        shoppingRepositoryImpl: ShoppingRepositoryImpl
+    ):ShoppingRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideDebtsRepository(
+        debtsRepositoryImpl: DebtsRepositoryImpl
+    ):DebtsRepository
 
 }

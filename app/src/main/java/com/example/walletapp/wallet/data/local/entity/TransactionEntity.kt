@@ -29,3 +29,22 @@ data class TransactionEntity(
     val note: String? = null,
     val date: Long
 )
+
+@Entity(tableName = "categories")
+data class CategoryEntity(
+    @PrimaryKey val id: String,
+    val name: String,
+    val type: String,
+    val iconResId: Int? = null,
+    val colorArgb: Long
+)
+
+@Entity(tableName = "accounts")
+data class AccountEntity(
+    @PrimaryKey val id: String,
+    val name: String,
+    val balance: Double = 0.0,
+    val colorHex: String? = null,
+    val iconResId: Int? = null
+
+)

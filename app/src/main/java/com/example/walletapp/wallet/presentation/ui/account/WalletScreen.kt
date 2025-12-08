@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.walletapp.navigation.Screen
 import com.example.walletapp.wallet.domain.model.Account
+import com.example.walletapp.wallet.presentation.ui.otherScreens.topbar.CustomTopBar
 import com.example.walletapp.wallet.presentation.viewmodel.AccountViewModel
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -65,56 +66,69 @@ fun WalletScreen(
     val scope = rememberCoroutineScope()
     var selectedAccount by remember { mutableStateOf<Account?>(null) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.onBackground)
-    ) {
-
-        Column(modifier = Modifier.fillMaxSize()) {
-            WalletCard(
-                accounts = accounts,
+    Scaffold(
+        topBar = {
+            CustomTopBar(
                 navController = navController,
-                onLimitReached = {
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            message = "Hamyon qo'shish cheklangan (Max 4 ta)"
-                        )
-                    }
-                },
-                onItemClick = { selectedAccount = it }
+                title = "Accounts",
+                onBackClick = {navController.popBackStack()},
             )
         }
-        selectedAccount?.let { account ->
-            AccountDetailBottomSheet(
-                account = account,
-                onDismiss = { selectedAccount = null },
-                onUpdate = { acc ->
-                    // TODO: Update logic
-                    selectedAccount = null
-                },
-                onDelete = { acc ->
-                    accountViewModel.deleteAccount(acc)
-                    selectedAccount = null
-                }
-            )
-        }
-        SnackbarHost(
-            hostState = snackbarHostState,
+    ) { paddingValues ->
+        Box(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 16.dp),
-            snackbar = { data ->
-                Snackbar(
-                    containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onTertiary
-                ) {
-                    Text(text = data.visuals.message)
-                }
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(MaterialTheme.colorScheme.primaryContainer)
+        ) {
+
+            Column(modifier = Modifier.fillMaxSize()) {
+                WalletCard(
+                    accounts = accounts,
+                    navController = navController,
+                    onLimitReached = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "Hamyon qo'shish cheklangan (Max 4 ta)"
+                            )
+                        }
+                    },
+                    onItemClick = { selectedAccount = it }
+                )
             }
-        )
+            selectedAccount?.let { account ->
+                AccountDetailBottomSheet(
+                    account = account,
+                    onDismiss = { selectedAccount = null },
+                    onUpdate = { acc ->
+                        // TODO: Update logic
+                        selectedAccount = null
+                    },
+                    onDelete = { acc ->
+                        accountViewModel.deleteAccount(acc)
+                        selectedAccount = null
+                    }
+                )
+            }
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 16.dp),
+                snackbar = { data ->
+                    Snackbar(
+                        containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiary
+                    ) {
+                        Text(text = data.visuals.message)
+                    }
+                }
+            )
+        }
     }
-}
+
+    }
+
 
 @Composable
 fun WalletCard(
@@ -134,7 +148,7 @@ fun WalletCard(
                 width = 1.dp,
                 color = borderColor,
                 shape = RoundedCornerShape(20.dp)),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onBackground),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
 
         shape = RoundedCornerShape(20.dp),
     ) {

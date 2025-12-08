@@ -53,13 +53,14 @@ class WalletDatabaseCallback @Inject constructor(
                 Triple("Abonent/Obuna", "EXPENSE", R.drawable.ic_subscription) to 0xFFFBC02D, // O'rta Sariq (Netflix, Spotify)
                 Triple("Qarzni to'lash", "EXPENSE", R.drawable.ic_debt) to 0xFFB71C1C,        // Eng To'q Qizil
                 Triple("Avto xizmat", "EXPENSE", R.drawable.ic_car_service) to 0xFF4DD0E1, // Ochiq Cyan
-                Triple("Bog'chas", "EXPENSE", R.drawable.ic_kindergarten) to 0xFF8E24AA, // To'q Binafsha
+                Triple("Bog'cha to'lovi", "EXPENSE", R.drawable.ic_kindergarten) to 0xFF8E24AA, // To'q Binafsha
                 Triple("Bank", "EXPENSE", R.drawable.ic_bank_fee) to 0xFF78909C,  // Kulrang-Moviy (Yengilroq)
                 Triple("ta'mirlash", "EXPENSE", R.drawable.ic_home_repair) to 0xFF689F38,  // To'q Yashil
                 Triple("Tozalash", "EXPENSE", R.drawable.ic_cleaning_new) to 0xFF07F6E0,
                 Triple("Jarima/Soliq", "EXPENSE", R.drawable.ic_tax) to 0xFFC2185B,         // To'q Pushti
                 Triple("Kredit to'lovi", "EXPENSE", R.drawable.ic_credit_card) to 0xFF3949AB, // Indigo
 
+                Triple("Qarz olish", "INCOME", R.drawable.ic_debt) to 0xFFB71C1C,        // Eng To'q Qizil
                 Triple("Oylik Maosh", "INCOME", R.drawable.ic_salary) to 0xFF4CAF50,          // Yashil
                 Triple("Qo'shimcha", "INCOME", R.drawable.ic_extra_income) to 0xFF8BC34A, // Och Yashil
                 Triple("Investitsiya", "INCOME", R.drawable.ic_trending_up) to 0xFF00BFA5, // Feruza (Teal)

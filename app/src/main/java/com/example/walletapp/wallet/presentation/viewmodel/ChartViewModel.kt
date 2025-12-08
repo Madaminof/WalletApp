@@ -65,13 +65,13 @@ class ChartViewModel @Inject constructor(
         .map { transactions ->
             val expenseTransactions = transactions.filter { it.type == TransactionType.EXPENSE }
             val groupedExpenses = expenseTransactions
-                .groupBy { it.category.name }
+                .groupBy { it.category?.name }
                 .map { (categoryName, list) ->
                     val totalAmount = list.sumOf { it.amount }
                     CategoryData(
-                        categoryName = categoryName,
+                        categoryName = categoryName?:"",
                         amount = totalAmount,
-                        color = getCategoryColor(categoryName)
+                        color = getCategoryColor(categoryName?:"")
                     )
                 }
                 .filter { it.amount > 0.0 }

@@ -6,14 +6,21 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="text/plain" />
+        </intent>
+    </queries>
+
     <application
         android:name=".core.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/wallet_icon2"
+        android:icon="@drawable/ic_wallet_analyst"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/wallet_icon2"
+        android:roundIcon="@drawable/ic_wallet"
         android:supportsRtl="true"
         android:theme="@style/Theme.WalletApp"
         tools:targetApi="31">
