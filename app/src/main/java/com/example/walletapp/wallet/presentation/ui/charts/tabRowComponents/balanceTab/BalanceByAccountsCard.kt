@@ -39,14 +39,17 @@ import androidx.compose.ui.unit.sp
 import com.example.walletapp.wallet.domain.model.Account
 import com.example.walletapp.wallet.presentation.ui.charts.tabRowComponents.CircularIconButton
 import com.example.walletapp.wallet.presentation.ui.charts.tabRowComponents.getAccountColor
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import java.text.DecimalFormat
 import kotlin.math.absoluteValue
+
+val activeCurrency by CurrencyManager.currentCurrency
 
 @Composable
 fun BalanceByAccountsCard(
     accounts: List<Account>,
     totalBalance: Double,
-    formatter: DecimalFormat
 ) {
     val nonNegativeTotalBalance = totalBalance.coerceAtLeast(0.0)
     val cardBackgroundColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.6f)
@@ -65,7 +68,7 @@ fun BalanceByAccountsCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Hisoblar Bo'yicha Balans",
+                    "Account Balance",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.8f)
@@ -85,7 +88,6 @@ fun BalanceByAccountsCard(
             PremiumStackedAccountBar(
                 accounts = accounts,
                 totalBalance = nonNegativeTotalBalance,
-                formatter = formatter,
                 primaryColor = primaryAccent,
                 isDarkBackground = true
             )
@@ -97,14 +99,13 @@ fun BalanceByAccountsCard(
 fun PremiumStackedAccountBar(
     accounts: List<Account>,
     totalBalance: Double,
-    formatter: DecimalFormat,
     primaryColor: Color,
     isDarkBackground: Boolean = false
 ) {
 
     val activeAccounts = remember(accounts) { accounts.filter { it.initialBalance.absoluteValue > 0.0 } }
 
-    val safeTotalBalance = if (totalBalance <= 0) 0.0001 else totalBalance // Nolga bo'lishni oldini olish
+    val safeTotalBalance = if (totalBalance <= 0) 0.0001 else totalBalance
 
     val accountData = remember(activeAccounts, safeTotalBalance) {
         activeAccounts
@@ -139,7 +140,7 @@ fun PremiumStackedAccountBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(10.dp) // Kichikroq va ixchamroq
+                .height(10.dp)
                 .clip(RoundedCornerShape(5.dp))
                 .background(barTrackColor)
         ) {
@@ -161,7 +162,6 @@ fun PremiumStackedAccountBar(
                     .padding(vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Rangli Nuqta
                 Box(
                     modifier = Modifier
                         .size(8.dp)
@@ -192,7 +192,7 @@ fun PremiumStackedAccountBar(
                     )
                 }
                 Text(
-                    "${formatter.format(account.initialBalance)} UZS",
+                    formatAmountWithCurrency(account.initialBalance),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 13.sp,
                     color = textColor,

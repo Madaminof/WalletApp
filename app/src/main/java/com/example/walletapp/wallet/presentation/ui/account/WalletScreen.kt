@@ -26,7 +26,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.walletapp.navigation.Screen
 import com.example.walletapp.wallet.domain.model.Account
+import com.example.walletapp.wallet.presentation.ui.home.activeCurrency
 import com.example.walletapp.wallet.presentation.ui.otherScreens.topbar.CustomTopBar
+import com.example.walletapp.wallet.presentation.utils.FormatAmount
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import com.example.walletapp.wallet.presentation.viewmodel.AccountViewModel
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -45,16 +48,7 @@ private fun parseColor(colorHex: String?): Color {
         Color(0xFF8D6E63)
     }
 }
-@Composable
-private fun formatBalance(balance: Double): String {
-    val currencyFormatter = remember {
-        NumberFormat.getCurrencyInstance(Locale("uz", "UZ")).apply {
-            minimumFractionDigits = 0
-            maximumFractionDigits = 0
-        }
-    }
-    return currencyFormatter.format(balance)
-}
+
 
 @Composable
 fun WalletScreen(
@@ -215,7 +209,6 @@ fun WalletCardItem(account: Account, onClick: (Account) -> Unit) {
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                // Ikonka
                 account.iconResId?.let {
                     Box(
                         modifier = Modifier
@@ -235,16 +228,16 @@ fun WalletCardItem(account: Account, onClick: (Account) -> Unit) {
 
                 Column(horizontalAlignment = Alignment.Start) {
                     Text(
-                        text = "Balans",
+                        text = "Balance",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = secondaryContentColor,
                         modifier = Modifier.padding(bottom = 2.dp)
                     )
                     Text(
-                        text = formatBalance(account.initialBalance),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.ExtraBold,
+                        text = FormatAmount(account.initialBalance),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
                         color = contentColor,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis

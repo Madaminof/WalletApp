@@ -38,7 +38,7 @@ fun PremiumDoughnutChart(
     modifier: Modifier = Modifier,
     chartThickness: Dp = 30.dp,
     animationDuration: Int = 500,
-    centerLabel: String = "JAMI XARAJAT"
+    centerLabel: String = "TOTAL EXPENSE"
 ) {
     val totalAngle = 360f
     val animatedProgress = remember { Animatable(0f) }

@@ -26,11 +26,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.walletapp.ui.theme.expenseColor
 import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.CircularIconButton
 import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.primaryAccent
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import com.example.walletapp.wallet.presentation.viewmodel.CategoryData
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 val ALL_PERIODS = listOf(TimePeriod.Daily, TimePeriod.Weekly, TimePeriod.Monthly, TimePeriod.AllTime)
+val activeCurrency by CurrencyManager.currentCurrency
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -66,9 +69,6 @@ private fun PremiumStatisticsCardContent(
         targetValue = if (isPressed) 0.95f else 1f,
         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
     )
-
-    val formatter = remember { DecimalFormat("#,###") }
-    val formattedTotalAmount = formatter.format(totalAmount)
 
     val topCategories = remember(expenseData) {
         expenseData.sortedByDescending { it.amount }.take(3)
@@ -142,7 +142,7 @@ private fun PremiumStatisticsCardContent(
                 Spacer(Modifier.width(4.dp))
                 Icon(
                     Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Davrni tanlash",
+                    contentDescription = "Select period",
                     modifier = Modifier.size(18.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
@@ -150,13 +150,13 @@ private fun PremiumStatisticsCardContent(
 
             Spacer(Modifier.height(14.dp))
             Text(
-                text = "JAMI XARAJAT",
+                text = "TOTAL EXPENSE",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "$formattedTotalAmount UZS",
+                text = formatAmountWithCurrency(totalAmount),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = expenseColor
@@ -181,7 +181,7 @@ private fun PremiumStatisticsCardContent(
                         val remainingAmount = totalAmount - topCategories.sumOf { it.amount }
                         if (remainingAmount > 0) {
                             CategoryLegendItem(
-                                data = CategoryData("Boshqalar", remainingAmount, Color.LightGray),
+                                data = CategoryData("Others", remainingAmount, Color.LightGray),
                                 totalAmount = totalAmount,
                                 isRemaining = true
                             )

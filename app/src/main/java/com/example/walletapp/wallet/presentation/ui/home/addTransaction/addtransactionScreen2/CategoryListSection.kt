@@ -63,7 +63,7 @@ fun CategoryItem(
     val colorTween = tween<Color>(durationMillis = 200)
     val categoryColor = Color(cat.colorArgb)
 
-    val targetBackgroundColor = if (isSelected) categoryColor else MaterialTheme.colorScheme.primaryContainer
+    val targetBackgroundColor = if (isSelected) categoryColor else MaterialTheme.colorScheme.primaryContainer.copy(0.7f)
     val backgroundColor by animateColorAsState(
         targetValue = targetBackgroundColor,
         animationSpec = colorTween,

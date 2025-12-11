@@ -18,8 +18,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.walletapp.wallet.domain.model.Account
-import java.text.NumberFormat
-import java.util.Locale
+import com.example.walletapp.wallet.presentation.ui.home.activeCurrency
+import com.example.walletapp.wallet.presentation.utils.FormatAmount
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,13 +36,6 @@ fun AccountDetailBottomSheet(
     } ?: MaterialTheme.colorScheme.primary
     val iconBackgroundColor = accountColor.copy(alpha = 0.15f)
 
-    val currencyFormatter = remember {
-        NumberFormat.getCurrencyInstance(Locale("uz", "UZ")).apply {
-            minimumFractionDigits = 0
-            maximumFractionDigits = 2
-        }
-    }
-    val formattedBalance = currencyFormatter.format(account.initialBalance)
 
 
     ModalBottomSheet(
@@ -84,7 +78,7 @@ fun AccountDetailBottomSheet(
                     ) {
                         Icon(
                             Icons.Default.Edit,
-                            contentDescription = "Hisobni tahrirlash",
+                            contentDescription = "Edit Account",
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -130,13 +124,13 @@ fun AccountDetailBottomSheet(
                 }
                 Column {
                     Text(
-                        text = "Joriy Balans",
+                        text = "Current Balance",
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onTertiary
                     )
                     Text(
-                        text = formattedBalance,
+                        text = FormatAmount(account.initialBalance),
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.ExtraBold,
                         color = MaterialTheme.colorScheme.onTertiary,

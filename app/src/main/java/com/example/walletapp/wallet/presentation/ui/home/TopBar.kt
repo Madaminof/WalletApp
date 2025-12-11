@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.walletapp.core.AppStatusBarColor
 import com.example.walletapp.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,18 +26,11 @@ fun HomeTopBar(
     onMenuClick: () -> Unit,
     navController: NavController
 ) {
-    AppStatusBarColor(MaterialTheme.colorScheme.primaryContainer)
-
     val navigationIconBackground = MaterialTheme.colorScheme.primary.copy(0.07f)
-
     val actionsBackUpBackground = MaterialTheme.colorScheme.onTertiary.copy(0.03f)
     val actionsBackUpIcon = MaterialTheme.colorScheme.onTertiary.copy(0.4f)
-
     val actionsSettingBackground = MaterialTheme.colorScheme.onTertiary.copy(0.03f)
     val actionsSettingIcon = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
-
-
-
 
     TopAppBar(
         title = {

@@ -41,19 +41,13 @@ import androidx.compose.ui.unit.sp
 import com.example.walletapp.ui.theme.expenseColor
 import com.example.walletapp.ui.theme.incomeColor
 import com.example.walletapp.wallet.domain.model.Debt
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
-private fun formatAmount(amount: Double): String {
-    val uzbekFormat = NumberFormat.getNumberInstance(Locale("uz", "UZ")).apply {
-        maximumFractionDigits = 2
-        minimumFractionDigits = 0
-    }
-    return "${uzbekFormat.format(amount)} So'm"
-}
 
 @Composable
 fun DebtItemRow(
@@ -129,7 +123,7 @@ fun DebtItemRow(
 
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = formatAmount(debt.amount),
+                    text = formatAmountWithCurrency(debt.amount),
                     fontWeight = FontWeight.SemiBold,
                     color = actionColor,
                     fontSize = 13.sp,

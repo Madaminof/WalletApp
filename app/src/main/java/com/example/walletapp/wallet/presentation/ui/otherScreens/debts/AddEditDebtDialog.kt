@@ -56,6 +56,8 @@ import com.example.walletapp.ui.theme.expenseColor
 import com.example.walletapp.ui.theme.incomeColor
 import com.example.walletapp.wallet.domain.model.Account
 import com.example.walletapp.wallet.domain.model.Debt
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.getCurrencySymbol
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -65,6 +67,8 @@ import java.util.Locale
 private fun formatAmountToInput(amount: Double): String {
     return String.format(Locale.US, "%.2f", amount).removeSuffix(".00").removeSuffix(".0")
 }
+val activeCurrency by CurrencyManager.currentCurrency
+
 
 @Composable
 fun AddEditDebtDialog(
@@ -78,7 +82,7 @@ fun AddEditDebtDialog(
     onConfirm: (person: String, amount: Double, isLent: Boolean) -> Unit
 ) {
     val isEditing = initialDebt != null && initialDebt.id.isNotBlank()
-    val dialogTitle = if (isEditing) "Qarzni Tahrirlash" else "Yangi Qarz Qo'shish"
+    val dialogTitle = if (isEditing) "Edit Debt" else "Add new Debt"
 
     var personName by remember { mutableStateOf(initialDebt?.person ?: "") }
     var amountText by remember {
@@ -170,7 +174,7 @@ fun AddEditDebtDialog(
                 OutlinedTextField(
                     value = personName,
                     onValueChange = { personName = it },
-                    label = { Text("Shaxs nomi", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                    label = { Text("Name", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
                     leadingIcon = { Icon(Icons.Default.Person, contentDescription = null, tint = primaryActionColor) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -184,7 +188,7 @@ fun AddEditDebtDialog(
                 OutlinedTextField(
                     value = amountText,
                     onValueChange = { newText -> amountText = newText.filter { it.isDigit() || it == '.' } },
-                    label = { Text("Summa (so'm)",color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                    label = { Text("Amount (${getCurrencySymbol(activeCurrency)})",color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     leadingIcon = { Icon(Icons.Default.Money, contentDescription = null, tint = primaryActionColor) },
                     modifier = Modifier.fillMaxWidth(),
@@ -223,7 +227,7 @@ fun AddEditDebtDialog(
                         modifier = Modifier.height(48.dp),
                         colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onTertiary.copy(0.5f))
                     ) {
-                        Text("Bekor qilish", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.labelLarge)
+                        Text("Cancel", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.labelLarge)
                     }
                     Spacer(Modifier.width(12.dp))
 
@@ -234,7 +238,7 @@ fun AddEditDebtDialog(
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = primaryActionColor)
                     ) {
-                        Text(if (isEditing) "Saqlash" else "Qo'shish",
+                        Text(if (isEditing) "Save" else "Add",
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.SemiBold)
                     }
@@ -262,10 +266,10 @@ fun AccountSelectionDropdown(
         modifier = modifier
     ) {
         OutlinedTextField(
-            value = selectedAccount?.name ?: "Hisobni tanlang",
+            value = selectedAccount?.name ?: "Select Account",
             onValueChange = {},
             readOnly = true,
-            label = { Text("Hisob", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+            label = { Text("Account", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor().fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(
@@ -318,7 +322,7 @@ fun DateSelectionField(
         OutlinedTextField(
             value = dateText,
             onValueChange = { /* ReadOnly */ },
-            label = { Text("Sana") },
+            label = { Text("Date") },
             leadingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = null, tint = primaryColor) },
             readOnly = true,
             enabled = false,
@@ -351,10 +355,10 @@ fun DateSelectionField(
                         onDateSelect(startOfDay)
                     }
                     showDatePicker = false
-                }) { Text("Tanlash") }
+                }) { Text("Select") }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) { Text("Bekor qilish") }
+                TextButton(onClick = { showDatePicker = false }) { Text("Cancel") }
             }
         ) {
             DatePicker(state = datePickerState)

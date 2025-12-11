@@ -18,6 +18,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.getCurrencySymbol
 import com.example.walletapp.wallet.presentation.viewmodel.AddTransactionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,6 +28,8 @@ fun AddTransactionDialog(
     viewModel: AddTransactionViewModel,
     onDismiss: () -> Unit
 ) {
+    val activeCurrency by CurrencyManager.currentCurrency
+
     val uiState = viewModel.uiState
     var expandedCategory by remember { mutableStateOf(false) }
     var expandedAccount by remember { mutableStateOf(false) }
@@ -65,7 +69,7 @@ fun AddTransactionDialog(
                     )
                 }
                 Text(
-                    text = "Xarid qilish",
+                    text = "Shopping",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold,
                     modifier = Modifier
@@ -80,10 +84,10 @@ fun AddTransactionDialog(
                     modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
                 ) {
                     OutlinedTextField(
-                        value = uiState.selectedCategory?.name ?: "Kategoriya tanlang",
+                        value = uiState.selectedCategory?.name ?: "Select category",
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Kategoriya", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                        label = { Text("Category", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCategory) },
                         modifier = Modifier.fillMaxWidth().menuAnchor(),
                         shape = RoundedCornerShape(12.dp),
@@ -120,10 +124,10 @@ fun AddTransactionDialog(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     OutlinedTextField(
-                        value = uiState.selectedAccount?.name ?: "Hisob tanlang",
+                        value = uiState.selectedAccount?.name ?: "Select account",
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Hisob",color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                        label = { Text("Account",color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedAccount) },
                         modifier = Modifier.fillMaxWidth().menuAnchor(),
                         shape = RoundedCornerShape(12.dp),
@@ -156,7 +160,7 @@ fun AddTransactionDialog(
                 OutlinedTextField(
                     value = uiState.amountInput,
                     onValueChange = viewModel::onAmountChange,
-                    label = { Text("Summa (UZS)",color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                    label = { Text("Amount (${getCurrencySymbol(activeCurrency)})",color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
@@ -167,7 +171,7 @@ fun AddTransactionDialog(
                 OutlinedTextField(
                     value = uiState.note,
                     onValueChange = viewModel::onNoteChange,
-                    label = { Text("Izoh (Opsional)",color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                    label = { Text("Note (Opsional)",color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -189,7 +193,7 @@ fun AddTransactionDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextButton(onClick = onDismiss, modifier = Modifier.weight(1f)) {
-                        Text("Bekor qilish", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary.copy(0.5f))
+                        Text("Cancel", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary.copy(0.5f))
                     }
                     Spacer(modifier = Modifier.width(16.dp))
 
@@ -210,7 +214,7 @@ fun AddTransactionDialog(
                                 strokeWidth = 2.5.dp
                             )
                         } else {
-                            Text("Saqlash", fontWeight = FontWeight.Bold)
+                            Text("Save", fontWeight = FontWeight.Bold)
                         }
                     }
                 }

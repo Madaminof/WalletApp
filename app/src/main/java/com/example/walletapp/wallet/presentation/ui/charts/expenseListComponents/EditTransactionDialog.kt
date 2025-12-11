@@ -34,6 +34,9 @@ import com.example.walletapp.wallet.presentation.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.primaryAccent // primaryAccent ni import qilganingizni faraz qildim
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+
+val activeCurrency by CurrencyManager.currentCurrency
 
 @Composable
 fun EditTransactionDialog(
@@ -75,7 +78,6 @@ fun EditTransactionDialog(
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 10.dp)
             ) {
-                // 1. Drag Handle
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -89,7 +91,7 @@ fun EditTransactionDialog(
                     )
                 }
                 Text(
-                    text = "Tranzaksiyani Tahrirlash",
+                    text = "Edit Transaction",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -119,7 +121,7 @@ fun EditTransactionDialog(
                         textColor = textColor
                     )
                     PremiumDropdownSelector(
-                        label = "Kategoriya",
+                        label = "Category",
                         icon = Icons.Default.Category,
                         selectedValue = selectedCategory?.name ?: "Tanlanmagan",
                         items = filteredCategories,
@@ -130,7 +132,6 @@ fun EditTransactionDialog(
                                 horizontalArrangement = Arrangement.Start,
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
                             ) {
-                                // Icon
                                 Icon(
                                     painter = painterResource(id = cat.iconResId?: R.drawable.ic_add),
                                     contentDescription = null,
@@ -143,7 +144,7 @@ fun EditTransactionDialog(
                         }
                     )
                     PremiumDropdownSelector(
-                        label = "Hamyon",
+                        label = "Account",
                         icon = Icons.Default.Wallet,
                         selectedValue = selectedAccount?.name ?: "Tanlanmagan",
                         items = accounts,
@@ -204,10 +205,9 @@ fun EditTransactionDialog(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Bekor qilish
                     TextButton(onClick = onClose) {
                         Text(
-                            "Bekor qilish",
+                            "Cancel",
                             fontWeight = FontWeight.SemiBold,
                             color = textColor.copy(alpha = 0.5f)
                         )
@@ -234,7 +234,7 @@ fun EditTransactionDialog(
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = primaryAccent)
                     ) {
-                        Text("Saqlash", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                        Text("Save", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                     }
                 }
             }
@@ -247,10 +247,10 @@ fun PremiumAmountInput(amount: String, onAmountChange: (String) -> Unit, colors:
     OutlinedTextField(
         value = amount,
         onValueChange = { onAmountChange(it.replace(',', '.')) },
-        label = { Text("Summa", color = textColor.copy(alpha = 0.5f)) },
+        label = { Text("Amount", color = textColor.copy(alpha = 0.5f)) },
         singleLine = true,
         modifier = Modifier.fillMaxWidth(),
-        leadingIcon = { Text("UZS", fontWeight = FontWeight.SemiBold, color = primaryAccent) },
+        leadingIcon = { Text("$activeCurrency", fontWeight = FontWeight.SemiBold, color = primaryAccent) },
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number),
         shape = RoundedCornerShape(12.dp),
         colors = colors,
@@ -297,7 +297,7 @@ fun <T> PremiumDropdownSelector(
                         rotation = if (expanded) 180f else 0f
                     },
                 shape = RoundedCornerShape(12.dp),
-                color = containerColor // Dinamik fon
+                color = containerColor
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -367,8 +367,6 @@ fun PremiumDateSelector(selectedDate: Date, onDateSelected: (Date) -> Unit, cont
     }
 
     if (showDatePicker) {
-        // DatePicker dialogini stilini yaxshilash kerak bo'lsa, uning o'rniga Custom Dialog ishlatiladi.
-        // Hozirgi Material 3 versiyasi saqlanadi.
         val datePickerState = rememberDatePickerState(initialSelectedDateMillis = selectedDate.time)
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
@@ -376,10 +374,10 @@ fun PremiumDateSelector(selectedDate: Date, onDateSelected: (Date) -> Unit, cont
                 TextButton(onClick = {
                     datePickerState.selectedDateMillis?.let { onDateSelected(Date(it)) }
                     showDatePicker = false
-                }) { Text("Tanlash", color = primaryColor) }
+                }) { Text("Select", color = primaryColor) }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) { Text("Bekor qilish", color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                TextButton(onClick = { showDatePicker = false }) { Text("Cancel", color = MaterialTheme.colorScheme.onSurfaceVariant) }
             }
         ) { DatePicker(state = datePickerState) }
     }
@@ -411,7 +409,6 @@ fun PremiumTimeSelector(selectedDate: Date, onTimeSelected: (Date) -> Unit, cont
     }
 
     if (showTimePicker) {
-        // TimePicker dialogini stilini yaxshilash kerak bo'lsa, uning o'rniga Custom Dialog ishlatiladi.
         val calendar = Calendar.getInstance().apply { time = selectedDate }
         val timePickerState = rememberTimePickerState(
             initialHour = calendar.get(Calendar.HOUR_OF_DAY),
@@ -421,7 +418,7 @@ fun PremiumTimeSelector(selectedDate: Date, onTimeSelected: (Date) -> Unit, cont
 
         AlertDialog(
             onDismissRequest = { showTimePicker = false },
-            title = { Text("Vaqtni tanlang", color = MaterialTheme.colorScheme.onSurface) },
+            title = { Text("Select time", color = MaterialTheme.colorScheme.onSurface) },
             text = { TimePicker(state = timePickerState) },
             confirmButton = {
                 TextButton(onClick = {
@@ -430,10 +427,10 @@ fun PremiumTimeSelector(selectedDate: Date, onTimeSelected: (Date) -> Unit, cont
                     newCalendar.set(Calendar.MINUTE, timePickerState.minute)
                     onTimeSelected(newCalendar.time)
                     showTimePicker = false
-                }) { Text("Tanlash", color = primaryColor) }
+                }) { Text("Select", color = primaryColor) }
             },
             dismissButton = {
-                TextButton(onClick = { showTimePicker = false }) { Text("Bekor qilish", color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                TextButton(onClick = { showTimePicker = false }) { Text("Cancel", color = MaterialTheme.colorScheme.onSurfaceVariant) }
             }
         )
     }
@@ -444,7 +441,7 @@ fun PremiumNoteInput(note: String, onNoteChange: (String) -> Unit, colors: TextF
     OutlinedTextField(
         value = note,
         onValueChange = onNoteChange,
-        label = { Text("Izoh (ixtiyoriy)", color = textColor.copy(alpha = 0.5f)) },
+        label = { Text("Note (optianal)", color = textColor.copy(alpha = 0.5f)) },
         leadingIcon = { Icon(Icons.Default.Note, contentDescription = null, tint = primaryAccent) },
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),

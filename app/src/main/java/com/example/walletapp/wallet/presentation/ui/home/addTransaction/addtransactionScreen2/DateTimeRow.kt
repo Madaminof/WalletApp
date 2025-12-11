@@ -13,7 +13,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -108,7 +107,7 @@ fun DateTimeRow(viewModel: AddTransactionViewModel) {
             ) {
                 Icon(
                     Icons.Default.DateRange,
-                    contentDescription = "Sanani tanlash",
+                    contentDescription = "Select Date",
                     tint = accentColor,
                     modifier = Modifier.size(18.dp)
                 )
@@ -137,7 +136,7 @@ fun DateTimeRow(viewModel: AddTransactionViewModel) {
             ) {
                 Icon(
                     Icons.Default.AccessTime,
-                    contentDescription = "Vaqtni tanlash",
+                    contentDescription = "Select Time",
                     tint = accentColor,
                     modifier = Modifier.size(18.dp)
                 )

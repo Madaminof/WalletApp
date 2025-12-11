@@ -21,15 +21,16 @@ import com.example.walletapp.ui.theme.expenseColor
 import com.example.walletapp.ui.theme.incomeColor
 import com.example.walletapp.wallet.domain.model.Debt
 import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.DeleteConfirmationDialog // delete dialog uchun
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.FormatAmount
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
+import com.example.walletapp.wallet.presentation.utils.getCurrencySymbol
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-private fun formatAmount(amount: Double): String {
-    val formatter = NumberFormat.getInstance(Locale.US)
-    return formatter.format(amount).replace(",", " ")
-}
+val activeCurrency by CurrencyManager.currentCurrency
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -99,7 +100,7 @@ fun DebtDetailBottomSheet(
                     onDelete(debt)
                     onDismiss()
                 },
-                title = "Qarzni o'chirish",
+                title = "Delete Debt",
                 text = "Rostdan ham ushbu qarz ma'lumotini o'chirishni xohlaysizmi?"
             )
         }
@@ -136,7 +137,7 @@ fun DebtHeader(
             IconButton(onClick = { onUpdate(debt) }) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Tahrirlash",
+                    contentDescription = "Edit",
                     tint = MaterialTheme.colorScheme.onTertiary.copy(0.6f)
                 )
             }
@@ -156,8 +157,6 @@ fun PremiumDebtSummaryCard(debt: Debt, primaryColor: Color) {
     val isLent = debt.isLent
     val typeText = if (isLent) "BERILGAN QARZ" else "OLINGAN QARZ"
     val icon = if (isLent) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward
-
-    val formattedAmount = formatAmount(debt.amount)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -190,22 +189,10 @@ fun PremiumDebtSummaryCard(debt: Debt, primaryColor: Color) {
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = primaryColor
-                        )) {
-                            append(formattedAmount)
-                        }
-                        withStyle(style = SpanStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = primaryColor.copy(alpha = 0.7f)
-                        )) {
-                            append(" UZS")
-                        }
-                    }
+                    text = formatAmountWithCurrency(debt.amount),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = primaryColor,
                 )
             }
         }

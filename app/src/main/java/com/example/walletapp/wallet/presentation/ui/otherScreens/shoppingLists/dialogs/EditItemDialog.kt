@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.walletapp.wallet.domain.model.ShoppingItem
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.getCurrencySymbol
 
 
 @Composable
@@ -41,6 +43,8 @@ fun EditItemDialog(
     onDismiss: () -> Unit,
     onUpdate: (ShoppingItem) -> Unit
 ) {
+    val activeCurrency by CurrencyManager.currentCurrency
+
     var nameInput by remember { mutableStateOf(item.name) }
     var priceInput by remember { mutableStateOf(if (item.price == 0.0) "" else "%.0f".format(item.price)) } // Narxni toza saqlash
 
@@ -73,7 +77,7 @@ fun EditItemDialog(
                     )
                 }
                 Text(
-                    text = "Tahrirlash",
+                    text = "Edit",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -85,7 +89,7 @@ fun EditItemDialog(
                 OutlinedTextField(
                     value = nameInput,
                     onValueChange = { nameInput = it },
-                    label = { Text("Mahsulot nomi", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                    label = { Text("Name", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
@@ -107,7 +111,7 @@ fun EditItemDialog(
                             priceInput = cleanedValue
                         }
                     },
-                    label = { Text("Narxi (UZS)", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                    label = { Text("Amount (${getCurrencySymbol(activeCurrency)})", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
@@ -128,7 +132,7 @@ fun EditItemDialog(
                 ) {
                     TextButton(onClick = onDismiss) {
                         Text(
-                            "Bekor qilish",
+                            "Cancel",
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onTertiary.copy(0.5f)
                         )
@@ -148,7 +152,7 @@ fun EditItemDialog(
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         modifier = Modifier.height(48.dp)
                     ) {
-                        Text("Saqlash", fontWeight = FontWeight.SemiBold)
+                        Text("Save", fontWeight = FontWeight.SemiBold)
                     }
                 }
             }

@@ -34,9 +34,11 @@ import androidx.navigation.NavController
 import com.example.walletapp.core.AppStatusBarColor
 import com.example.walletapp.wallet.domain.model.ShoppingItem
 import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.DeleteConfirmationDialog
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 import com.example.walletapp.wallet.presentation.ui.otherScreens.shoppingLists.dialogs.AddTransactionDialog
 import com.example.walletapp.wallet.presentation.ui.otherScreens.shoppingLists.dialogs.EditItemDialog
 import com.example.walletapp.wallet.presentation.ui.otherScreens.topbar.CustomTopBar
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import com.example.walletapp.wallet.presentation.viewmodel.AddTransactionViewModel
 import com.example.walletapp.wallet.presentation.viewmodel.ShoppingViewModel
 import java.util.UUID
@@ -322,7 +324,7 @@ fun ShoppingListItem(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "${"%.0f".format(item.price)} UZS",
+                    text = formatAmountWithCurrency(item.price),
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.tertiary,
                     textDecoration = if (item.isChecked) TextDecoration.LineThrough else null,
@@ -344,13 +346,13 @@ fun ShoppingListItem(
                         containerColor = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Tahrirlash", color = MaterialTheme.colorScheme.onTertiary.copy(0.7f)) },
+                            text = { Text("Edit", color = MaterialTheme.colorScheme.onTertiary.copy(0.7f)) },
                             onClick = { onEdit(item); showMenu = false },
                             leadingIcon = { Icon(Icons.Default.Edit, contentDescription = "Tahrirlash", tint = MaterialTheme.colorScheme.primary) }
                         )
                         Divider()
                         DropdownMenuItem(
-                            text = { Text("O'chirish", color = MaterialTheme.colorScheme.error) },
+                            text = { Text("Delete", color = MaterialTheme.colorScheme.error) },
                             onClick = { showDeleteDialog = true },
                             leadingIcon = { Icon(Icons.Default.Delete, contentDescription = "O'chirish", tint = MaterialTheme.colorScheme.error) }
                         )
@@ -369,7 +371,7 @@ fun ShoppingListItem(
         DeleteConfirmationDialog(
             onDismiss = {showDeleteDialog = false},
             onConfirmDelete = {onDelete(item.id); showMenu = false},
-            title = "Maxsulotni o'chirish",
+            title = "Delete Product",
             text = "Rostdan ham maxsulotni o'chirishni hohlaysizmi?"
         )
     }

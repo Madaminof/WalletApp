@@ -114,8 +114,6 @@ fun AddAccountScreen(
             navController.popBackStack()
         }
     }
-
-    AppStatusBarColor(MaterialTheme.colorScheme.background)
     Scaffold(
         topBar = {
             AddAccountTopBar(
@@ -262,7 +260,7 @@ fun AccountPreviewCard(
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Text(
-                    text = if (name.isNotEmpty()) name else "Hamyon nomi",
+                    text = if (name.isNotEmpty()) name else "Account name",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.ExtraBold,
                     color = previewTextColor,
@@ -272,7 +270,7 @@ fun AccountPreviewCard(
             }
             Column(horizontalAlignment = Alignment.Start) {
                 Text(
-                    text = "Joriy Balans",
+                    text = "Current Balance",
                     style = MaterialTheme.typography.labelMedium,
                     color = previewTextColor.copy(alpha = 0.7f)
                 )
@@ -300,7 +298,7 @@ fun AccountInputFields(
         TextField(
             value = name,
             onValueChange = onNameChange,
-            label = { Text("Hamyon nomi *") },
+            label = { Text("Account name") },
             isError = isNameExists,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
@@ -324,7 +322,7 @@ fun AccountInputFields(
         TextField(
             value = balanceText,
             onValueChange = onBalanceChange,
-            label = { Text("Balans (majburiy emas)") },
+            label = { Text("Balance (optional)") },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(),
@@ -347,7 +345,7 @@ fun ColorSelector(
     selectedColor: Color,
     onColorSelected: (Color) -> Unit
 ) {
-    Text("Rang tanlang", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary)
+    Text("Select color", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary)
     LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(vertical = 8.dp)) {
         items(availableColors) { c ->
             val isSelected = c == selectedColor
@@ -372,7 +370,7 @@ fun IconSelector(
     selectedIcon: Int,
     onIconSelected: (Int) -> Unit
 ) {
-    Text("Ikonka tanlang", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary)
+    Text("Select icon", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary)
     LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(vertical = 8.dp)) {
         items(availableIcons) { iconRes ->
             val selected = iconRes == selectedIcon

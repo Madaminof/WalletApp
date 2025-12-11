@@ -58,7 +58,7 @@ fun EditListDialog(
                     )
                 }
                 Text(
-                    text = "Ro'yxat nomini tahrirlash",
+                    text = "Edit list name",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -70,7 +70,7 @@ fun EditListDialog(
                 OutlinedTextField(
                     value = listName,
                     onValueChange = { listName = it },
-                    label = { Text("Yangi ro'yxat nomi", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                    label = { Text("List name", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
@@ -87,7 +87,7 @@ fun EditListDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextButton(onClick = onDismiss) {
-                        Text("Bekor qilish", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary.copy(0.5f))
+                        Text("Cancel", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary.copy(0.5f))
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(
@@ -97,7 +97,7 @@ fun EditListDialog(
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         modifier = Modifier.height(48.dp)
                     ) {
-                        Text("Saqlash", fontWeight = FontWeight.SemiBold)
+                        Text("Save", fontWeight = FontWeight.SemiBold)
                     }
                 }
             }

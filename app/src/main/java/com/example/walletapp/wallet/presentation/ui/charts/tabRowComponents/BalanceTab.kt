@@ -113,7 +113,7 @@ fun BalanceTab(
             BalanceTrendCard(viewModel)
         }
         item {
-            BalanceByAccountsCard(state.accounts, state.totalBalance, remember { DecimalFormat("#,###.##") })
+            BalanceByAccountsCard(state.accounts, state.totalBalance)
         }
     }
 }

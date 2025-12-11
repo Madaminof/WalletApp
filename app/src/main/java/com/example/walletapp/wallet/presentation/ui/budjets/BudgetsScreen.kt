@@ -26,7 +26,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.walletapp.wallet.domain.model.BudgetStatus
 import androidx.navigation.NavController
 import com.example.walletapp.navigation.Screen
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 import com.example.walletapp.wallet.presentation.ui.otherScreens.topbar.CustomTopBar
+import com.example.walletapp.wallet.presentation.utils.FormatAmount
+import com.example.walletapp.wallet.presentation.utils.getCurrencySymbol
 import java.text.DecimalFormat
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -111,10 +114,10 @@ fun ThisMonthBudgetCard(
     budgetStatuses: List<BudgetStatus>,
     onBudgetClick: (BudgetStatus) -> Unit
 ) {
+    val activeCurrency by CurrencyManager.currentCurrency
     val totalSpent = budgetStatuses.sumOf { it.spentAmount }
     val totalLimit = budgetStatuses.sumOf { it.budget.maxAmount }
 
-    val formatter = remember { DecimalFormat("#,##0") }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -132,14 +135,14 @@ fun ThisMonthBudgetCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "This month\n(so'm)",
-                    fontSize = 14.sp,
+                    text = "This month\n(${getCurrencySymbol(activeCurrency)})",
+                    fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.onTertiary,
                     lineHeight = 18.sp
                 )
                 Text(
-                    text = "Σ ${formatter.format(totalSpent)} / ${formatter.format(totalLimit)}",
-                    fontSize = 14.sp,
+                    text = "Σ ${FormatAmount(totalSpent)} / ${FormatAmount(totalLimit)}",
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
@@ -170,7 +173,6 @@ fun SimpleBudgetRow(
     status: BudgetStatus,
     onClick: () -> Unit
 ) {
-    val formatter = remember { DecimalFormat("#,##0") }
     val progress = (status.percentageUsed / 100).toFloat().coerceIn(0f, 1f)
 
     val progressFloat by animateFloatAsState(targetValue = progress, label = "progressAnim")
@@ -189,14 +191,14 @@ fun SimpleBudgetRow(
         ) {
             Text(
                 text = status.budget.category.name,
-                fontSize = 16.sp,
+                fontSize = 13.sp,
                 fontWeight = FontWeight.Normal,
                 color = rowContentColor
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "${formatter.format(status.spentAmount)} / ${formatter.format(status.budget.maxAmount)}",
-                    fontSize = 16.sp,
+                    text = "${FormatAmount(status.spentAmount)} / ${FormatAmount(status.budget.maxAmount)}",
+                    fontSize = 11.sp,
                     color = rowContentColor
                 )
                 Spacer(Modifier.width(8.dp))

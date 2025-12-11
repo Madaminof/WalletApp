@@ -19,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.walletapp.R
-import com.example.walletapp.core.AppStatusBarColor
 import com.example.walletapp.navigation.Screen
 import kotlinx.coroutines.delay
 
@@ -27,7 +26,6 @@ import kotlinx.coroutines.delay
 fun SplashScreen(
     navController: NavHostController
 ) {
-    AppStatusBarColor(MaterialTheme.colorScheme.background)
 
     val scale = remember { Animatable(0.5f) }
     var isContentVisible by remember { mutableStateOf(true) }

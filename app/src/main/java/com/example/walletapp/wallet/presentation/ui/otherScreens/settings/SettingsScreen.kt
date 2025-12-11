@@ -4,15 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,11 +24,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.themes.ThemeManager
 import com.example.walletapp.navigation.Screen
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencySelectionDialog
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.numFormat.NumberFormatSelectionDialog
 import com.example.walletapp.wallet.presentation.ui.otherScreens.topbar.CustomTopBar
-
-val PrimaryAccent = Color(0xFF4759C1)
-val SecondaryText = Color.Gray
 
 
 data class SettingItem(
@@ -34,12 +37,16 @@ data class SettingItem(
     val icon: ImageVector,
     val iconTint: Color,
     val route: String? = null,
-    val action: () -> Unit = {}
+    val action: (() -> Unit)? = null
 )
 
 @Composable
 fun SettingsScreen(navController: NavController) {
     val scrollState = rememberScrollState()
+
+    var showThemeDialog by remember { mutableStateOf(false) }
+    var showCurrencyDialog by remember { mutableStateOf(false) }
+    var showformatNumberDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -62,22 +69,42 @@ fun SettingsScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            UserProfileSection(
-                userName = "Wallet App",
-                userEmail = "info@walletapp.uz",
-                balance = "15,250,000 UZS",
-                membership = "Premium Member"
-            )
+            PremiumSubscriptionCard()
 
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(32.dp))
 
-            SettingsSection(title = "Account Settings") {
+            SettingsSection(title = "Application Settings") {
                 SettingCard(
                     items = listOf(
-                        SettingItem("Edit Profile", Icons.Default.Person, Color(0xFFE57373)),
-                        SettingItem("Setup PIN/FaceID", Icons.Default.Fingerprint, Color(0xFF81C784)),
-                        SettingItem("Subscription", Icons.Default.WorkspacePremium, Color(0xFF4FC3F7)),
-                        SettingItem("Data Backup", Icons.Default.Backup, Color(0xFF7986CB)),
+                        SettingItem(
+                            "Choose Theme",
+                            Icons.Default.DarkMode,
+                            Color(0xFFFFB74D),
+                            action = { showThemeDialog = true }
+                        ),
+                        SettingItem(
+                            "Accounts",
+                            Icons.Default.AccountBalanceWallet,
+                            Color(0xFFE57373),
+                            route = Screen.Wallet.route
+                        ),
+                        SettingItem(
+                            "Currency",
+                            Icons.Default.AttachMoney,
+                            Color(0xFF4DB6AC),
+                            action = { showCurrencyDialog = true }
+                        ),
+                        SettingItem(
+                            "Number Format",
+                            Icons.Default.FormatListNumbered,
+                            Color(0xFFFFB74D),
+                            action = { showformatNumberDialog = true }
+                        ),
+                        SettingItem(
+                            "Language",
+                            Icons.Default.Language,
+                            Color(0xFF7986CB)
+                        ),
                     ),
                     navController = navController
                 )
@@ -85,15 +112,11 @@ fun SettingsScreen(navController: NavController) {
 
             Spacer(Modifier.height(24.dp))
 
-            SettingsSection(title = "Application Management") {
+            SettingsSection(title = "Data and Notifications") {
                 SettingCard(
                     items = listOf(
-                        SettingItem("Choose Theme", Icons.Default.DarkMode, Color(0xFFFFB74D)),
-                        SettingItem("Accounts", Icons.Default.AccountBalanceWallet, Color(0xFFE57373), route = Screen.Wallet.route),
-                        SettingItem("Number Format", Icons.Default.FormatListNumbered, Color(0xFFFFB74D)),
-                        SettingItem("Currency", Icons.Default.AttachMoney, Color(0xFF4DB6AC)),
                         SettingItem("Notifications", Icons.Default.Notifications, Color(0xFF9575CD)),
-                        SettingItem("Export Data", Icons.Default.CloudDownload, Color(0xFF7986CB), action = { /* Ma'lumot eksport logikasi */ }),
+                        SettingItem("Export Data", Icons.Default.CloudDownload, Color(0xFF7986CB), action = { /* Export logic */ }),
                     ),
                     navController = navController
                 )
@@ -104,10 +127,8 @@ fun SettingsScreen(navController: NavController) {
             SettingsSection(title = "Help and Actions") {
                 SettingCard(
                     items = listOf(
-                        SettingItem("Help Center", Icons.Default.HelpCenter, Color.Gray),
-                        SettingItem("Share App", Icons.Default.Share, Color.Gray, action = { /* Share App intent */ }),
-                        SettingItem("Privacy Policy", Icons.Default.Policy, Color.Gray),
-                        SettingItem("Log Out", Icons.AutoMirrored.Filled.ExitToApp, Color.Red),
+                        SettingItem("Help Center", Icons.Default.HelpCenter, Color(0xFF81C784)),
+                        SettingItem("Share App", Icons.Default.Share, Color(0xFF4FC3F7), action = { /* Share App intent */ }),
                     ),
                     navController = navController
                 )
@@ -115,73 +136,97 @@ fun SettingsScreen(navController: NavController) {
 
             Spacer(Modifier.height(40.dp))
         }
+
+
+        if (showThemeDialog) {
+            ThemeSelectionDialog(
+                onDismiss = { showThemeDialog = false }
+            )
+        }
+        if (showCurrencyDialog) {
+            CurrencySelectionDialog(
+                onDismiss = { showCurrencyDialog = false }
+            )
+        }
+        if (showformatNumberDialog) {
+            NumberFormatSelectionDialog(
+                onDismiss = { showformatNumberDialog = false }
+            )
+        }
     }
 }
 
-
 @Composable
-fun UserProfileSection(
-    userName: String,
-    userEmail: String,
-    balance: String,
-    membership: String
+fun PremiumSubscriptionCard(
+    onUpgradeClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp),
+            .heightIn(min = 120.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = PrimaryAccent.copy(alpha = 0.95f)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.2f)),
-                contentAlignment = Alignment.Center
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
             ) {
                 Icon(
-                    Icons.Default.Person,
-                    contentDescription = "User Avatar",
-                    tint = Color.White,
-                    modifier = Modifier.size(60.dp)
+                    Icons.Default.WorkspacePremium,
+                    contentDescription = "Premium Icon",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = "Upgrade to Premium",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.ExtraBold
                 )
             }
 
-            Spacer(Modifier.width(16.dp))
+            Spacer(Modifier.height(8.dp))
 
-            Column {
-                Text(
-                    text = userName,
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.ExtraBold
+            Text(
+                text = "Unlock all features, remove limits, and support development.",
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Medium,
+                maxLines = 2
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            Button(
+                onClick = onUpgradeClick,
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
                 )
-                Spacer(Modifier.height(4.dp))
+            ) {
                 Text(
-                    text = userEmail,
-                    color = Color.White.copy(alpha = 0.8f),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium
+                    text = "Get Premium",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp
                 )
-                Spacer(Modifier.height(8.dp))
-                Text(
-                    text = "Balance: $balance",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Spacer(Modifier.width(8.dp))
+                Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(16.dp))
             }
         }
     }
 }
+
 
 @Composable
 fun SettingsSection(title: String, content: @Composable () -> Unit) {
@@ -189,9 +234,9 @@ fun SettingsSection(title: String, content: @Composable () -> Unit) {
         Text(
             text = title,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            color = SecondaryText,
-            modifier = Modifier.padding(bottom = 8.dp, start = 4.dp)
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+            modifier = Modifier.padding(bottom = 10.dp, start = 8.dp)
         )
         content()
     }
@@ -201,16 +246,16 @@ fun SettingsSection(title: String, content: @Composable () -> Unit) {
 fun SettingCard(items: List<SettingItem>, navController: NavController) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.6f)),
     ) {
-        Column(modifier = Modifier.padding(vertical = 4.dp)) {
+        Column {
             items.forEachIndexed { index, item ->
                 SettingRow(item = item) {
                     if (item.route != null) {
                         navController.navigate(item.route)
                     } else {
-                        item.action()
+                        item.action?.invoke()
                     }
                 }
 
@@ -218,7 +263,7 @@ fun SettingCard(items: List<SettingItem>, navController: NavController) {
                     Divider(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         thickness = 0.5.dp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f)
+                        color = MaterialTheme.colorScheme.outlineVariant
                     )
                 }
             }
@@ -228,21 +273,21 @@ fun SettingCard(items: List<SettingItem>, navController: NavController) {
 
 @Composable
 fun SettingRow(item: SettingItem, onClick: () -> Unit) {
+    val contentColor = MaterialTheme.colorScheme.onTertiary.copy(0.7f)
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 modifier = Modifier
-                    .size(36.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(item.iconTint.copy(alpha = 0.15f)),
+                    .size(38.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(item.iconTint.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -256,16 +301,16 @@ fun SettingRow(item: SettingItem, onClick: () -> Unit) {
             Spacer(Modifier.width(16.dp))
             Text(
                 text = item.title,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
+                fontSize = 15.sp,
+                color = contentColor,
+                fontWeight = FontWeight.Medium,
             )
         }
-        if (item.route != null || item.action != {}) {
-            Icon(
-                Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "Go to ${item.title}",
-                tint = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.6f)
-            )
-        }
+        Icon(
+            Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = "Go to ${item.title}",
+            tint = MaterialTheme.colorScheme.outline
+        )
+
     }
 }

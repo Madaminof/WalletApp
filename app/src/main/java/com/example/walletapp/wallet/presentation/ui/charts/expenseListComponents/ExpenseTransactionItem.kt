@@ -27,6 +27,7 @@ import com.example.walletapp.ui.theme.expenseColor
 import com.example.walletapp.ui.theme.incomeColor
 import com.example.walletapp.wallet.domain.model.Transaction
 import com.example.walletapp.wallet.domain.model.TransactionType
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -159,7 +160,7 @@ private fun ExpenseTransactionItemContent(
         }
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "$amountPrefix ${"%,.0f".format(transaction.amount)} UZS",
+            text = formatAmountWithCurrency(transaction.amount),
             fontSize = 12.sp,
             color = amountColor,
             fontWeight = FontWeight.SemiBold,

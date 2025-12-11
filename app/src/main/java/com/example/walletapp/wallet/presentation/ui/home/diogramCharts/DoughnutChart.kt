@@ -27,8 +27,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import com.example.walletapp.wallet.presentation.viewmodel.CategoryData
 import java.text.DecimalFormat
+val activeCurrency by CurrencyManager.currentCurrency
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
@@ -117,18 +120,18 @@ fun DoughnutChart(
                     textLength > 12 -> currentFontSize = 7.sp
                     textLength > 9 -> currentFontSize = 8.sp
                     textLength > 7 -> currentFontSize = 9.sp
-                    else -> currentFontSize = 12.sp
+                    else -> currentFontSize = 10.sp
                 }
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        "Jami",
+                        "Total",
                         color = MaterialTheme.colorScheme.onTertiary,
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Normal
                     )
                     Text(
-                        text = "$totalText UZS",
+                        text = formatAmountWithCurrency(totalAmount),
                         fontSize = currentFontSize,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,

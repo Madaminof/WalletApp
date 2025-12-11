@@ -66,7 +66,7 @@ fun CashFlowFilterDialog(
                     )
                 }
                 Text(
-                    text = "Vaqt oralig'ini tanlash",
+                    text = "Select Time",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -100,19 +100,23 @@ fun CashFlowFilterDialog(
                                     Icon(
                                         Icons.Filled.Check,
                                         contentDescription = "Selected",
-                                        tint = Color.White, // Ichki rang Oq
+                                        tint = Color.White,
                                         modifier = Modifier
                                             .size(24.dp)
                                             .clip(CircleShape)
-                                            .background(primaryAccent) // Fon rangi primaryAccent
+                                            .background(primaryAccent)
                                     )
                                 } else {
                                     Box(
                                         modifier = Modifier
                                             .size(24.dp)
                                             .clip(CircleShape)
-                                            .background(MaterialTheme.colorScheme.onTertiary.copy(0.3f)) // 🚨 Fon rangi moslandi
-                                            .border(1.5.dp, Color.LightGray.copy(alpha = 0.7f), CircleShape) // 🚨 Border qalinligi moslandi
+                                            .background(MaterialTheme.colorScheme.onTertiary.copy(0.05f))
+                                            .border(
+                                                width = 2.dp,
+                                                color = MaterialTheme.colorScheme.onTertiary.copy(0.06f),
+                                                shape = CircleShape
+                                            )
                                     )
                                 }
                             }
@@ -133,7 +137,7 @@ fun CashFlowFilterDialog(
                     enabled = true
                 ) {
                     Text(
-                        text = "Qo'llash ($tempSelectedFilter)",
+                        text = "Save ($tempSelectedFilter)",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold
                     )

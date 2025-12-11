@@ -54,6 +54,8 @@ import com.example.walletapp.wallet.presentation.ui.charts.tabRowComponents.Bala
 import com.example.walletapp.wallet.presentation.ui.charts.tabRowComponents.CircularIconButton
 import com.example.walletapp.wallet.presentation.ui.charts.tabRowComponents.EmptyChartView
 import com.example.walletapp.wallet.presentation.ui.charts.tabRowComponents.primaryAccent
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -103,7 +105,6 @@ fun BalanceTrendLineChart(
     data: List<BalancePoint>,
     modifier: Modifier = Modifier,
     lineColor: Color,
-    formatter: DecimalFormat,
     selectedFilter: String
 ) {
     if (data.isEmpty()) {
@@ -115,7 +116,6 @@ fun BalanceTrendLineChart(
     val minVal = values.minOrNull() ?: 0.0
     val maxVal = values.maxOrNull() ?: 0.0
 
-    // Range safety
     val range = (maxVal - minVal).takeIf { it > 0 } ?: 1.0
 
     Column(
@@ -286,9 +286,8 @@ fun BalanceTrendCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.Start
             ) {
-                val formattedBalance = String.format("%,.2f", state.totalBalance)
                 Text(
-                    text = "$formattedBalance UZS",
+                    text = formatAmountWithCurrency(state.totalBalance),
                     color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.8f),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold
@@ -336,13 +335,11 @@ fun BalanceTrendCard(
             BalanceTrendLineChart(
                 data = state.trendData,
                 lineColor = primaryAccent,
-                formatter = formatter,
                 selectedFilter = state.selectedFilter
             )
 
             Spacer(Modifier.height(16.dp))
 
-            // --- 4. Vaqt Filtrlash Tugmalari ---
             TimeFilterRow(state.selectedFilter, onFilterChange = viewModel::onFilterChange)
         }
     }

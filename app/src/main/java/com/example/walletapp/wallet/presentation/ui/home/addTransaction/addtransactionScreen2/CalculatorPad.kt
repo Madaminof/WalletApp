@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.walletapp.ui.theme.expenseColor
 import com.example.walletapp.wallet.domain.model.TransactionType
+import com.example.walletapp.wallet.presentation.utils.getCurrencySymbol
 import java.text.DecimalFormat
 
 
@@ -165,11 +166,11 @@ fun CalculatorDisplay(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "UZS",
+                text = activeCurrency,
                 fontSize = unitFontSize,
                 fontWeight = FontWeight.Light,
                 color = amountColor.copy(alpha = 0.7f),
-                modifier = Modifier.padding(bottom = 2.dp)
+                modifier = Modifier.padding(bottom = 6.dp)
             )
         }
     }

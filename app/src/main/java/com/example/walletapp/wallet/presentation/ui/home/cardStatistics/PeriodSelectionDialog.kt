@@ -80,7 +80,7 @@ fun PeriodSelectionDialog(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(10.dp))
-                                .clickable { tempSelectedPeriod = period } // 🚨 Faqat vaqtinchalik tanlovni yangilaydi
+                                .clickable { tempSelectedPeriod = period }
                                 .background(if (isSelected) primaryAccent.copy(alpha = 0.08f) else Color.Transparent)
                                 .padding(horizontal = 12.dp, vertical = 14.dp),
                             verticalAlignment = Alignment.CenterVertically,

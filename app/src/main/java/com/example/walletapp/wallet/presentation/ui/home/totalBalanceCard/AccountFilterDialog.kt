@@ -57,7 +57,7 @@ fun AccountFilterDialog(
                     )
                 }
                 Text(
-                    text = "Hisoblarni tanlash",
+                    text = "Select Accounts",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -116,8 +116,12 @@ fun AccountFilterDialog(
                                         modifier = Modifier
                                             .size(24.dp)
                                             .clip(CircleShape)
-                                            .background(MaterialTheme.colorScheme.onTertiary.copy(0.3f))
-                                            .border(1.5.dp, Color.LightGray.copy(alpha = 0.7f), CircleShape)
+                                            .background(MaterialTheme.colorScheme.onTertiary.copy(0.05f))
+                                            .border(
+                                                width = 2.dp,
+                                                color = MaterialTheme.colorScheme.onTertiary.copy(0.06f),
+                                                shape = CircleShape
+                                            )
                                     )
                                 }
                             }
@@ -132,7 +136,7 @@ fun AccountFilterDialog(
                     colors = ButtonDefaults.buttonColors(containerColor = primaryAccent)
                 ) {
                     Text(
-                        text = "Qo'llash (${selectedAccountIds.size}/${accounts.size})",
+                        text = "Save (${selectedAccountIds.size}/${accounts.size})",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold
                     )

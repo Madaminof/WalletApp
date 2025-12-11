@@ -64,7 +64,7 @@ fun AddListDialog(
                     )
                 }
                 Text(
-                    text = "Yangi Ro'yxat Qo'shish",
+                    text = "Add New List",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -76,7 +76,7 @@ fun AddListDialog(
                 OutlinedTextField(
                     value = listName,
                     onValueChange = { listName = it },
-                    label = { Text("Ro'yxat nomi", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                    label = { Text("List name", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
@@ -94,7 +94,7 @@ fun AddListDialog(
                 ) {
                     // Bekor qilish
                     TextButton(onClick = onDismiss) {
-                        Text("Bekor qilish", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary.copy(0.5f))
+                        Text("Cancel", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary.copy(0.5f))
                     }
                     Spacer(modifier = Modifier.width(8.dp))
 
@@ -105,7 +105,7 @@ fun AddListDialog(
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         modifier = Modifier.height(48.dp)
                     ) {
-                        Text("Qo'shish", fontWeight = FontWeight.SemiBold)
+                        Text("Add", fontWeight = FontWeight.SemiBold)
                     }
                 }
             }

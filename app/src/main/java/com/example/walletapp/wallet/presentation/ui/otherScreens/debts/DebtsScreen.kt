@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.walletapp.wallet.domain.model.Debt
 import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.DeleteConfirmationDialog
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 import com.example.walletapp.wallet.presentation.ui.otherScreens.topbar.CustomTopBar
 import com.example.walletapp.wallet.presentation.viewmodel.DebtsViewModel
 import kotlinx.coroutines.launch
@@ -35,6 +36,7 @@ fun DebtsScreen(
     navController: NavController,
     viewModel: DebtsViewModel = hiltViewModel()
 ) {
+
     val uiState by viewModel.state.collectAsState()
 
     var debtToEdit by remember { mutableStateOf<Debt?>(null) }

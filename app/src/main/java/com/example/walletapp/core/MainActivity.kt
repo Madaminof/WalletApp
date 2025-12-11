@@ -2,61 +2,42 @@ package com.example.walletapp.core
 
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.walletapp.ui.theme.WalletAppTheme
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
-import com.example.walletapp.auth.presentation.AuthViewModel
 import com.example.walletapp.navigation.NavGraph
-import com.example.walletapp.wallet.domain.model.TransactionType
 import com.example.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.numFormat.NumberFormatManager
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.themes.ThemeManager
 import com.example.walletapp.wallet.presentation.viewmodel.AccountViewModel
 import com.example.walletapp.wallet.presentation.viewmodel.AddTransactionViewModel
 import com.example.walletapp.wallet.presentation.viewmodel.DebtsViewModel
 import com.example.walletapp.wallet.presentation.viewmodel.HomeViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-
-    @Inject lateinit var googleSignInClient: GoogleSignInClient
-    /*
-        private val authViewModel: AuthViewModel by viewModels()
-    */
-
-
-    /*private val signInLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-                try {
-                    val account = task.getResult(Exception::class.java)
-                    val idToken = account?.idToken
-                    if (idToken != null) {
-                        authViewModel.signInWithGoogleIdToken(idToken)
-                    }
-                } catch (_: Exception) {}
-            }
-        }*/
+class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeManager.applyTheme(this)
+        CurrencyManager.initialize(applicationContext)
+        NumberFormatManager.initialize(applicationContext)
 
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            WalletAppTheme {
+            val themeChangeTrigger by ThemeManager.isThemeChanged
 
+            WalletAppTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     val homeViewModel: HomeViewModel = hiltViewModel()
                     val addTransactionViewModel: AddTransactionViewModel = hiltViewModel()

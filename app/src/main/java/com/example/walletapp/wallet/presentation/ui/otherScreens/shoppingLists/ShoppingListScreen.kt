@@ -40,15 +40,19 @@ import com.example.walletapp.wallet.presentation.viewmodel.ShoppingViewModel
 import java.text.NumberFormat
 import java.util.Locale
 import java.util.UUID
-import android.util.Log // Logni ishlatish uchun
-import android.content.ActivityNotFoundException // Intent uchun maxsus xatoni ushlash uchun
+import android.util.Log
+import android.content.ActivityNotFoundException
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 
+val activeCurrency by CurrencyManager.currentCurrency
 
 @Composable
 fun ShoppingListScreen(
     navController: NavController,
     shoppingViewModel: ShoppingViewModel = hiltViewModel()
 ) {
+
     val uiState by shoppingViewModel.state.collectAsState()
     val shoppingListsWithStats = uiState.listsWithStats
     val context = LocalContext.current
@@ -118,7 +122,7 @@ fun ShoppingListScreen(
                                 },
                                 onShare = {
                                     val itemDetails = listWithStats.items.map { item ->
-                                        "${item.name}: ${"%.0f".format(item.price)} so'm"
+                                        "${item.name}: ${"%.0f".format(item.price)} $activeCurrency"
                                     }
 
                                     shareShoppingList(
@@ -261,7 +265,7 @@ fun ShoppingListRow(
                     color = MaterialTheme.colorScheme.onTertiary.copy(0.6f),
                 )
                 Text(
-                    text = "${"%.0f".format(totalAmount)} so'm",
+                    text = formatAmountWithCurrency(totalAmount),
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
                     color = MaterialTheme.colorScheme.onTertiary.copy(0.7f)
@@ -348,7 +352,7 @@ Mahsulotlar soni: (${cleanItemDetails.size})
 
 $itemsFormatted
 
-Umumiy Hisob: $formattedTotalAmount so'm
+Umumiy Hisob: $formattedTotalAmount $activeCurrency
     """.trimIndent()
 
     val shareIntent = Intent().apply {

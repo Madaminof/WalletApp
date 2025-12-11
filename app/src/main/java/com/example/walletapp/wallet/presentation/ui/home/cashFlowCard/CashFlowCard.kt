@@ -24,20 +24,15 @@ import com.example.walletapp.ui.theme.incomeColor
 import com.example.walletapp.wallet.presentation.ui.home.cashFlowCard.CashFlowFilterDialog
 import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.CircularIconButton
 import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.primaryAccent
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.FormatAmount
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import com.example.walletapp.wallet.presentation.viewmodel.CashFlowViewModel
 import java.text.NumberFormat
 import java.util.Locale
+import kotlin.math.absoluteValue
 
-private fun formatUzs(amount: Double): String {
-    val formatter = NumberFormat.getCurrencyInstance(Locale("uz", "UZ")).apply {
-        maximumFractionDigits = 2
-        minimumFractionDigits = 2
-        currency = java.util.Currency.getInstance("UZS")
-    }
-    val formatted = formatter.format(amount)
-    val cleanFormatted = formatted.replace("-", "").replace("(", "").replace(")", "").trim()
-    return if (amount < 0) "-$cleanFormatted" else cleanFormatted
-}
+val activeCurrency by CurrencyManager.currentCurrency
 
 @Composable
 fun CashFlowItem(
@@ -76,7 +71,7 @@ fun CashFlowItem(
             )
         }
         Text(
-            text = formatUzs(amount),
+            text = FormatAmount(amount),
             fontSize = if (isTotal) 14.sp else 13.sp,
             fontWeight = if (isTotal) FontWeight.SemiBold else FontWeight.Normal,
             color = displayColor,

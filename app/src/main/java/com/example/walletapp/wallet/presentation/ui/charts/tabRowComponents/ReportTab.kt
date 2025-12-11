@@ -30,18 +30,19 @@ import com.example.walletapp.ui.theme.incomeColor
 import com.example.walletapp.wallet.domain.model.Category
 import com.example.walletapp.wallet.domain.model.Transaction
 import com.example.walletapp.wallet.domain.model.TransactionType
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.max
+val activeCurrency by CurrencyManager.currentCurrency
 
 @Composable
 fun ReportsTab(
     transactions: List<Transaction>,
     allCategories: List<Category>
 ) {
-    val formatter = remember { DecimalFormat("#,##0") }
-
     val allIncomeCategories = allCategories.filter { it.type == TransactionType.INCOME }
     val allExpenseCategories = allCategories.filter { it.type == TransactionType.EXPENSE }
 
@@ -73,7 +74,6 @@ fun ReportsTab(
                 totalAmount = totalIncome,
                 data = groupedIncomeData,
                 color = incomeColor,
-                formatter = formatter
             )
         }
 
@@ -83,7 +83,6 @@ fun ReportsTab(
                 totalAmount = totalExpense,
                 data = groupedExpenseData,
                 color = expenseColor,
-                formatter = formatter
             )
         }
     }
@@ -95,7 +94,6 @@ fun ReportContainerCard(
     totalAmount: Double,
     data: List<Pair<Category, List<Transaction>>>,
     color: Color,
-    formatter: DecimalFormat
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -111,7 +109,6 @@ fun ReportContainerCard(
             TotalSectionHeader(
                 title = title,
                 totalAmount = totalAmount,
-                formatter = formatter,
                 amountColor = color,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -121,7 +118,6 @@ fun ReportContainerCard(
                     category = category,
                     transactions = transactions,
                     color = color,
-                    formatter = formatter
                 )
             }
         }
@@ -133,7 +129,6 @@ fun DetailedCategorySection(
     category: Category,
     transactions: List<Transaction>,
     color: Color,
-    formatter: DecimalFormat
 ) {
     val totalBalance = remember { transactions.sumOf { it.amount } }
     var expanded by remember { mutableStateOf(false) }
@@ -141,11 +136,12 @@ fun DetailedCategorySection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 2.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 6.dp, horizontal = 8.dp)
+                .padding(vertical = 7.dp, horizontal = 8.dp)
                 .clip(RectangleShape)
                 .clickable { expanded = !expanded },
             verticalAlignment = Alignment.CenterVertically
@@ -176,7 +172,7 @@ fun DetailedCategorySection(
             )
 
             Text(
-                text = "${formatter.format(totalBalance)} so'm",
+                text = formatAmountWithCurrency(totalBalance),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Normal,
                 color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
@@ -212,7 +208,6 @@ fun DetailedCategorySection(
                             TransactionItem(
                                 transaction = transaction,
                                 color = color.copy(alpha = 0.8f),
-                                formatter = formatter
                             )
                             if (transactions.last() != transaction) {
                             }
@@ -227,7 +222,6 @@ fun DetailedCategorySection(
 fun TransactionItem(
     transaction: Transaction,
     color: Color,
-    formatter: DecimalFormat
 ) {
     val dateFormat = remember { SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()) }
     val formattedDateTime = remember { dateFormat.format(Date(transaction.date)) }
@@ -240,7 +234,8 @@ fun TransactionItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 10.dp),
+            .padding(vertical = 8.dp, horizontal = 10.dp)
+            .padding(top = 2.dp, bottom = 2.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -268,8 +263,8 @@ fun TransactionItem(
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
-                text = "${formatter.format(transaction.amount)} so'm",
-                fontSize = 13.sp,
+                text = formatAmountWithCurrency(transaction.amount),
+                fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
                 textAlign = TextAlign.End,
@@ -303,7 +298,7 @@ fun TransactionItem(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Izoh:",
+                        text = "Note:",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.8f)
@@ -319,8 +314,6 @@ fun TransactionItem(
                         color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.7f),
                         modifier = Modifier.weight(1f)
                     )
-
-                    // Icon
                     Icon(
                         imageVector = if (noteExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                         contentDescription = if (noteExpanded) "Izohni yopish" else "Izohni ochish",
@@ -344,7 +337,6 @@ fun TransactionItem(
 fun TotalSectionHeader(
     title: String,
     totalAmount: Double,
-    formatter: DecimalFormat,
     amountColor: Color,
     modifier: Modifier = Modifier
 ) {
@@ -370,7 +362,7 @@ fun TotalSectionHeader(
                 )
             }
             Text(
-                text = "${formatter.format(totalAmount)} so'm",
+                text = formatAmountWithCurrency(totalAmount),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = amountColor,

@@ -27,7 +27,11 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import com.example.walletapp.R
 import com.example.walletapp.wallet.domain.model.Account
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.FormatAmount
+import com.example.walletapp.wallet.presentation.utils.getCurrencySymbol
 import java.text.DecimalFormat
+val activeCurrency by CurrencyManager.currentCurrency
 
 @Composable
 fun AccountRow(
@@ -64,7 +68,7 @@ private fun AccountItem(
     )
     val colorTween = tween<Color>(durationMillis = 350)
 
-    val defaultColor = MaterialTheme.colorScheme.primaryContainer
+    val defaultColor = MaterialTheme.colorScheme.primaryContainer.copy(0.7f)
 
     val accColor: Color = remember(acc.colorHex) {
         val hexString = acc.colorHex
@@ -115,18 +119,10 @@ private fun AccountItem(
         label = "scaleAnim"
     )
 
-    val balanceFormatter = remember { DecimalFormat("#,##0") }
-    val formattedBalance = balanceFormatter.format(acc.initialBalance).replace(",", " ")
-
     Card(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = containerColor
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 1.dp,
-            pressedElevation = 4.dp,
-            hoveredElevation = if (isSelected) 8.dp else 2.dp
         ),
 
         modifier = Modifier
@@ -162,23 +158,12 @@ private fun AccountItem(
                     modifier = Modifier.padding(top = 0.dp)
                 ) {
                     Text(
-                        formattedBalance,
+                        FormatAmount(acc.initialBalance),
                         color = balanceColor,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 10.sp,
                         maxLines = 1,
                         style = LocalTextStyle.current.copy(lineHeight = 1.05.em)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        "UZS",
-                        color = currencyColor,
-                        fontSize = 9.sp,
-                        fontWeight = FontWeight.Medium,
-                        maxLines = 1,
-                        modifier = Modifier.padding(bottom = 1.dp),
-                        style = LocalTextStyle.current.copy(lineHeight = 1.05.em)
-
                     )
                 }
             }

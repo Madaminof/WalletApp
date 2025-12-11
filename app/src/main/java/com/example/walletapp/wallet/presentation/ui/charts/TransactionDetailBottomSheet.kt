@@ -32,8 +32,11 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import com.example.walletapp.R
 import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.DeleteConfirmationDialog
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import java.text.NumberFormat
 
+val activeCurrency by CurrencyManager.currentCurrency
 
 fun formatAmount(amount: Double): String {
     val formatter = NumberFormat.getInstance(Locale.US)
@@ -103,7 +106,7 @@ fun TransactionDetailBottomSheet(
             DeleteConfirmationDialog(
                 onDismiss = { showDeleteDialog = false },
                 onConfirmDelete = {onDelete(transaction)},
-                title = "Tranzaksiyani o'chirish",
+                title = "Delete Transaction",
                 text = "Rostdan ham tranzaksiyani o'chirishni hohlaysizmi?"
             )
         }
@@ -239,7 +242,7 @@ fun TransactionHeader(
             IconButton(onClick = { onUpdate(transaction) }) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Tahrirlash",
+                    contentDescription = "Edit",
                     tint = MaterialTheme.colorScheme.onTertiary.copy(0.6f)
                 )
             }
@@ -259,10 +262,6 @@ fun TransactionHeader(
 fun PremiumTransactionSummaryCard(transaction: Transaction) {
     val typeColor = if (transaction.type == TransactionType.EXPENSE) expenseColor else incomeColor
     val icon = if (transaction.type == TransactionType.EXPENSE) Icons.Default.RemoveCircle else Icons.Default.AddCircle
-
-    val formattedAmount = formatAmount(transaction.amount)
-    val amountPrefix = if (transaction.type == TransactionType.EXPENSE) "-" else "+"
-
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -294,22 +293,11 @@ fun PremiumTransactionSummaryCard(transaction: Transaction) {
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = typeColor
-                        )) {
-                            append("$amountPrefix $formattedAmount")
-                        }
-                        withStyle(style = SpanStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = typeColor.copy(alpha = 0.7f)
-                        )) {
-                            append(" UZS")
-                        }
-                    }
+                    text = formatAmountWithCurrency(amount = transaction.amount),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = typeColor
+
                 )
             }
         }

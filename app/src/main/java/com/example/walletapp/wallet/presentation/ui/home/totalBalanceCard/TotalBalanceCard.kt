@@ -1,5 +1,6 @@
 package com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard
 
+import activeCurrency
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -35,6 +36,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.walletapp.ui.theme.expenseColor
 import com.example.walletapp.ui.theme.incomeColor
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import com.example.walletapp.wallet.presentation.utils.FormatAmount
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
+import com.example.walletapp.wallet.presentation.utils.getCurrencySymbol
 import kotlin.math.absoluteValue
 
 val primaryAccent = Color(0xFF4759C1)
@@ -46,6 +51,9 @@ fun TotalBalanceCard(
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.cardState.collectAsState()
+
+    val balanceColor = if (state.netBalance < 0) expenseColor else incomeColor
+
 
     var isPressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
@@ -97,11 +105,8 @@ fun TotalBalanceCard(
 
             Spacer(Modifier.height(4.dp))
 
-            val balanceColor = if (state.netBalance < 0) expenseColor else incomeColor
-            val formattedBalance = String.format("%,.2f", state.netBalance.absoluteValue)
-
             Text(
-                text = "${if (state.netBalance < 0) "-" else ""}$formattedBalance UZS",
+                text = "${if (state.netBalance < 0) "-" else ""}${FormatAmount(state.netBalance.absoluteValue)}",
                 color = balanceColor,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold
@@ -128,7 +133,7 @@ fun TotalBalanceCard(
                     val sign = if (state.periodBalance >= 0) "+" else ""
 
                     Text(
-                        text = "$sign$periodAmount UZS, ${state.periodLabel}",
+                        text = "$sign$periodAmount ${getCurrencySymbol(activeCurrency)}, ${state.periodLabel}",
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),

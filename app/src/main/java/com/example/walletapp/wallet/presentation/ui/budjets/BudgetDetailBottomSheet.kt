@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.walletapp.wallet.domain.model.Budget
 import com.example.walletapp.wallet.domain.model.BudgetStatus
 import com.example.walletapp.wallet.presentation.ui.charts.expenseListComponents.DeleteConfirmationDialog
+import com.example.walletapp.wallet.presentation.utils.FormatAmount
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -162,21 +163,21 @@ fun BudgetSummaryCard(status: BudgetStatus) {
         Column(modifier = Modifier.padding(16.dp)) {
             DetailSummaryRow(
                 label = "Maksimal Budjet",
-                value = "${status.budget.maxAmount}",
+                value = "${FormatAmount(status.budget.maxAmount)}",
                 icon = Icons.Default.AccountBalanceWallet,
                 valueColor = Color(0xFF66BB6A)
             )
             Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
             DetailSummaryRow(
                 label = "Sarflangan Miqdor",
-                value = "${status.spentAmount}",
+                value = "${FormatAmount(status.spentAmount)}",
                 icon = Icons.Default.RemoveCircle,
                 valueColor = Color(0xFFE57373)
             )
             Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
             DetailSummaryRow(
                 label = "Qoldiq Miqdor",
-                value = "${status.remainingAmount}",
+                value = "${FormatAmount(status.remainingAmount)}",
                 icon = Icons.Default.AddCircle,
                 valueColor = if (status.isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
             )
@@ -243,7 +244,7 @@ fun DetailSummaryRow(label: String, value: String, icon: ImageVector, valueColor
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onTertiary,
-                fontSize = 14.sp
+                fontSize = 13.sp
             )
         }
 
@@ -251,7 +252,7 @@ fun DetailSummaryRow(label: String, value: String, icon: ImageVector, valueColor
             text = value,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 14.sp,
+            fontSize = 12.sp,
             color = valueColor,
             modifier = Modifier.weight(1f, fill = false)
         )

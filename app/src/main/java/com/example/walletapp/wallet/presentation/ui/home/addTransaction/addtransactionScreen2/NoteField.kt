@@ -146,7 +146,7 @@ fun NoteDialogContent(
                     onClick = onDismiss
                 ) {
                     Text(
-                        "Bekor qilish",
+                        "Cancel",
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onTertiary.copy(0.5f)
                     )
@@ -168,7 +168,7 @@ fun NoteDialogContent(
                     ),
                     modifier = Modifier.height(48.dp)
                 ) {
-                    Text("Saqlash", fontWeight = FontWeight.SemiBold)
+                    Text("Save", fontWeight = FontWeight.SemiBold)
                 }
             }
         }

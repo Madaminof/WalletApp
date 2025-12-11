@@ -5,14 +5,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBalance // Bank uchun simulyatsiya
 import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.Payments // Cash uchun simulyatsiya
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,21 +33,11 @@ import com.example.walletapp.wallet.domain.model.Account
 import com.example.walletapp.wallet.presentation.ui.account.AccountDetailBottomSheet
 import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.CircularIconButton
 import com.example.walletapp.wallet.presentation.ui.home.totalBalanceCard.primaryAccent
+import com.example.walletapp.wallet.presentation.utils.FormatAmount
+import com.example.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import com.example.walletapp.wallet.presentation.viewmodel.AccountViewModel
 import java.text.NumberFormat
 import java.util.Locale
-
-
-private fun formatUzs(amount: Double): String {
-    val formatter = NumberFormat.getCurrencyInstance(Locale("uz", "UZ")).apply {
-        maximumFractionDigits = 2
-        minimumFractionDigits = 2
-        currency = java.util.Currency.getInstance("UZS")
-    }
-    val formatted = formatter.format(amount)
-    val cleanFormatted = formatted.replace("-", "").replace("(", "").replace(")", "").trim()
-    return if (amount < 0) "-$cleanFormatted" else cleanFormatted
-}
 
 
 @Composable
@@ -109,7 +93,7 @@ fun AccountItem(
 
             )
             Text(
-                text = formatUzs(account.initialBalance),
+                text = FormatAmount(account.initialBalance),
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Normal,
                 color = amountColor,
