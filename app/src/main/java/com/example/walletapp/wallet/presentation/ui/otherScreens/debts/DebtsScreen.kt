@@ -66,7 +66,7 @@ fun DebtsScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = { CustomTopBar(title = "Qarzlar Boshqaruvi", onBackClick = { navController.popBackStack() }, navController = navController) },
+        topBar = { CustomTopBar(title = "Debts", onBackClick = { navController.popBackStack() }, navController = navController) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {

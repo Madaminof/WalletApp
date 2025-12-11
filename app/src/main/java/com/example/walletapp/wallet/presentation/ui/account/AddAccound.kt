@@ -65,7 +65,7 @@ private val extendedColors = listOf(
 private val extendedIcons = listOf(
     R.drawable.ic_card_default,
     R.drawable.ic_visa, R.drawable.ic_mastercard,
-    R.drawable.ic_wallet, R.drawable.ic_dollor,
+    R.drawable.ic_wallet_2, R.drawable.ic_dollor,
     R.drawable.ic_money1,R.drawable.ic_travel
 )
 
@@ -118,7 +118,12 @@ fun AddAccountScreen(
     AppStatusBarColor(MaterialTheme.colorScheme.background)
     Scaffold(
         topBar = {
-            AddAccountTopBar(navController = navController, canSave = canSave, onSave = handleSave)
+            AddAccountTopBar(
+                navController = navController,
+                canSave = canSave,
+                onSave = handleSave,
+                title = "Add Account"
+                )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
@@ -178,17 +183,36 @@ fun AddAccountTopBar(
     navController: NavController,
     canSave: Boolean,
     onSave: () -> Unit,
+    title:String
 ) {
     CenterAlignedTopAppBar(
-        title = { Text("Yangi Hamyon", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onTertiary) },
+        title = { Text(title, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.onTertiary.copy(0.8f)) },
         navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(Icons.Default.Close, contentDescription = "Yopish", tint = MaterialTheme.colorScheme.onTertiary)
+            Box(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colorScheme.onTertiary.copy(0.03f)),
+                contentAlignment = Alignment.Center
+            ){
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(Icons.Default.Close, contentDescription = "Yopish", tint = MaterialTheme.colorScheme.onTertiary)
+                }
             }
         },
         actions = {
-            IconButton(onClick = onSave, enabled = canSave) {
-                Icon(Icons.Default.Check, contentDescription = "Saqlash", tint = MaterialTheme.colorScheme.onTertiary)
+            Box(
+                modifier = Modifier
+                    .padding(end = 12.dp)
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colorScheme.onTertiary.copy(0.05f)),
+                contentAlignment = Alignment.Center
+            ){
+                IconButton(onClick = onSave, enabled = canSave) {
+                    Icon(Icons.Default.Check, contentDescription = "Saqlash", tint = MaterialTheme.colorScheme.onTertiary)
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

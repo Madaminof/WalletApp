@@ -72,7 +72,7 @@ fun DrawerBody(
         NavItem(Icons.Default.Share, "Invite Friends", Investments),
         NavItem(Icons.Default.Public, "Follow Us", Follow),
         NavItem(Icons.Default.Help, "Help", Help),
-        NavItem(Icons.Default.Settings, "Settings", Settings),
+        NavItem(Icons.Default.Settings, "Settings", Settings,Screen.SettingScreen.route),
 
         )
 

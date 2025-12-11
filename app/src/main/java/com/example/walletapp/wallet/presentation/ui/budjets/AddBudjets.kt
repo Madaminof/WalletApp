@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -355,10 +356,24 @@ fun AddBudgetTopBar(
     scope: CoroutineScope
     ) {
     TopAppBar(
-        title = { Text("Yangi Budjet", fontWeight = FontWeight.Bold) },
+        title = { Text(
+            "Add Budget",
+            fontWeight = FontWeight.ExtraBold,
+            color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+            modifier = Modifier.padding(start = 12.dp)
+        ) },
         navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(Icons.Filled.ArrowBackIosNew, contentDescription = "Orqaga")
+            Box(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colorScheme.onTertiary.copy(0.03f)),
+                contentAlignment = Alignment.Center
+            ){
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(Icons.Filled.Close, contentDescription = "Orqaga")
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

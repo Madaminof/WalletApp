@@ -65,7 +65,7 @@ fun SplashScreen(
                 modifier = Modifier.scale(scale.value)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_wallet_analyst),
+                    painter = painterResource(R.drawable.ic_wallet_2),
                     contentDescription = "Wallet App Logo",
                     tint = Color.Unspecified,
                     modifier = Modifier.size(100.dp)

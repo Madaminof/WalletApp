@@ -83,7 +83,7 @@ fun TransactionDetailBottomSheet(
             PremiumTransactionSummaryCard(transaction = transaction)
 
             Spacer(Modifier.height(24.dp))
-            Divider(color = MaterialTheme.colorScheme.outlineVariant)
+            Divider(color = MaterialTheme.colorScheme.onTertiary.copy(0.2f), thickness = 0.5.dp)
             Spacer(Modifier.height(16.dp))
 
             transaction.note?.let { note ->
@@ -117,9 +117,9 @@ fun DetailSectionCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(0.5f)
         ),
     ) {
         Column(
@@ -140,7 +140,7 @@ fun DetailSectionCard(
                 ) },
                 valueColor = MaterialTheme.colorScheme.onTertiary.copy(0.7f)
             )
-            Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), modifier = Modifier.padding(horizontal = 16.dp))
+            Divider(color = MaterialTheme.colorScheme.onTertiary.copy(0.1f), modifier = Modifier.padding(horizontal = 16.dp), thickness = 0.5.dp)
 
             PremiumDetailRow(
                 label = "Type",
@@ -155,7 +155,7 @@ fun DetailSectionCard(
                        },
                 valueColor = if (transaction.type == TransactionType.EXPENSE) expenseColor else incomeColor
             )
-            Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), modifier = Modifier.padding(horizontal = 16.dp))
+            Divider(color = MaterialTheme.colorScheme.onTertiary.copy(0.1f), modifier = Modifier.padding(horizontal = 16.dp), thickness = 0.5.dp)
 
             PremiumDetailRow(
                 label = "Date time",
@@ -322,9 +322,9 @@ fun ExpandableNoteCard(note: String) {
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(0.5f)
         ),
     ) {
         Column(

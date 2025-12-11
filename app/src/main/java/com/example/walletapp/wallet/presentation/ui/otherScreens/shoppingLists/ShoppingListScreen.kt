@@ -185,8 +185,7 @@ fun ShoppingListRow(
             .fillMaxWidth().padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(16.dp))
             .clickable { onItemClick(list.id) },
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.6f)),
     ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
             Row(

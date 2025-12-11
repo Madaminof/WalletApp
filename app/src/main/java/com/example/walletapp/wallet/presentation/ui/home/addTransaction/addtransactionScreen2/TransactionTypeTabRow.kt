@@ -1,16 +1,14 @@
 package com.example.walletapp.wallet.presentation.ui.home.addTransaction.addtransactionScreen2
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,7 +27,7 @@ fun TransactionTypeTabRow(
         TransactionType.EXPENSE to "Xarajat",
     )
 
-    val selectedContainerColor = MaterialTheme.colorScheme.primary.copy(0.7f)
+    val selectedContainerColor = MaterialTheme.colorScheme.primary
     val unselectedContainerColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f)
     val selectedContentColor = MaterialTheme.colorScheme.onPrimary
     val unselectedContentColor = MaterialTheme.colorScheme.onTertiary.copy(0.3f)
@@ -45,6 +43,16 @@ fun TransactionTypeTabRow(
     ) {
         tabs.forEach { (type, title) ->
             val isSelected = type == selected
+            val animatedBackgroundColor by animateColorAsState(
+                targetValue = if (isSelected) selectedContainerColor else Color.Transparent,
+                animationSpec = tween(durationMillis = 300),
+                label = "BackgroundColorAnimation"
+            )
+            val animatedTextColor by animateColorAsState(
+                targetValue = if (isSelected) selectedContentColor else unselectedContentColor,
+                animationSpec = tween(durationMillis = 300),
+                label = "TextColorAnimation"
+            )
 
             Box(
                 modifier = Modifier
@@ -52,7 +60,7 @@ fun TransactionTypeTabRow(
                     .padding(2.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(
-                        color = if (isSelected) selectedContainerColor else Color.Transparent
+                        color = animatedBackgroundColor
                     )
                     .clickable { onSelect(type) }
                     .padding(vertical = 12.dp),
@@ -60,7 +68,7 @@ fun TransactionTypeTabRow(
             ) {
                 Text(
                     text = title,
-                    color = if (isSelected) selectedContentColor else unselectedContentColor,
+                    color = animatedTextColor,
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.SemiBold
                 )

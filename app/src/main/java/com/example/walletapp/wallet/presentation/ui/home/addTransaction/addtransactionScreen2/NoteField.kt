@@ -2,33 +2,30 @@ package com.example.walletapp.wallet.presentation.ui.home.addTransaction.addtran
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.walletapp.wallet.presentation.viewmodel.AddTransactionViewModel
-import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteFeatureController(
     viewModel: AddTransactionViewModel
 ) {
-    var showBottomSheet by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val coroutineScope = rememberCoroutineScope()
-
-    val noteText = viewModel.uiState.note
+    var showNoteDialog by remember { mutableStateOf(false) }
+    val noteText = viewModel.uiState.note.takeIf { !it.isNullOrBlank() }
     val accentColor = MaterialTheme.colorScheme.primary
 
     Column(
@@ -39,142 +36,140 @@ fun NoteFeatureController(
     ){
         Box(
             modifier = Modifier
-                .clickable { showBottomSheet = true }
+                .clickable { showNoteDialog = true }
                 .clip(MaterialTheme.shapes.small)
                 .padding(horizontal = 8.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = if (noteText.isNotBlank()) {noteText} else "Add note",
-                fontWeight = if (noteText.isNotBlank()) FontWeight.Normal else FontWeight.Medium,
-                fontSize = 11.sp,
-                color = if (noteText.isNotBlank()) MaterialTheme.colorScheme.onTertiary else accentColor,
-                textDecoration = if (noteText.isBlank()) TextDecoration.Underline else null,
+                text = noteText ?: "Add Note",
+                fontWeight = if (noteText.isNullOrBlank()) FontWeight.Medium else FontWeight.Normal,
+                fontSize = 12.sp,
+                color = if (noteText.isNullOrBlank()) accentColor else MaterialTheme.colorScheme.onTertiary,
+                textDecoration = if (noteText.isNullOrBlank()) TextDecoration.Underline else null,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    showBottomSheet = false
-                },
-                sheetState = sheetState,
-                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-                containerColor = MaterialTheme.colorScheme.surface
-            ) {
-                NoteBottomSheetContent(
+
+        if (showNoteDialog) {
+            Dialog(onDismissRequest = { showNoteDialog = false }) {
+                NoteDialogContent(
                     viewModel = viewModel,
-                    onSave = {
-                        coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
-                            if (!sheetState.isVisible) showBottomSheet = false
-                        }
-                    }
+                    onDismiss = { showNoteDialog = false }
                 )
             }
         }
     }
-
 }
 
-
 @Composable
-fun NoteBottomSheetContent(
+fun NoteDialogContent(
     viewModel: AddTransactionViewModel,
-    onSave: () -> Unit
+    onDismiss: () -> Unit
 ) {
     var noteInput by remember { mutableStateOf(viewModel.uiState.note) }
     val accentColor = MaterialTheme.colorScheme.primary
     val onPrimaryColor = MaterialTheme.colorScheme.onPrimary
     val originalNote = viewModel.uiState.note
 
-    Column(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .wrapContentHeight()
+            .clip(RoundedCornerShape(24.dp)),
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
+        shadowElevation = 16.dp
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "Add note",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onTertiary
-            )
-            if (noteInput.isNotBlank()) {
-                TextButton(
-                    onClick = { noteInput = "" },
-                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp) // Ixcham qilish
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Clear,
-                        contentDescription = "Izohni tozalash",
-                        tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(Modifier.width(4.dp))
-                    Text("Clear", color = MaterialTheme.colorScheme.error, fontSize = 13.sp)
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = noteInput,
-            onValueChange = { noteInput = it },
-            label = { Text("Izohingizni kiriting", color = MaterialTheme.colorScheme.onTertiary.copy(0.2f)) },
-            placeholder = { Text("Masalan: Restoran xarajati...", color = MaterialTheme.colorScheme.onTertiary.copy(0.2f)) },
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 100.dp),
-            shape = MaterialTheme.shapes.medium,
-            singleLine = false,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = accentColor,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                cursorColor = accentColor,
-                focusedLabelColor = accentColor,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                focusedContainerColor = MaterialTheme.colorScheme.surface
-            )
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+                .padding(horizontal = 20.dp, vertical = 10.dp)
         ) {
-            TextButton(
-                onClick = onSave,
-                contentPadding = PaddingValues(horizontal = 10.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Text(
-                    "Bekor qilish",
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                Divider(
+                    modifier = Modifier.width(40.dp).clip(CircleShape),
+                    thickness = 4.dp,
+                    color = Color.LightGray.copy(alpha = 0.5f)
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Button(
-                onClick = {
-                    viewModel.onNoteChange(noteInput)
-                    onSave()
-                },
-                enabled = noteInput != originalNote,
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = accentColor,
-                    contentColor = onPrimaryColor,
-                    disabledContentColor = MaterialTheme.colorScheme.onTertiary.copy(0.3f)
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Text("Saqlash", fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
+                Text(
+                    text = "Add Note",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp, bottom = 24.dp),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
+                )
+            }
+            OutlinedTextField(
+                value = noteInput,
+                onValueChange = { noteInput = it },
+                label = { Text("Izohingizni kiriting", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                placeholder = { Text("Masalan: Restoran xarajati...", color = MaterialTheme.colorScheme.onTertiary.copy(0.3f)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 100.dp)
+                    .padding(bottom = 24.dp),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = false,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    focusedBorderColor = accentColor,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                    cursorColor = accentColor,
+                    focusedTextColor = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+                    focusedLabelColor = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+                    unfocusedTextColor = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
+                )
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextButton(
+                    onClick = onDismiss
+                ) {
+                    Text(
+                        "Bekor qilish",
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onTertiary.copy(0.5f)
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Button(
+                    onClick = {
+                        viewModel.onNoteChange(noteInput)
+                        onDismiss()
+                    },
+                    enabled = noteInput != originalNote,
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = accentColor,
+                        contentColor = onPrimaryColor,
+                        disabledContainerColor = MaterialTheme.colorScheme.onTertiary.copy(0.1f),
+                        disabledContentColor = MaterialTheme.colorScheme.onTertiary.copy(0.3f)
+                    ),
+                    modifier = Modifier.height(48.dp)
+                ) {
+                    Text("Saqlash", fontWeight = FontWeight.SemiBold)
+                }
             }
         }
     }

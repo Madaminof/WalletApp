@@ -7,10 +7,8 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.*
 import androidx.navigation.compose.composable
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.walletapp.auth.presentation.AuthViewModel
 import com.example.walletapp.wallet.presentation.ui.Navigation
 import com.example.walletapp.wallet.presentation.ui.account.AddAccountScreen
 import com.example.walletapp.wallet.presentation.ui.account.WalletScreen
@@ -23,6 +21,7 @@ import com.example.walletapp.wallet.presentation.ui.home.SplashScreen
 import com.example.walletapp.wallet.presentation.ui.home.addTransaction.addtransactionScreen2.AddTransactionBottomSheet
 import com.example.walletapp.wallet.presentation.ui.otherScreens.debts.DebtsScreen
 import com.example.walletapp.wallet.presentation.ui.otherScreens.goals.GoalsScreen
+import com.example.walletapp.wallet.presentation.ui.otherScreens.settings.SettingsScreen
 import com.example.walletapp.wallet.presentation.ui.otherScreens.shoppingLists.ShoppingListDetailScreen
 import com.example.walletapp.wallet.presentation.ui.otherScreens.shoppingLists.ShoppingListScreen
 import com.example.walletapp.wallet.presentation.viewmodel.AccountViewModel
@@ -56,6 +55,25 @@ sealed class Screen(val route: String) {
 
     object ShoppingDetail : Screen("shopDetail")
     object DebtsScreen: Screen("debts_screen")
+    object SettingScreen: Screen("settings")
+
+
+    // settings items
+    object EditProfileScreen: Screen("EditProfileScreen")
+    object SubscriptionScreen: Screen("SubscriptionScreen")
+    object DataBackupScreen: Screen("DataBackupScreen")
+    object ThemeScreen: Screen("ThemeScreen")
+    object AccountsScreen: Screen("AccountsScreen")
+    object NumberFormatScreen: Screen("NumberFormatScreen")
+    object CurrencyScreen: Screen("CurrencyScreen")
+    object NotificationScreen: Screen("NotificationScreen")
+    object HelpScreen: Screen("HelpScreen")
+    object PrivacyPolicyScreen: Screen("PrivacyPolicyScreen")
+    object AuthScreen: Screen("AuthScreen")
+
+    object SetupPinFaceIDScreen: Screen("SetupPinFaceIDScreen")
+
+
 
 }
 
@@ -261,5 +279,17 @@ fun NavGraph(
                 viewModel = debtsViewModel
             )
         }
+
+        composable(
+            route = Screen.SettingScreen.route,
+
+            enterTransition = { ZoomInForward },
+            exitTransition = { ZoomOutForward },
+            popEnterTransition = { ZoomInBackward },
+            popExitTransition = { ZoomOutBackward }
+        ) { backStackEntry ->
+            SettingsScreen(navController)
+        }
+
     }
 }

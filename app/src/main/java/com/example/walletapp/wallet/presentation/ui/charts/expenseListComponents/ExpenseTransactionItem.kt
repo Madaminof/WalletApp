@@ -4,6 +4,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
@@ -18,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.walletapp.R
 import com.example.walletapp.ui.theme.expenseColor
@@ -70,10 +73,10 @@ fun ExpenseTransactionItem(
         )
         Divider(
             modifier = Modifier
-                .padding(start = 76.dp, end = 16.dp)
+                .padding(start = 16.dp, end = 16.dp)
                 .align(Alignment.BottomStart),
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-            thickness = 1.dp
+            color = MaterialTheme.colorScheme.onTertiary.copy(0.1f),
+            thickness = 0.5.dp
         )
     }
 }
@@ -90,12 +93,12 @@ private fun ExpenseTransactionItemContent(
         TransactionType.INCOME -> incomeColor
     }
     val iconBackgroundColor = when (transaction.type) {
-        TransactionType.EXPENSE -> expenseColor.copy(alpha = 0.15f)
-        TransactionType.INCOME -> incomeColor.copy(alpha = 0.15f)
+        TransactionType.EXPENSE -> Color(transaction.category.colorArgb)
+        TransactionType.INCOME -> Color(transaction.category.colorArgb)
     }
     val iconTintColor = when (transaction.type) {
-        TransactionType.EXPENSE -> expenseColor
-        TransactionType.INCOME -> incomeColor
+        TransactionType.EXPENSE -> MaterialTheme.colorScheme.onPrimary
+        TransactionType.INCOME -> MaterialTheme.colorScheme.onPrimary
     }
 
     val amountPrefix = if (transaction.type == TransactionType.EXPENSE) "-" else "+"
@@ -105,12 +108,13 @@ private fun ExpenseTransactionItemContent(
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(horizontal = 16.dp, vertical = 6.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Box(
             modifier = Modifier
                 .size(35.dp)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(CircleShape)
                 .background(iconBackgroundColor),
             contentAlignment = Alignment.Center
         ) {
@@ -129,21 +133,27 @@ private fun ExpenseTransactionItemContent(
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
-                lineHeight = 12.sp
+                style = LocalTextStyle.current.copy(lineHeight = 1.1.em)
             )
-            Row {
+            Row(
+                modifier = Modifier.padding(2.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
                     text = transaction.account.name,
                     fontSize = 9.sp,
                     color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    style = LocalTextStyle.current.copy(lineHeight = 1.1.em)
 
                 )
                 Text(
-                    text = " • ${dateFormatter.format(transaction.date)}",
+                    text = " | ${dateFormatter.format(transaction.date)}",
                     fontSize = 8.sp,
-                    color = Color.Gray.copy(alpha = 0.8f)
+                    color = Color.Gray.copy(alpha = 0.8f),
+                    style = LocalTextStyle.current.copy(lineHeight = 1.1.em)
+
                 )
             }
         }

@@ -175,7 +175,7 @@ fun CalculatorDisplay(
     }
     Divider(
         modifier = Modifier
-            .background(color = MaterialTheme.colorScheme.onTertiary.copy(0.3f), shape = RoundedCornerShape(2.dp))
+            .background(color = MaterialTheme.colorScheme.onTertiary.copy(0.1f)), thickness = 0.5.dp
     )
 }
 
@@ -221,7 +221,7 @@ fun CalculatorPad(
                         "CheckIcon" -> IconCalculatorButton(
                             icon = Icons.Default.Check,
                             onClick = { processAction(CalculatorAction.Save) },
-                            isPrimary = true
+                            isPrimary = true,
                         )
                         "DeleteIcon" -> CalculatorButton(
                             label = "C",
@@ -288,13 +288,13 @@ fun RowScope.IconCalculatorButton(
     isPrimary: Boolean = false,
     isDanger: Boolean = false
 ) {
-    val DangerColor = expenseColor
+    val DangerColor = MaterialTheme.colorScheme.primaryContainer
     val bgColor = when {
         isPrimary -> Color(0xFF1B8B4D)
         isDanger -> DangerColor
         else -> Color.Transparent
     }
-    val tintColor = if (isPrimary || isDanger) Color.White else Color.Black.copy(alpha = 0.6f)
+    val tintColor = if (isPrimary) Color.White else expenseColor
 
     Box(
         modifier = Modifier

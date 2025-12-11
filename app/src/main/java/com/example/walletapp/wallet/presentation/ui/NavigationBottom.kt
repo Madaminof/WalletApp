@@ -83,7 +83,8 @@ fun Navigation(
         Scaffold(
             topBar = {
                 HomeTopBar(
-                    onMenuClick = openDrawer
+                    onMenuClick = openDrawer,
+                    navController = navController
                 )
             },
             floatingActionButton = {

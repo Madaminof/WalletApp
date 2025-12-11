@@ -51,7 +51,7 @@ class WalletDatabaseCallback @Inject constructor(
                 Triple("Avto yoqilg'i", "EXPENSE", R.drawable.ic_gas_station) to 0xFFFB8C00, // To'q Sariq
                 Triple("Boshqa Xarajat", "EXPENSE", R.drawable.ic_default_expense) to 0xFF9E9E9E, // O'rta Kulrang
                 Triple("Abonent/Obuna", "EXPENSE", R.drawable.ic_subscription) to 0xFFFBC02D, // O'rta Sariq (Netflix, Spotify)
-                Triple("Qarzni to'lash", "EXPENSE", R.drawable.ic_debt) to 0xFFB71C1C,        // Eng To'q Qizil
+                Triple("Qarzni to'lash", "EXPENSE", R.drawable.ic_up_down) to 0xFFB71C1C,        // Eng To'q Qizil
                 Triple("Avto xizmat", "EXPENSE", R.drawable.ic_car_service) to 0xFF4DD0E1, // Ochiq Cyan
                 Triple("Bog'cha to'lovi", "EXPENSE", R.drawable.ic_kindergarten) to 0xFF8E24AA, // To'q Binafsha
                 Triple("Bank", "EXPENSE", R.drawable.ic_bank_fee) to 0xFF78909C,  // Kulrang-Moviy (Yengilroq)

@@ -1,8 +1,6 @@
 package com.example.walletapp.wallet.presentation.ui.home.addTransaction.addtransactionScreen2
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-// ... (boshqa importlar)
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,8 +9,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-// ... (boshqa importlar)
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel

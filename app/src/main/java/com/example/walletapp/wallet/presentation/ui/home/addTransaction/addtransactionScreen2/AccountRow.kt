@@ -1,9 +1,10 @@
 package com.example.walletapp.wallet.presentation.ui.home.addTransaction.addtransactionScreen2
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background // Kerak bo'lmasligi mumkin, lekin qoldiramiz
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import com.example.walletapp.R
@@ -37,8 +39,8 @@ fun AccountRow(
 
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = PaddingValues(horizontal = 8.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
         items(accounts, key = { it.id }) { acc ->
             AccountItem(
@@ -56,15 +58,19 @@ private fun AccountItem(
     isSelected: Boolean,
     onSelect: (Account) -> Unit,
 ) {
-    val defaultColor = MaterialTheme.colorScheme.onTertiary.copy(0.05f)
-    val animationDuration = 300 // ms
+    val premiumSpring = spring<Float>(
+        dampingRatio = Spring.DampingRatioMediumBouncy,
+        stiffness = Spring.StiffnessLow
+    )
+    val colorTween = tween<Color>(durationMillis = 350)
+
+    val defaultColor = MaterialTheme.colorScheme.primaryContainer
 
     val accColor: Color = remember(acc.colorHex) {
         val hexString = acc.colorHex
         if (hexString.isNullOrBlank()) {
             return@remember defaultColor
         }
-
         try {
             Color(hexString.toColorInt())
         } catch (e: IllegalArgumentException) {
@@ -72,68 +78,66 @@ private fun AccountItem(
         }
     }
 
-    // Asosiy rang animatsiyalari
     val targetContainerColor = if (isSelected) accColor else defaultColor
     val containerColor by animateColorAsState(
         targetValue = targetContainerColor,
-        animationSpec = tween(animationDuration), label = "containerColorAnim"
+        animationSpec = colorTween,
+        label = "containerColorAnim"
     )
+    val contentColorForSelected = if (accColor.luminance() > 0.5f) Color.Black else Color.White
+    val contentColorForUnselected = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
 
-    // Kontent ranglari uchun
-    val primaryContentColor = if (accColor.luminance() > 0.5f) Color.Black else Color.White
-
-    // Icon Tint
-    val targetIconTint = if (isSelected) primaryContentColor else accColor
+    val targetIconTint = if (isSelected) contentColorForSelected else accColor
     val iconTint by animateColorAsState(
         targetValue = targetIconTint,
-        animationSpec = tween(animationDuration), label = "iconTintAnim"
+        animationSpec = colorTween,
+        label = "iconTintAnim"
     )
-
-    // Account Name rangi
-    val targetNameColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onTertiary.copy(0.7f)
+    val targetTextColor = if (isSelected) contentColorForSelected else contentColorForUnselected
     val nameColor by animateColorAsState(
-        targetValue = targetNameColor,
-        animationSpec = tween(animationDuration), label = "nameColorAnim"
+        targetValue = targetTextColor,
+        animationSpec = colorTween,
+        label = "nameColorAnim"
     )
-
-    // Balance rangi
-    val targetBalanceColor = if (isSelected) Color.White.copy(0.9f) else MaterialTheme.colorScheme.onTertiary.copy(0.7f)
     val balanceColor by animateColorAsState(
-        targetValue = targetBalanceColor,
-        animationSpec = tween(animationDuration), label = "balanceColorAnim"
+        targetValue = targetTextColor,
+        animationSpec = colorTween,
+        label = "balanceColorAnim"
     )
-
-    // Currency rangi
-    val targetCurrencyColor = if (isSelected) Color.White.copy(0.7f) else MaterialTheme.colorScheme.onTertiary.copy(0.4f)
     val currencyColor by animateColorAsState(
-        targetValue = targetCurrencyColor,
-        animationSpec = tween(animationDuration), label = "currencyColorAnim"
+        targetValue = if (isSelected) contentColorForSelected.copy(alpha = 0.7f) else MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+        animationSpec = colorTween,
+        label = "currencyColorAnim"
     )
-
-    // Kattalashish Animatsiyasi
     val scale by animateFloatAsState(
         targetValue = if (isSelected) 1.05f else 1.0f,
-        animationSpec = tween(animationDuration), label = "scaleAnim"
+        animationSpec = premiumSpring,
+        label = "scaleAnim"
     )
 
     val balanceFormatter = remember { DecimalFormat("#,##0") }
     val formattedBalance = balanceFormatter.format(acc.initialBalance).replace(",", " ")
 
     Card(
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = containerColor
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 1.dp,
+            pressedElevation = 4.dp,
+            hoveredElevation = if (isSelected) 8.dp else 2.dp
         ),
 
         modifier = Modifier
             .scale(scale)
-            .defaultMinSize(minWidth = 100.dp)
+            .defaultMinSize(minWidth = 120.dp)
             .clickable { onSelect(acc) }
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(id = acc.iconResId ?: R.drawable.ic_card_default),
@@ -141,7 +145,7 @@ private fun AccountItem(
                 tint = iconTint,
                 modifier = Modifier.size(24.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             Column(
                 verticalArrangement = Arrangement.Center,
             ) {
@@ -150,26 +154,31 @@ private fun AccountItem(
                     color = nameColor,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 12.sp,
-                    lineHeight = 10.sp
+                    maxLines = 1,
+                    style = LocalTextStyle.current.copy(lineHeight = 1.05.em)
                 )
                 Row(
                     verticalAlignment = Alignment.Bottom,
-                    modifier = Modifier.padding(top = 2.dp)
+                    modifier = Modifier.padding(top = 0.dp)
                 ) {
                     Text(
                         formattedBalance,
                         color = balanceColor,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.SemiBold,
                         fontSize = 10.sp,
-                        lineHeight = 12.sp
+                        maxLines = 1,
+                        style = LocalTextStyle.current.copy(lineHeight = 1.05.em)
                     )
-                    Spacer(modifier = Modifier.width(3.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         "UZS",
                         color = currencyColor,
-                        fontSize = 8.sp,
-                        lineHeight = 7.sp,
-                        modifier = Modifier.padding(bottom = 0.dp)
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1,
+                        modifier = Modifier.padding(bottom = 1.dp),
+                        style = LocalTextStyle.current.copy(lineHeight = 1.05.em)
+
                     )
                 }
             }
