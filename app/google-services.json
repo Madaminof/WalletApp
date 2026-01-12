@@ -1,44 +1,45 @@
 {
   "project_info": {
-    "project_number": "244487532885",
-    "project_id": "walletapp-f977a",
-    "storage_bucket": "walletapp-f977a.firebasestorage.app"
+    "project_number": "353560686142",
+    "project_id": "walletapp-1028c",
+    "storage_bucket": "walletapp-1028c.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:244487532885:android:7e710f3a2527b7025d7fdc",
+        "mobilesdk_app_id": "1:353560686142:android:9fad75f916fa1d8707eb6f",
         "android_client_info": {
-          "package_name": "com.example.walletapp"
+          "package_name": "dev.samandar.walletanalyst"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "244487532885-ssj2mltooqvf2slnedkf6tsemt6ud6eb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.walletapp",
-            "certificate_hash": "1eb7207186c09a0fd944a5b93f37bd8dd0e5efc6"
-          }
-        },
-        {
-          "client_id": "244487532885-o5gflknt481n4q037f24t4pql83te3hh.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB9aJaOddax-xcJnYoYIuq9ORUFXqlF3vs"
+          "current_key": "AIzaSyDBT63N_z-icbYiIBL3NFpmgeFho0UQaIU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "244487532885-o5gflknt481n4q037f24t4pql83te3hh.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353560686142:android:a3b57f7b80e1fbb207eb6f",
+        "android_client_info": {
+          "package_name": "dev.samandar.walletapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBT63N_z-icbYiIBL3NFpmgeFho0UQaIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     }

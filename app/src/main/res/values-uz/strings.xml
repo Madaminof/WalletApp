@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    // title (topbar title)
+    <string name="title_home">Bosh sahifa</string>
+    <string name="title_account" translatable="false">Hamyonlarim</string>
+    <string name="title_statistics" translatable="false">Statistika</string>
+    <string name="title_budgets" translatable="false">Budjetlar</string>
+    <string name="title_shopping_lists" translatable="false">Xarid ro\'yxatlari</string>
+    <string name="title_debts" translatable="false">Qarzlar</string>
+    <string name="title_goals" translatable="false">Maqsadlar</string>
+    <string name="title_settings" translatable="false">Sozlamalar</string>
+    <string name="title_add_budget" translatable="false">Budjet Qo\'shish</string>
+    <string name="title_transactions" translatable="false">Tranzaksiyalar</string>
+    <string name="title_edit_debt" translatable="false">Qarzni Tahrirlash</string>
+    <string name="title_add_debt" translatable="false">Yangi Qarz Qo\'shish</string>
+
+
+    // drawer menu titles
+    <string name="title_currency_rates" translatable="false">Valyuta kurslari</string>
+    <string name="drawer_menu_title_home" translatable="false">Bosh sahifa</string>
+    <string name="title_invite_friends" translatable="false">Taklif qilish</string>
+
+    <string name="title_follow_us" translatable="false">Bizni kuzating</string>
+    <string name="subtitle_telegram_channel">Eng so\ʻnggi yangiliklardan xabardor bo\ʻlish uchun!</string>
+    <string name="button_telegram">Telegram kanalimiz</string>
+
+    <string name="title_help" translatable="false">Yordam</string>
+
+    // settings Screen
+    <string name="setting_Card_title1">Ilova Sozlamalari</string>
+    <string name="setting_Card_title2">Yordam va Amallar</string>
+    <string name="btn_save">Saqlash</string>
+
+    <string name="setting_choose_theme_title">Mavzuni tanlash</string>
+    <string name="light">Yorug\‘</string>
+    <string name="dark">Qorong\'u</string>
+    <string name="system">Tizim bo\‘yicha</string>
+
+    <string name="setting_choose_language_title">Tilni Tanlash</string>
+
+    <string name="setting_currency_title">Valyuta</string>
+    <string name="setting_numFormat_title">Raqam Formati</string>
+    <string name="setting_numFormat_example">Namuna</string>
+    <string name="number_format_space_title">Bo\'shliq Ajratgich</string>
+    <string name="number_format_comma_title">Vergul Ajratgich</string>
+    <string name="number_format_dot_title">Nuqta Ajratgich</string>
+    <string name="setting_language_title">Til</string>
+
+    <string name="setting_help_title">Yordam Markazi</string>
+    <string name="setting_share_title">Ulashish</string>
+
+    // tezkor cardlar
+    <string name="quick_budjets" translatable="false">Budjetlar</string>
+    <string name="quick_shoppingList" translatable="false">Xarid ro\'yxatlari</string>
+    <string name="quick_Debts" translatable="false">Qarzlar</string>
+    <string name="quick_Balance" translatable="false">Balans</string>
+    <string name="quick_Goals" translatable="false">Maqsadlar</string>
+
+    // Home/TotalBalance Card
+    <string name="total_balance" translatable="false">Umumiy Balans</string>
+    <string name="empty_chart_hint">Kiritilgan maʼlumotlar bu yerda aks etadi</string>
+    <string name="filter_day" translatable="false">Kunlik</string>
+    <string name="filter_week" translatable="false">Haftalik</string>
+    <string name="filter_month" translatable="false">Oylik</string>
+    <string name="filter_year" translatable="false">Yillik</string>
+    <string name="filter_all">Barchasi</string>
+
+    <string name="empty_chart_view" translatable="false">Grafik ma\'lumotlari mavjud emas.</string>
+    <string name="total_balance_title_dialog">Hisoblarni tanlang</string>
+    <string name="total_balance_save_button_txt">Saqlash</string>
+
+    // Cash Flow
+    <string name="title_cash_flow">Pul oqimi</string>
+    <string name="title_income">Daromad</string>
+    <string name="title_expense">Xarajat</string>
+    <string name="title_total">Jami</string>
+
+    <string name="dialog_title">Vaqtni tanlang</string>
+    <string name="dialog_btn_txt">Saqlash</string>
+
+    // Expense Statistics Card
+    <string name="title_expense_statistics">Xarajatlar Statistikasi</string>
+    <string name="total_expense">UMUMIY XARAJAT</string>
+    <string name="others">Boshqalar</string>
+    <string name="empty" translatable="false">Chiqimlar hali kiritilmagan.</string>
+    <string name="title_dialog_expense_card" translatable="false">Vaqt oralig\'ini tanlash</string>
+    <string name="unknown">Noma\'lum</string>
+
+    // Budget Card
+    <string name="budget_card_txt1">Joriy budjetingizdan qancha mablag‘ qolganligini kuzating.</string>
+    <string name="budget_card_txt2">Budjetingizni belgilang va xarajatlaringizni nazorat qiling.</string>
+    <string name="budget_card_sarf">Sarflangan</string>
+    //BudgetScreen, detail
+    <string name="budget_label_limit">Limit:</string>
+    <string name="budget_label_spent">Sarflangan:</string>
+    <string name="budget_label_remaining">Qolgan:</string>
+    <string name="budget_label_over_budget">Limitdan oshgan:</string>
+    <string name="budget_icon_content_description_category">Kategoriya belgisi</string>
+    <string name="budget_icon_content_description_options">Variantlar</string>
+    <string name="empty_budgets_title">Budjetlar hali rejalashtirilmagan</string>
+    <string name="empty_budgets_subtitle">Budjet yaratish orqali xarajatlaringizni nazorat qiling.</string>
+    <string name="empty_budgets_icon_desc">Qo\'shish tugmasi belgisi</string>
+    <string name="budget_period_start_date_only">(%1$s)</string>
+    <string name="budget_period_range_dates">(%1$s) - (%2$s)</string>
+    <string name="budget_label_created_at">Yaratildi</string>
+    <string name="budget_daily_limit">Kunlik limit: %s</string>
+    // edit budget
+    <string name="edit_budget_title">Budjetni tahrirlash</string>
+    <string name="edit_budget_button_select">Tanlash</string>
+    <string name="edit_budget_button_update">Yangilash</string>
+    <string name="snackbar_fill_fields_error">Iltimos, barcha kerakli maydonlarni to\'g\'ri to\'ldiring.</string>
+    <string name="snackbar_budget_update_success">Budjet muvaffaqiyatli yangilandi!</string>
+    <string name="content_desc_drag_handle">Siltish tutqichi</string>
+    // budget detail
+    <string name="budget_details_title_secondary">Budjet ma\'lumotlari</string>
+    <string name="budget_details_icon_edit_desc">Budjetni tahrirlash</string>
+    <string name="budget_details_icon_delete_desc">Budjetni o\'chirish</string>
+    <string name="budget_detail_label_period">Davr</string>
+    <string name="budget_detail_label_start_date">Boshlanish sanasi</string>
+    <string name="budget_detail_label_end_date">Tugash sanasi</string>
+    <string name="budget_detail_label_status">Holat</string>
+    <string name="budget_detail_label_remaining_days">Qolgan kunlar</string>
+    <string name="budget_detail_status_active">Faol</string>
+    <string name="budget_detail_status_inactive">Nofaol</string>
+    <string name="budget_detail_days_unit">%d kun</string>
+    <string name="budget_summary_label_max_budget">Maksimal Budjet</string>
+    <string name="budget_summary_label_spent_amount">Sarflangan Miqdor</string>
+    <string name="budget_summary_label_remaining_amount">Qoldiq Miqdor</string>
+    <string name="budget_summary_progress_label">%d%% sarflangan</string>
+    <string name="budget_delete_dialog_title">Budjetni o\'chirish</string>
+    <string name="budget_delete_dialog_text">Rostdan ham budjetni o\'chirishni hohlaysizmi?</string>
+    <string name="create_first_budget">Birinchi budjetni yaratish</string>
+    // budget add Screen
+    <string name="budget_period_monthly">Oylik</string>
+    <string name="budget_period_weekly">Haftalik</string>
+    <string name="budget_period_range">Oraliq</string>
+    <string name="snackbar_success_budget_saved">Budjet muvaffaqiyatli qo\'shildi!</string>
+    <string name="snackbar_success_budget_updated">Budjet muvaffaqiyatli tahrirlandi!</string>
+    <string name="snackbar_success_budget_deleted">Budjet muvaffaqiyatli o\'chirildi!</string>
+    <string name="snackbar_error_select_category">Iltimos, kategoriyani tanlang.</string>
+    <string name="snackbar_error_max_amount_zero">Maksimal summa 0 dan katta bo\'lishi kerak.</string>
+    <string name="snackbar_error_select_end_date">Maxsus budjet uchun tugash sanasini tanlang.</string>
+    <string name="snackbar_error_end_date_invalid">Tugash sanasi boshlanish sanasidan keyin bo\'lishi kerak.</string>
+    <string name="category_label_title">Kategoriya</string>
+    <string name="category_label_placeholder">Kategoriyani tanlang</string>
+    <string name="category_go_to_desc">Kategoriyalarga o\'tish</string>
+    <string name="category_selection_sheet_title">Kategoriyani tanlang</string>
+    <string name="category_selection_empty">Kategoriyalar topilmadi.</string>
+    <string name="input_label_max_amount">Maksimal Budjet Summasi</string>
+    <string name="period_selector_title">Budjet Davrini tanlang</string>
+    <string name="period_custom_range_title">Maxsus Budjet Oralig\'i</string>
+    <string name="date_input_label_start">Boshlanish sanasi</string>
+    <string name="date_input_label_end">Tugash sanasi</string>
+    <string name="date_input_placeholder_end">Tugash sanasi</string>
+    <string name="date_picker_content_desc">Sana tanlagich</string>
+    <string name="preview_card_title">BUDJET (XARAJAT)</string>
+    <string name="preview_card_period_label">DAVR</string>
+    <string name="preview_card_placeholder_category">Kategoriyani tanlang</string>
+    <string name="date_picker_select_action">Tanlash</string>
+    <string name="date_picker_choose_action">Tanlash</string>
+    <string name="snackbar_success_budget_added">Byudjet muvaffaqiyatli qo\'shildi!</string>
+
+
+    // Add transaction
+    <string name="tabrow_income">Daromad</string>
+    <string name="tabrow_expense">Xarajat</string>
+    <string name="add_note_title">Izoh qo‘shish</string>
+    <string name="add_note_label">Izohingizni kiriting</string>
+    <string name="add_note_placeholder">Masalan: Restoran xarajati</string>
+    <string name="add_note_btn_txt_cancel">Bekor qilish</string>
+    <string name="add_note_btn_txt_save">Saqlash</string>
+    <string name="snackbar_transaction_saved_success">Tranzaksiya muvaffaqiyatli saqlandi!</string>
+    <string name="isAmountValid_message">Miqdorni kiriting.</string>
+    <string name="isCategorySelected_message">Kategoriyani tanlang.</string>
+    <string name="else_message">Saqlash uchun ma\'lumotlar to\'liq emas.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">BEKOR QILISH</string>
+    <string name="select_time">Vaqtni tanlang</string>
+    <string name="date_format">dd MMM, yyyy</string>
+    <string name="snackbar_success_title">Muvaffaqiyatli!</string>
+    <string name="label_today">Bugun</string>
+    <string name="label_yesterday">Kecha</string>
+    <string name="title_select_wallet">Hamyonni tanlang</string>
+    <string name="subtitle_select_wallet">Qaysi hisobdan foydalanayapsiz?</string>
+    <string name="title_add_transaction">Tranzaksiya qo\'shish</string>
+
+    // Account Screen Details
+    <string name="current_balance">Joriy balans</string>
+    <string name="add_account_title">Hamyon qo\'shish</string>
+    <string name="add_account_limit_reached">Hamyon qo\'shish cheklangan (Maksimal %1$d ta)</string>
+    <string name="add_account_name_input_label">Hamyon nomi</string>
+    <string name="add_account_balance_input_label">Balans (ixtiyoriy)</string>
+    <string name="add_account_name_placeholder">Masalan: Kartam, Sberbank, Naqd pul</string>
+    <string name="add_account_balance_placeholder">Boshlang\'ich balans: 150000</string>
+    <string name="add_account_current_balance">Joriy balans</string>
+    <string name="add_account_select_color">Rangni tanlang</string>
+    <string name="add_account_select_icon">Belgini tanlang</string>
+    <string name="add_account_default_name">Hamyon nomi</string>
+    <string name="add_account_error_name_blank">Iltimos, hamyon nomini kiriting</string>
+    <string name="add_account_error_name_exists">Bu nom avval ishlatilgan</string>
+    <string name="action_close">Yopish</string>
+    <string name="action_save">Saqlash</string>
+    <string name="action_edit_account">Hisobni tahrirlash</string>
+    <string name="action_delete_account">Hisobni o\'chirish</string>
+    <string name="account_delete_dialog_title">Hisobni o\ʻchirish</string>
+    <string name="account_delete_dialog_text">Haqiqatan ham hisobingizni o\ʻchirmoqchimisiz? Bu amalni ortga qaytarib boʻlmaydi va barcha maʼlumotlaringiz butunlay oʻchiriladi.</string>
+    <string name="btn_delete_account">Hisobni O\ʻchirish</string>
+    <string name="account_tag_main">ASOSIY</string>
+    <string name="account_tag_custom">SHAXSIY</string>
+    <string name="add_account_limit">Limit tugadi</string>
+
+
+    // Statistics Screen
+    <string name="tab_balance">Balans</string>
+    <string name="tab_expense">Xarajat</string>
+    <string name="tab_income">Daromad</string>
+    <string name="tab_reports">Hisobotlar</string>
+    <string name="empty_transactions_general">Hozircha hech qanday tranzaksiyalar kiritilmagan.</string>
+    <string name="empty_expenses">Hozircha hech qanday chiqimlar kiritilmagan.</string>
+    <string name="empty_incomes">Hozircha hech qanday daromadlar kiritilmagan.</string>
+    <string name="action_sort">Saralash</string>
+    <string name="unknown_category">Noma\'lum</string>
+    <string name="action_back">Orqaga</string>
+
+    <string name="transaction_details_title">Tranzaksiya ma\'lumotlari</string>
+    <string name="total_amount_label">Umumiy Miqdor</string>
+    <string name="note_label">Izoh</string>
+    <string name="detail_account">Hamyon</string>
+    <string name="detail_type">Turi</string>
+    <string name="detail_date_time">Sana va vaqt</string>
+    <string name="type_expense_value">Xarajat</string>
+    <string name="type_income_value">Daromad</string>
+    <string name="action_edit">Tahrirlash</string>
+    <string name="action_delete">O\'chirish</string>
+    <string name="action_expand">Kengaytirish</string>
+    <string name="action_collapse">Yopish</string>
+    <string name="delete_dialog_title">Tranzaksiyani o\'chirish</string>
+    <string name="delete_dialog_text">Rostdan ham tranzaksiyani o\'chirishni xohlaysizmi?</string>
+    <string name="content_description_edit">Tahrirlash tugmasi</string>
+    <string name="content_description_delete">O\'chirish tugmasi</string>
+    <string name="content_description_note">Izoh</string>
+
+    <string name="title_balance_trend">Balans trendi</string>
+    <string name="title_account_balance">Hisob balanslari</string>
+    <string name="period_label">davr ichida</string>
+
+    <string name="error_loading_data">Ma\'lumotlarni yuklashda xato:</string>
+    <string name="error_generic">Xato:</string>
+    <string name="empty_trend_data">Trend ma\'lumotlari mavjud emas.</string>
+    <string name="empty_account_balances">Hisoblar balanslari yo\'q.</string>
+
+    <string name="action_filter">Filtr</string>
+    <string name="action_account_filter">Hisob filtri</string>
+    <string name="content_description_filter">Filtr tugmasi</string>
+
+    <string name="no_data_available">Ma\'lumotlar mavjud emas</string>
+    <string name="total_label">Jami</string>
+    <string name="add_transactions_to_see_chart">Grafikni ko\'rish uchun tranzaksiyalar qo\'shing</string>
+
+    //Reports Screen
+    <string name="report_title_income">Daromad</string>
+    <string name="report_title_expense">Xarajat</string>
+    <string name="report_general_summary">Umumiy Hisobot</string>
+    <string name="report_no_transactions_in_category">Bu kategoriyada hozircha tranzaksiyalar mavjud emas.</string>
+    <string name="transaction_note_label">Izoh:</string>
+    <string name="icon_content_description_close_details">Tafsilotlarni yopish</string>
+    <string name="icon_content_description_open_details">Tafsilotlarni ochish</string>
+    <string name="icon_content_description_account">Hisob</string>
+    <string name="icon_content_description_open_note">Izohni ochish</string>
+    <string name="icon_content_description_close_note">Izohni yopish</string>
+
+    // Transaction Screen Sort dialog
+    <string name="sort_dialog_title">Saralash usulini tanlang</string>
+    <string name="sort_option_date_desc">Sana bo\'yicha (Eng yangisi avval)</string>
+    <string name="sort_option_amount_desc">Miqdor bo\'yicha (Eng kattasi avval)</string>
+    <string name="sort_option_amount_asc">Miqdor bo\'yicha (Eng kichigi avval)</string>
+    <string name="sort_button_save">Saqlash (%s)</string> <string name="sort_content_desc_selected">Tanlangan</string>
+    <string name="sort_state_date_desc">Sana kamayish</string>
+    <string name="sort_state_amount_desc">Miqdor kamayish</string>
+    <string name="sort_state_amount_asc">Miqdor o\'sish</string>
+    <string name="icon_content_desc_date">Sana bo\'yicha saralash belgisi</string>
+    <string name="icon_content_desc_amount_high_low">Miqdor bo\'yicha saralash belgisi (Kattadan kichikka)</string>
+    <string name="icon_content_desc_amount_low_high">Miqdor bo\'yicha saralash belgisi (Kichikdan kattaga)</string>
+
+
+    // ShoppingList Screen
+    <string name="shopping_list_note_prefix">Xarid roʻyxati: </string>
+    <string name="add_list_dialog_add">Ro\ʻyxat Qo\ʻshish</string>
+    <string name="add_list_dialog_edit">Ro\ʻyxatni Tahrirlash</string>
+    <string name="list_row_add_list_desc">Yangi ro\ʻyxat qo\ʻshish</string>
+    <string name="list_row_more_actions_desc">Qo\ʻshimcha amallar</string>
+    <string name="list_row_edit_button">Tahrirlash</string>
+    <string name="list_row_edit_desc">Ro\ʻyxatni tahrirlash</string>
+    <string name="list_row_delete_button">O\ʻchirish</string>
+    <string name="list_row_delete_desc">Ro\ʻyxatni o\ʻchirish</string>
+    <string name="list_row_share_button">Ulashish</string>
+    <string name="list_row_share_desc">Ro\ʻyxatni ulashish</string>
+    <string name="list_items_bought_status">%1$d/%2$d dona mahsulot</string>
+    <string name="empty_list_title">Sizda Xarid Ro\ʻyxatlari Yo\ʻq</string>
+    <string name="empty_list_subtitle">Boshlash uchun, \'Yangi Ro\ʻyxat\' tugmasini bosing va birinchi ro\ʻyxatingizni yarating.</string>
+    <string name="share_list_title">Xarid Ro\ʻyxati Tafsilotlari</string>
+    <string name="share_list_name">Ro\ʻyxat nomi</string>
+    <string name="share_list_item_count">Mahsulotlar soni</string>
+    <string name="share_list_no_items">Xarid uchun mahsulotlar hali kiritilmagan.</string>
+    <string name="share_list_total_amount">Umumiy Hisob</string>
+    <string name="detail_screen_transaction_button">Xarid qilish (%1$d)</string>
+    <string name="detail_screen_transaction_desc">Belgilangan elementlardan tranzaksiya yaratish</string>
+    <string name="detail_screen_empty_items">Ro\ʻyxat bo\ʻsh. Element qo\ʻshing.</string>
+    <string name="input_label_product_name">Mahsulot nomi</string>
+    <string name="input_label_price">Narxi</string>
+    <string name="input_button_add_to_list">Ro\ʻyxatga qo\ʻshish</string>
+    <string name="item_more_actions_desc">Qo\ʻshimcha amallar</string>
+    <string name="item_edit_desc">Mahsulotni tahrirlash</string>
+    <string name="item_delete_desc">Mahsulotni o\ʻchirish</string>
+    <string name="dialog_delete_product_title">Mahsulotni O\ʻchirish</string>
+    <string name="dialog_delete_product_text">Rostdan ham mahsulotni o\ʻchirishni xohlaysizmi?</string>
+    // Shop[ingList Dialogs
+    <string name="dialog_add_new_list_title">Yangi Ro\ʻyxat Qo\ʻshish</string>
+    <string name="dialog_edit_list_title">Ro\ʻyxat Nomini Tahrirlash</string>
+    <string name="dialog_label_list_name">Ro\ʻyxat nomi</string>
+    <string name="dialog_button_add">Qo\ʻshish</string>
+    <string name="dialog_button_save">Saqlash</string>
+    <string name="dialog_button_cancel">Bekor qilish</string>
+    <string name="dialog_edit_item_title">Tahrirlash</string>
+    <string name="dialog_label_item_name">Nomi</string>
+    <string name="dialog_label_amount">Miqdor (%1$s)</string>
+    <string name="dialog_add_transaction_title">Xarid</string>
+    <string name="dialog_label_select_category">Kategoriyani tanlang</string>
+    <string name="dialog_label_category">Kategoriya</string>
+    <string name="dialog_label_select_account">Hisobni tanlang</string>
+    <string name="dialog_label_account">Hisob</string>
+    <string name="dialog_label_amount_currency">Miqdor (%1$s)</string>
+    <string name="dialog_label_note_optional">Izoh (Opsional)</string>
+    <string name="dialog_button_save_transaction">Saqlash</string>
+
+    // Debt Screen
+    <string name="title_error">Xatolik Yuz Berdi</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Bekor qilish</string>
+    <string name="button_save">Saqlash</string>
+    <string name="button_delete">O\'chirish</string>
+    <string name="snackbar_debt_added">Yangi qarz muvaffaqiyatli qo\'shildi.</string>
+    <string name="snackbar_debt_updated">Qarz muvaffaqiyatli tahrirlandi.</string>
+    <string name="fab_new_debt_description">Yangi Qarz Qo\'shish</string>
+    <string name="dialog_delete_debt_title">Qarzni O\'chirish</string>
+    <string name="dialog_delete_debt_text">Rostdan ham ushbu qarz ma\'lumotini o\'chirishni xohlaysizmi?</string>
+    <string name="error_unknown">Noma\'lum xato.</string>
+    <string name="debt_summary_title">Umumiy Qarz Holati</string>
+    <string name="debt_lent_title">Berilgan Qarz (Sizga)</string>
+    <string name="debt_owed_title">Olingan Qarz (Sizdan)</string>
+    <string name="error_select_account">Qarz amalini bajarish uchun hisob tanlanishi shart.</string>
+    <string name="error_save_debt">Qarzni saqlashda xato yuz berdi: %s</string>
+    <string name="error_delete_debt">Qarzni o\'chirishda xato yuz berdi: %s</string>
+    <string name="error_toggle_settled">To\'lov holatini o\'zgartirishda xato yuz berdi: %s</string>
+    <string name="empty_debts_title">Qarzlar mavjud emas</string>
+    <string name="empty_debts_message">Hozircha sizda hech qanday qarz majburiyatlari yo‘q. Yangi qarz qo‘shish uchun tugmani bosing.</string>
+    <string name="empty_debts_description">Qarzlar ro‘yxati bo‘sh</string>
+    <string name="button_edit">Tahrirlash</string>
+    <string name="content_description_actions">Amallar</string>
+    <string name="debt_lent_you_gave">Siz Berdingiz</string>
+    <string name="debt_owed_you_took">Siz Oldingiz</string>
+    <string name="status_settled">Qaytarilgan</string>
+    <string name="status_pending">Kutilmoqda</string>
+    <string name="action_toggle_settled">Qaytish</string>
+    <string name="debt_details_title">Qarz tafsilotlari</string>
+    <string name="detail_person_label">Shaxs/Tashkilot</string>
+    <string name="detail_date_label">Sana</string>
+    <string name="detail_status_label">Holat</string>
+    <string name="snackbar_error_unknown">Noma/’lum xato yuz berdi</string>
+    <string name="snackbar_error_select_account">Hamyonni tanlang</string>
+    <string name="snackbar_payment_added_success">To/‘lov muvaffaqiyatli qo/‘shildi</string>
+    <string name="snackbar_debt_deleted_success">Qarz muvaffaqiyatli o/‘chirildi</string>
+    <string name="snackbar_error_empty_name">Iltimos, ismni kiriting</string>
+    <string name="tab_i_lent">Men berganman</string>
+    <string name="tab_i_borrowed">Men olganman</string>
+    <string name="debt_status_creditor">Haqdor</string>
+    <string name="debt_status_debtor">Qarzdor</string>
+    <string name="debt_net_balance">Sof balans</string>
+    <string name="debt_lent">Berilgan</string>
+    <string name="debt_borrowed">Olingan</string>
+    <string name="empty_lent_debts">Siz bergan qarzlar yo‘q</string>
+    <string name="empty_borrowed_debts">Siz olgan qarzlar yo‘q</string>
+    <string name="status_creditor">Siz haqdorlikdasiz</string>
+    <string name="status_debtor">Siz qarzdorlikdasiz</string>
+    <string name="debt_type_lent">BERILGAN QARZ</string>
+    <string name="debt_type_owed">OLINGAN QARZ</string>
+    <string name="debt_status_settled">YOPILGAN</string>
+    <string name="debt_payment">TO\'LOV</string>
+    <string name="add_payment">TO\'LOV QO\'SHISH</string>
+    <string name="debt_settled">To\‘landi</string>
+    <string name="debt_paid_percent">Yopildi</string>
+    <string name="debt_start_date">Berilgan vaqti</string>
+    <string name="debt_due_date">Qaytarish vaqti</string>
+    <string name="debt_status_lent">Sizdan qarzdor</string>
+    <string name="debt_status_borrowed">Siz qarzdorsiz</string>
+    <string name="remaining_amount">Qolgan summa</string>
+    <string name="payment_history">To\'lovlar tarixi</string>
+    <string name="no_payments_yet">Hali to\'lovlar mavjud emas</string>
+
+
+    <string name="button_add">Qo\'shish</string>
+    <string name="button_select">Tanlash</string>
+    <string name="debt_mode_lent">Pul berilmoqda (Chiqim)</string>
+    <string name="debt_mode_owed">Pul olinmoqda (Kirim)</string>
+    <string name="debt_action_lent">Qarz berish</string>
+    <string name="debt_action_owed">Qarz olish</string>
+    <string name="label_name">Ism/Tashkilot</string>
+    <string name="label_amount">Miqdor (%s)</string>
+    <string name="label_account">Hisob</string>
+    <string name="label_date">Sana</string>
+    <string name="placeholder_select_account">Hisob Tanlash</string>
+
+    <string name="debt_person_label">Kimga / Kimdan</string>
+    <string name="debt_person_placeholder">Ismni kiriting</string>
+    <string name="debt_amount_label">Qarz summasi</string>
+
+    // Edit Transaction
+    <string name="edit_transaction">Tranzaksiyani tahrirlash</string>
+    <string name="save">Saqlash</string>
+    <string name="transaction_amount">Tranzaksiya summasi</string>
+    <string name="details">Tafsilotlar</string>
+    <string name="category">Kategoriya</string>
+    <string name="account">Hisob</string>
+    <string name="date_time">Sana va vaqt</string>
+    <string name="note_hint">Eslatma (ixtiyoriy)</string>
+    <string name="select">Tanlash</string>
+    <string name="title_edit_category">Kategoriyani tahrirlash</string>
+    <string name="title_edit_account">Hisobni tahrirlash</string>
+    <string name="title_edit_amount">Summani tahrirlash</string>
+    <string name="title_edit_note">Izohni tahrirlash</string>
+
+
+    // Categorylar
+    <string name="acc_cash">Naqd pul</string>
+    <string name="acc_card">Karta</string>
+
+    <string name="cat_groceries">Bozorlik</string>
+    <string name="cat_dining_out">Ovqatlanish</string>
+    <string name="cat_drinks_coffee">Ichimlik/kofe</string>
+    <string name="cat_restaurant">Restoran</string>
+
+    <string name="cat_housing">Uy-joy</string>
+    <string name="cat_utilities">Kommunal to\'lov</string>
+    <string name="cat_maintenance">Xizmat ko\'rsatish</string>
+    <string name="cat_rent">Ijara</string>
+
+    <string name="cat_entertainment">Ko\'ngilochar</string>
+    <string name="cat_subscriptions">Obunalar</string>
+    <string name="cat_self_care">O\'ziga qarash</string>
+    <string name="cat_hobbies">Sevimli mashg\'ulotlar</string>
+
+    <string name="cat_education">Ta\'lim</string>
+    <string name="cat_books">Kitoblar</string>
+    <string name="cat_courses">Kurslar</string>
+    <string name="cat_certifications">Sertifikat</string>
+
+    <string name="cat_shopping">Xaridlar</string>
+    <string name="cat_clothing">Kiyim-kechak</string>
+    <string name="cat_electronics">Elektronika</string>
+    <string name="cat_home_appliances">Maishiy texnika</string>
+
+    <string name="cat_health">Salomatlik</string>
+    <string name="cat_fitness">Fitnes</string>
+    <string name="cat_pharmacy">Dorixona</string>
+    <string name="cat_dental">Stomatologiya</string>
+
+    <string name="cat_investment">Investitsiya</string>
+    <string name="cat_debt_loans">Qarz va kreditlar</string>
+    <string name="cat_gifts_donation">Sovg\'a/xayriya</string>
+    <string name="cat_other">Boshqa</string>
+
+    <string name="cat_main_salary">Ish haqi</string>
+    <string name="cat_side_job">Qo\'shimcha ish</string>
+    <string name="cat_business">Biznes</string>
+    <string name="cat_freelance">Frilans</string>
+    <string name="cat_passive_income">Passiv daromad</string>
+    <string name="cat_dividends">Dividend/Foizlar</string>
+    <string name="cat_bonus">Bonus</string>
+    <string name="cat_cashback">Keshbek</string>
+    <string name="cat_grants">Grant/Stipendiya</string>
+    <string name="cat_gifts">Sovg\'alar</string>
+    <string name="cat_other_income">Boshqa tushumlar</string>
+
+    <string name="cat_lent">Qarz berish</string>
+    <string name="cat_borrowed">Qarz olish</string>
+    <string name="cat_debt_payment">Qarz to\'lovi</string>
+
+
+</resources>

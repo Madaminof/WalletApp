@@ -3,34 +3,49 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.hilt)
     id("com.google.gms.google-services")
-
 }
 
 android {
-    namespace = "com.example.walletapp"
+    namespace = "dev.samandar.walletapp"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.walletapp"
+        applicationId = "dev.samandar.walletapp"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 35 // Android 15 qo'llab-quvvatlash
+        versionCode = 8 // Google Console uchun doim oshirib boring
+        versionName = "1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(providers.gradleProperty("STORE_FILE").get())
+            storePassword = providers.gradleProperty("STORE_PASSWORD").get()
+            keyAlias = providers.gradleProperty("KEY_ALIAS").get()
+            keyPassword = providers.gradleProperty("KEY_PASSWORD").get()
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+        }
+        debug {
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -44,78 +59,64 @@ android {
 }
 
 dependencies {
-    // --- 🧩 Compose ---
+    // --- Compose & UI ---
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.navigation.common.android)
-    implementation(libs.androidx.foundation.android)
-    implementation(libs.androidx.foundation.android)
-    implementation(libs.androidx.hilt.common)
-    implementation(libs.work.runtime.ktx)
-    implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.foundation)
     debugImplementation(libs.androidx.ui.tooling)
     implementation("androidx.compose.material:material-icons-extended")
 
-    // --- 🔄 Lifecycle & Activity ---
+    // --- Core & Lifecycle ---
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
-    // --- 🧭 Navigation (Compose) ---
-    implementation("androidx.navigation:navigation-compose:2.8.3")
-
-    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    // implementation(libs.firebase.firestore.ktx) // <--- ESKI, XATOLIK KELTIRGAN QATOR O'CHIRILADI
-    implementation("com.google.firebase:firebase-firestore-ktx") // <--- YANGI: Versiya raqamisiz yozildi
-
-    // --- 💉 Hilt (Dependency Injection) ---
+    // --- Navigation & Hilt ---
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.hilt.work)
 
-    // --- 🗂️ DataStore ---
-    implementation("androidx.datastore:datastore-preferences:1.1.0-alpha06")
+    // --- Firebase ---
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
-    // --- 🧱 Room (Local Database) ---
+    // --- Database & Storage ---
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
-    testImplementation("androidx.room:room-testing:2.6.1")
+    implementation(libs.datastore.preferences)
 
-    // --- 🌐 Retrofit & Networking ---
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:4.11.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    // --- Network ---
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.logging)
 
-    // --- 🎞️ Lottie (Animations) ---
-    implementation("com.airbnb.android:lottie-compose:6.0.0")
+    // --- WorkManager ---
+    implementation(libs.androidx.work.runtime.ktx)
 
-    // --- 🖼️ Coil (Image Loader) ---
-    implementation("io.coil-kt:coil-compose:2.6.0")
-
-    // --- 🌈 System UI Controller ---
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
-
-    // --- ⚙️ AndroidX qo‘shimchalar ---
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    // --- Utilities (Lottie, Coil, Accompanist) ---
+    implementation(libs.lottie.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.navigation.animation)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.constraintlayout.compose)
 
-    // --- 📡 Google Services (masalan, joylashuv) ---
+    // --- Google Services ---
     implementation(libs.play.services.location)
+    implementation(libs.play.services.auth)
 
-    // --- 🧪 Testing ---
+    // --- Testing ---
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0") // so‘nggi
-
-
-
 }

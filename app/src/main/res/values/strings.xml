@@ -1,28 +1,495 @@
 <resources>
-    <string name="app_name">Wallet Analyst</string>
+    <string name="app_name" translatable="false">Wallet Analyst</string>
     <string name="default_web_client_id">244487532885-o5gflknt481n4q037f24t4pql83te3hh.apps.googleusercontent.com</string>
 
 
-    <string name="title_Charts">Statistics</string>
-    <string name="title_Budgets">Budgets</string>
-    <string name="title_Account">Account</string>
-    <string name="title_Category">Categories</string>
+    // title (topbar title)
+    <string name="title_home" translatable="false">Home</string>
+    <string name="title_account">My Accounts</string>
+    <string name="title_statistics" translatable="false">Statistics</string>
+    <string name="title_budgets" translatable="false">Budgets</string>
+    <string name="title_shopping_lists" translatable="false">Shopping lists</string>
+    <string name="title_debts" translatable="false">Debts</string>
+    <string name="title_goals" translatable="false">Goals</string>
+    <string name="title_settings" translatable="false">Settings</string>
+    <string name="title_add_budget" translatable="false">Add Budget</string>
+    <string name="title_transactions" translatable="false">Transactions</string>
+    <string name="title_edit_debt" translatable="false">Edit Debt</string>
+    <string name="title_add_debt" translatable="false">Add new Debt</string>
 
 
-    <string name="bottom_home">Home</string>
-    <string name="bottom_charts">Charts</string>
-    <string name="bottom_budget">Budgets</string>
-    <string name="bottom_account">Account</string>
+    // drawer menu titles
+    <string name="title_currency_rates" translatable="false">Currency rates</string>
+    <string name="drawer_menu_title_home" translatable="false">Home</string>
+    <string name="title_invite_friends" translatable="false">Invite friends</string>
 
-    <string name="quick_budjets">Budgets</string>
-    <string name="quick_shoppingList">Shopping lists</string>
-    <string name="quick_Debts">Debts</string>
-    <string name="quick_Balance">Balance</string>
-    <string name="quick_Goals">Goals</string>
+    <string name="title_follow_us">Follow Us</string>
+    <string name="subtitle_telegram_channel">To stay informed of the latest news and updates!</string>
+    <string name="button_telegram">Our Telegram Channel</string>
+
+    <string name="title_help" translatable="false">Help</string>
+
+    // settings Screen
+    <string name="setting_Card_title1" translatable="false">Application Settings</string>
+    <string name="setting_Card_title2" translatable="false">Help and Actions</string>
+    <string name="btn_save" translatable="false">Save</string>
 
 
-    <string name="default_naqd_pul">Cash</string>
-    <string name="default_karta">Card</string>
+    <string name="setting_choose_theme_title" translatable="false">Choose Theme</string>
+    <string name="light" translatable="false">Light</string>
+    <string name="dark" translatable="false">Dark</string>
+    <string name="system" translatable="false">system</string>
+
+    <string name="setting_choose_language_title">Choose Language</string>
+
+    <string name="setting_currency_title" translatable="false">Currency</string>
+    <string name="setting_numFormat_title" translatable="false">Number Format</string>
+    <string name="setting_numFormat_example" translatable="false">Example</string>
+    <string name="number_format_space_title">Space Separator</string>
+    <string name="number_format_comma_title">Comma Separator</string>
+    <string name="number_format_dot_title">Dot Separator</string>
+
+    <string name="setting_language_title" translatable="false">Language</string>
+    <string name="setting_help_title" translatable="false">Help Center</string>
+    <string name="setting_share_title" translatable="false">Share</string>
+
+
+    // tezkor cardlar
+    <string name="quick_budjets" translatable="false">Budgets</string>
+    <string name="quick_shoppingList" translatable="false">Shopping lists</string>
+    <string name="quick_Debts" translatable="false">Debts</string>
+    <string name="quick_Balance" translatable="false">Balance</string>
+    <string name="quick_Goals" translatable="false">Goals</string>
+
+    // Home/TotalBalance Card
+    <string name="total_balance" translatable="false">Total Balance</string>
+    <string name="empty_chart_hint">Your data will be displayed here</string>
+    <string name="filter_day" translatable="false">Day</string>
+    <string name="filter_week" translatable="false">Week</string>
+    <string name="filter_month" translatable="false">Month</string>
+    <string name="filter_year" translatable="false">Year</string>
+    <string name="filter_all">All</string>
+
+    <string name="empty_chart_view" translatable="false">Chart data not available.</string>
+    <string name="total_balance_title_dialog" translatable="false">Select Accounts</string>
+    <string name="total_balance_save_button_txt" translatable="false">Save</string>
+
+    //Cash flow Card
+    <string name="title_cash_flow" translatable="false">Cash flow</string>
+    <string name="title_income" translatable="false">Income</string>
+    <string name="title_expense" translatable="false">Expense</string>
+    <string name="title_total" translatable="false">Total</string>
+
+    <string name="dialog_title" translatable="false">Select time</string>
+    <string name="dialog_btn_txt" translatable="false">Save</string>
+
+    // Expense Statistics Card
+    <string name="title_expense_statistics" translatable="false">Expense Statistics</string>
+    <string name="total_expense" translatable="false">TOTAL EXPENSE</string>
+    <string name="others" translatable="false">Others</string>
+    <string name="empty" translatable="false">No expenses have been entered yet.</string>
+    <string name="title_dialog_expense_card" translatable="false">Select Time Range</string>
+    <string name="unknown" translatable="false">Unknown</string>
+
+    // Budget Card
+    <string name="budget_card_txt1" translatable="false">Track how much money is remaining from your current budget.</string>
+    <string name="budget_card_txt2" translatable="false">Set your budget and control your expenses.</string>
+    <string name="budget_card_sarf" translatable="false">Spent</string>
+
+    //BudgetScreen, detail
+    <string name="budget_label_limit">Limit:</string>
+    <string name="budget_label_spent">Spend:</string>
+    <string name="budget_label_remaining">Remaining:</string>
+    <string name="budget_label_over_budget">Over budget:</string>
+    <string name="budget_icon_content_description_category">Category Icon</string>
+    <string name="budget_icon_content_description_options">Options</string>
+    <string name="empty_budgets_title">Budgets not planned yet</string>
+    <string name="empty_budgets_subtitle">Control your spending by creating a budget.</string>
+    <string name="empty_budgets_icon_desc">Add button icon</string>
+    <string name="budget_period_start_date_only">(%1$s)</string>
+    <string name="budget_period_range_dates">(%1$s) - (%2$s)</string>
+    <string name="create_first_budget">Create First Budget</string>
+    <string name="budget_label_created_at">Created at</string>
+    <string name="budget_daily_limit">Daily limit: %s</string>
+    // edit budget
+    <string name="edit_budget_title">Edit Budget</string>
+    <string name="edit_budget_button_select">Select</string>
+    <string name="edit_budget_button_update">Update</string>
+    <string name="snackbar_fill_fields_error">Please fill in all required fields correctly.</string>
+    <string name="snackbar_budget_update_success">Budget successfully updated!</string>
+    <string name="content_desc_drag_handle">Drag handle</string>
+    // budget detail
+    <string name="budget_details_title_secondary">Budget information</string>
+    <string name="budget_details_icon_edit_desc">Edit budget</string>
+    <string name="budget_details_icon_delete_desc">Delete budget</string>
+    <string name="budget_detail_label_period">Period</string>
+    <string name="budget_detail_label_start_date">Start date</string>
+    <string name="budget_detail_label_end_date">End date</string>
+    <string name="budget_detail_label_status">Status</string>
+    <string name="budget_detail_label_remaining_days">Remaining days</string>
+    <string name="budget_detail_status_active">Active</string>
+    <string name="budget_detail_status_inactive">Inactive</string>
+    <string name="budget_detail_days_unit">%d days</string>
+    <string name="budget_summary_label_max_budget">Maximum Budget</string>
+    <string name="budget_summary_label_spent_amount">Spent Amount</string>
+    <string name="budget_summary_label_remaining_amount">Remaining Amount</string>
+    <string name="budget_summary_progress_label">%d%% spent</string>
+    <string name="budget_delete_dialog_title">Delete Budget</string>
+    <string name="budget_delete_dialog_text">Are you sure you want to delete this budget?</string>
+    // budget add Screen
+    <string name="budget_period_monthly">Monthly</string>
+    <string name="budget_period_weekly">Weekly</string>
+    <string name="budget_period_range">Range</string>
+    <string name="snackbar_success_budget_saved">Budget successfully added!</string>
+    <string name="snackbar_success_budget_updated">Budget successfully updated!</string>
+    <string name="snackbar_success_budget_deleted">Budget successfully deleted!</string>
+    <string name="snackbar_error_select_category">Please select a category.</string>
+    <string name="snackbar_error_max_amount_zero">Maximum amount must be greater than 0.</string>
+    <string name="snackbar_error_select_end_date">Please select an end date for a custom budget.</string>
+    <string name="snackbar_error_end_date_invalid">End date must be after the start date.</string>
+    <string name="category_label_title">Category</string>
+    <string name="category_label_placeholder">Select Category</string>
+    <string name="category_go_to_desc">Go to Categories</string>
+    <string name="category_selection_sheet_title">Select a Category</string>
+    <string name="category_selection_empty">No categories found.</string>
+    <string name="input_label_max_amount">Maximum Budget Amount</string>
+    <string name="period_selector_title">Select Budget Period</string>
+    <string name="period_custom_range_title">Custom Budget Range</string>
+    <string name="date_input_label_start">Start Date</string>
+    <string name="date_input_label_end">End Date</string>
+    <string name="date_input_placeholder_end">End Date</string>
+    <string name="date_picker_content_desc">Date Picker</string>
+    <string name="preview_card_title">BUDGET (EXPENSE)</string>
+    <string name="preview_card_period_label">PERIOD</string>
+    <string name="preview_card_placeholder_category">Select Category</string>
+    <string name="date_picker_select_action">Select</string>
+    <string name="date_picker_choose_action">Choose</string>
+    <string name="snackbar_success_budget_added">Budget added successfully!</string>
+
+
+
+    // Add Transaction UI
+    <string name="tabrow_income" translatable="false">Income</string>
+    <string name="tabrow_expense" translatable="false">Expense</string>
+    <string name="snackbar_transaction_saved_success">Transaction saved successfully!</string>
+    <string name="add_note_title" translatable="false">Add note</string>
+    <string name="add_note_label" translatable="false">Enter your note</string>
+    <string name="add_note_placeholder" translatable="false">E.g., Restaurant expense</string>
+    <string name="add_note_btn_txt_cancel" translatable="false">Cancel</string>
+    <string name="add_note_btn_txt_save" translatable="false">Save</string>
+    <string name="isAmountValid_message">Please enter the amount.</string>
+    <string name="isCategorySelected_message">Please select a category.</string>
+    <string name="else_message">Data is incomplete to save the transaction.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="select_time">Select time</string>
+    <string name="date_format">dd MMM, yyyy</string>
+    <string name="snackbar_success_title">Success!</string>
+    <string name="label_today">Today</string>
+    <string name="label_yesterday">Yesterday</string>
+    <string name="title_select_wallet">Select Wallet</string>
+    <string name="subtitle_select_wallet">Which account are you using?</string>
+    <string name="title_add_transaction">Add Transaction</string>
+
+    // ui/account
+    <string name="current_balance" translatable="false">Current Balance</string>
+    <string name="add_account_title">Add Account</string>
+    <string name="add_account_limit_reached">Account limit reached (Max %1$d accounts)</string>
+    <string name="add_account_name_input_label">Account name</string>
+    <string name="add_account_balance_input_label">Balance (optional)</string>
+    <string name="add_account_name_placeholder">E.g.: My Card, Sberbank, Cash</string>
+    <string name="add_account_balance_placeholder">Initial balance: 150000</string>
+    <string name="add_account_current_balance">Current Balance</string>
+    <string name="add_account_select_color">Select color</string>
+    <string name="add_account_select_icon">Select icon</string>
+    <string name="add_account_default_name">Account name</string>
+    <string name="add_account_error_name_blank">Please enter the account name</string>
+    <string name="add_account_error_name_exists">This name has been used before</string>
+    <string name="action_close">Close</string>
+    <string name="action_save">Save</string>
+    <string name="action_edit_account">Edit Account</string>
+    <string name="action_delete_account">Delete Account</string>
+    <string name="account_delete_dialog_title">Delete Account</string>
+    <string name="account_delete_dialog_text">Are you sure you want to delete your account? This action is irreversible, and all your data will be permanently deleted.</string>
+    <string name="btn_delete_account">Delete Account</string>
+    <string name="account_tag_main">MAIN</string>
+    <string name="account_tag_custom">CUSTOM</string>
+    <string name="add_account_limit">Limit Reached</string>
+
+
+    // Statistics Screen
+    <string name="tab_balance">Balance</string>
+    <string name="tab_expense">Expense</string>
+    <string name="tab_income">Income</string>
+    <string name="tab_reports">Reports</string>
+    <string name="empty_transactions_general">No transactions have been entered yet.</string>
+    <string name="empty_expenses">No expenses have been entered yet.</string>
+    <string name="empty_incomes">No incomes have been entered yet.</string>
+    <string name="action_sort">Sort</string>
+    <string name="unknown_category">Unknown</string>
+    <string name="action_back">Back</string>
+
+    <string name="transaction_details_title">Transaction Details</string>
+    <string name="total_amount_label">Total Amount</string>
+    <string name="note_label">Note</string>
+    <string name="detail_account">Account</string>
+    <string name="detail_type">Type</string>
+    <string name="detail_date_time">Date &amp; Time</string>
+    <string name="type_expense_value">Expense</string>
+    <string name="type_income_value">Income</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_expand">Expand</string>
+    <string name="action_collapse">Collapse</string>
+    <string name="delete_dialog_title">Delete Transaction</string>
+    <string name="delete_dialog_text">Are you sure you want to delete this transaction?</string>
+    <string name="content_description_edit">Edit button</string>
+    <string name="content_description_delete">Delete button</string>
+    <string name="content_description_note">Note</string>
+
+    <string name="title_balance_trend">Balance Trend</string>
+    <string name="title_account_balance">Account Balance</string>
+    <string name="period_label">during period</string>
+    <string name="error_loading_data">Error loading data:</string>
+    <string name="error_generic">Error:</string>
+    <string name="empty_trend_data">Trend data is not available.</string>
+    <string name="empty_account_balances">No account balances.</string>
+    <string name="action_filter">Filter</string>
+    <string name="action_account_filter">Accounts filter</string>
+    <string name="content_description_filter">Filter button</string>
+
+    <string name="no_data_available">No data available</string>
+    <string name="total_label">Total</string>
+    <string name="add_transactions_to_see_chart">Add transactions to see chart</string>
+
+    // Reports Screen
+    <string name="report_title_income">Income</string>
+    <string name="report_title_expense">Expense</string>
+    <string name="report_general_summary">General Summary</string>
+    <string name="report_no_transactions_in_category">No transactions available in this category yet.</string>
+    <string name="transaction_note_label">Note:</string>
+    <string name="icon_content_description_close_details">Close details</string>
+    <string name="icon_content_description_open_details">Open details</string>
+    <string name="icon_content_description_account">Account</string>
+    <string name="icon_content_description_open_note">Open note</string>
+    <string name="icon_content_description_close_note">Close note</string>
+
+    // Transaction Screen Sort dialog
+    <string name="sort_dialog_title">Select Sort Method</string>
+    <string name="sort_option_date_desc">By Date (Newest first)</string>
+    <string name="sort_option_amount_desc">By Amount (Highest first)</string>
+    <string name="sort_option_amount_asc">By Amount (Lowest first)</string>
+    <string name="sort_button_save">Save (%s)</string> <string name="sort_content_desc_selected">Selected</string>
+    <string name="sort_state_date_desc">Date Descending</string>
+    <string name="sort_state_amount_desc">Amount Descending</string>
+    <string name="sort_state_amount_asc">Amount Ascending</string>
+    <string name="icon_content_desc_date">Date sort icon</string>
+    <string name="icon_content_desc_amount_high_low">Amount sort icon (High to Low)</string>
+    <string name="icon_content_desc_amount_low_high">Amount sort icon (Low to High)</string>
+
+    // ShoppingList Screen
+    <string name="shopping_list_note_prefix">Shopping list: </string>
+    <string name="add_list_dialog_add">Add List</string>
+    <string name="add_list_dialog_edit">Edit List</string>
+    <string name="list_row_add_list_desc">Add new list</string>
+    <string name="list_row_more_actions_desc">More actions</string>
+    <string name="list_row_edit_button">Edit</string>
+    <string name="list_row_edit_desc">Edit list</string>
+    <string name="list_row_delete_button">Delete</string>
+    <string name="list_row_delete_desc">Delete list</string>
+    <string name="list_row_share_button">Share</string>
+    <string name="list_row_share_desc">Share list</string>
+    <string name="list_items_bought_status">%1$d/%2$d items</string>
+    <string name="empty_list_title">You have no Shopping Lists</string>
+    <string name="empty_list_subtitle">To start, press the \'Add List\' button and create your first list.</string>
+    <string name="share_list_title">Shopping List Details</string>
+    <string name="share_list_name">List Name</string>
+    <string name="share_list_item_count">Number of Products</string>
+    <string name="share_list_no_items">Products for shopping have not been entered yet.</string>
+    <string name="share_list_total_amount">Total Amount</string>
+    <string name="detail_screen_transaction_button">Purchase (%1$d)</string>
+    <string name="detail_screen_transaction_desc">Create transaction from checked items</string>
+    <string name="detail_screen_empty_items">The list is empty. Add an item.</string>
+    <string name="input_label_product_name">Product Name</string>
+    <string name="input_label_price">Price</string>
+    <string name="input_button_add_to_list">Add to list</string>
+    <string name="item_more_actions_desc">More actions for item</string>
+    <string name="item_edit_desc">Edit item</string>
+    <string name="item_delete_desc">Delete item</string>
+    <string name="dialog_delete_product_title">Delete Product</string>
+    <string name="dialog_delete_product_text">Are you sure you want to delete the product?</string>
+    // ShoppingList Dialogs
+    <string name="dialog_add_new_list_title">Add New List</string>
+    <string name="dialog_edit_list_title">Edit List Name</string>
+    <string name="dialog_label_list_name">List name</string>
+    <string name="dialog_button_add">Add</string>
+    <string name="dialog_button_save">Save</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_edit_item_title">Edit</string>
+    <string name="dialog_label_item_name">Name</string>
+    <string name="dialog_label_amount">Amount (%1$s)</string>
+    <string name="dialog_add_transaction_title">Shopping</string>
+    <string name="dialog_label_select_category">Select category</string>
+    <string name="dialog_label_category">Category</string>
+    <string name="dialog_label_select_account">Select account</string>
+    <string name="dialog_label_account">Account</string>
+    <string name="dialog_label_amount_currency">Amount (%1$s)</string>
+    <string name="dialog_label_note_optional">Note (Optional)</string>
+    <string name="dialog_button_save_transaction">Save</string>
+
+    // Debt Screen
+    <string name="title_error">An Error Occurred</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_save">Save</string>
+    <string name="button_delete">Delete</string>
+    <string name="snackbar_debt_added">New debt successfully added.</string>
+    <string name="snackbar_debt_updated">Debt successfully updated.</string>
+    <string name="fab_new_debt_description">Add New Debt</string>
+    <string name="dialog_delete_debt_title">Delete Debt</string>
+    <string name="dialog_delete_debt_text">Are you sure you want to delete this debt record?</string>
+    <string name="error_unknown">Unknown error.</string>
+    <string name="debt_summary_title">Overall Debt Status</string>
+    <string name="debt_lent_title">Lent (Owed to You)</string>
+    <string name="debt_owed_title">Owed (You Owe)</string>
+    <string name="error_select_account">An account must be selected to perform the debt operation.</string>
+    <string name="error_save_debt">Error saving debt: %s</string>
+    <string name="error_delete_debt">Error deleting debt: %s</string>
+    <string name="error_toggle_settled">Error changing settlement status: %s</string>
+    <string name="empty_debts_title">No Debts Yet</string>
+    <string name="empty_debts_message">You don\'t have any active debt obligations right now. Tap the button to add a new debt.</string>
+    <string name="empty_debts_description">Debt list is empty</string>
+    <string name="button_edit">Edit</string>
+    <string name="content_description_actions">Actions</string>
+    <string name="debt_lent_you_gave">You Lent</string>
+    <string name="debt_owed_you_took">You Owed</string>
+    <string name="status_settled">Settled</string>
+    <string name="status_pending">Pending</string>
+    <string name="action_toggle_settled">Mark Paid</string>
+    <string name="debt_details_title">Debt Details</string>
+    <string name="detail_person_label">Person/Entity</string>
+    <string name="detail_date_label">Date</string>
+    <string name="detail_status_label">Status</string>
+    <string name="snackbar_error_unknown">An unknown error occurred</string>
+    <string name="snackbar_error_select_account">Please select an account</string>
+    <string name="snackbar_payment_added_success">Payment added successfully</string>
+    <string name="snackbar_debt_deleted_success">Debt deleted successfully</string>
+    <string name="snackbar_error_empty_name">Please enter a name</string>
+    <string name="tab_i_lent">I Lent</string>
+    <string name="tab_i_borrowed">I Borrowed</string>
+    <string name="debt_status_creditor">Creditor</string>
+    <string name="debt_status_debtor">Debtor</string>
+    <string name="debt_net_balance">Net Balance</string>
+    <string name="debt_lent">Lent</string>
+    <string name="debt_borrowed">Borrowed</string>
+    <string name="empty_lent_debts">You haven\'t lent any money yet</string>
+    <string name="empty_borrowed_debts">You haven\'t borrowed any money yet</string>
+    <string name="status_creditor">You are a creditor</string>
+    <string name="status_debtor">You are in debt</string>
+    <string name="debt_type_lent">DEBT LENT</string>
+    <string name="debt_type_owed">DEBT OWED</string>
+    <string name="debt_status_settled">SETTLED</string>
+    <string name="debt_payment">PAYMENT</string>
+    <string name="add_payment">ADD PAYMENT</string>
+    <string name="debt_settled">Settled</string>
+    <string name="debt_paid_percent">Paid</string>
+    <string name="debt_start_date">Issued date</string>
+    <string name="debt_due_date">Due date</string>
+    <string name="debt_status_lent">Owes you</string>
+    <string name="debt_status_borrowed">You owe</string>
+    <string name="remaining_amount">Remaining amount</string>
+    <string name="payment_history">Payment history</string>
+    <string name="no_payments_yet">No payments yet</string>
+
+
+    <string name="button_add">Add</string>
+    <string name="button_select">Select</string>
+    <string name="debt_mode_lent">Lending money (Expense)</string>
+    <string name="debt_mode_owed">Borrowing money (Income)</string>
+    <string name="debt_action_lent">Lend Money</string>
+    <string name="debt_action_owed">Borrow Money</string>
+    <string name="label_name">Name/Entity</string>
+    <string name="label_amount">Amount (%s)</string>
+    <string name="label_account">Account</string>
+    <string name="label_date">Date</string>
+    <string name="placeholder_select_account">Select Account</string>
+
+    <string name="debt_person_label">To / From</string>
+    <string name="debt_person_placeholder">Enter name</string>
+    <string name="debt_amount_label">Debt amount</string>
+
+    //edit transaction
+    <string name="edit_transaction">Edit Transaction</string>
+    <string name="save">Save</string>
+    <string name="transaction_amount">Transaction Amount</string>
+    <string name="details">Details</string>
+    <string name="category">Category</string>
+    <string name="account">Account</string>
+    <string name="date_time">Date &amp; Time</string>
+    <string name="note_hint">Note (optional)</string>
+    <string name="select">Select</string>
+    <string name="title_edit_category">Edit Category</string>
+    <string name="title_edit_account">Edit Account</string>
+    <string name="title_edit_amount">Edit Amount</string>
+    <string name="title_edit_note">Edit Note</string>
+
+
+
+    // Categorylar
+    <string name="acc_cash">Cash</string>
+    <string name="acc_card">Card</string>
+
+    <string name="cat_groceries">Groceries</string>
+    <string name="cat_dining_out">Dining out</string>
+    <string name="cat_drinks_coffee">Drinks &amp; Coffee</string>
+    <string name="cat_restaurant">Restaurant</string>
+
+    <string name="cat_housing">Housing</string>
+    <string name="cat_utilities">Utilities</string>
+    <string name="cat_maintenance">Maintenance</string>
+    <string name="cat_rent">Rent</string>
+
+    <string name="cat_entertainment">Entertainment</string>
+    <string name="cat_subscriptions">Subscriptions</string>
+    <string name="cat_self_care">Self-Care</string>
+    <string name="cat_hobbies">Hobbies</string>
+
+    <string name="cat_education">Education</string>
+    <string name="cat_books">Books</string>
+    <string name="cat_courses">Courses</string>
+    <string name="cat_certifications">Certifications</string>
+
+    <string name="cat_shopping">Shopping</string>
+    <string name="cat_clothing">Clothing</string>
+    <string name="cat_electronics">Electronics</string>
+    <string name="cat_home_appliances">Home Appliances</string>
+
+    <string name="cat_health">Health</string>
+    <string name="cat_fitness">Fitness</string>
+    <string name="cat_pharmacy">Pharmacy</string>
+    <string name="cat_dental">Dental</string>
+
+    <string name="cat_investment">Investment</string>
+    <string name="cat_debt_loans">Debt &amp; Loans</string>
+    <string name="cat_gifts_donation">Gifts &amp; Donation</string>
+    <string name="cat_other">Other</string>
+
+    <string name="cat_main_salary">Main Salary</string>
+    <string name="cat_side_job">Side Job</string>
+    <string name="cat_business">Business</string>
+    <string name="cat_freelance">Freelance</string>
+    <string name="cat_passive_income">Passive Income</string>
+    <string name="cat_dividends">Dividends/Interest</string>
+    <string name="cat_bonus">Bonus</string>
+    <string name="cat_cashback">Cashback</string>
+    <string name="cat_grants">Grants/Scholarship</string>
+    <string name="cat_gifts">Gifts</string>
+    <string name="cat_other_income">Other Income</string>
+
+    <string name="cat_lent">Lent</string>
+    <string name="cat_borrowed">Borrowed</string>
+    <string name="cat_debt_payment">Debt payment</string>
+
 
 
 

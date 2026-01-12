@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    // title (topbar title)
+    <string name="title_home">Главная</string>
+    <string name="title_account" translatable="false">Мои Счета</string>
+    <string name="title_statistics" translatable="false">Статистика</string>
+    <string name="title_budgets" translatable="false">Бюджеты</string>
+    <string name="title_shopping_lists" translatable="false">Списки покупок</string>
+    <string name="title_debts" translatable="false">Долги</string>
+    <string name="title_goals" translatable="false">Цели</string>
+    <string name="title_settings" translatable="false">Настройки</string>
+    <string name="title_add_budget" translatable="false">Добавить Бюджет</string>
+    <string name="title_transactions" translatable="false">Транзакции</string>
+    <string name="title_edit_debt" translatable="false">Редактировать Долг</string>
+    <string name="title_add_debt" translatable="false">Добавить новый Долг</string>
+
+
+    // drawer menu titles
+    <string name="title_currency_rates" translatable="false">Курсы валют</string>
+    <string name="drawer_menu_title_home" translatable="false">Главная</string>
+    <string name="title_invite_friends" translatable="false">Пригласить</string>
+
+    <string name="title_follow_us">Подпишитесь на нас</string>
+    <string name="subtitle_telegram_channel">Чтобы быть в курсе последних новостей и обновлений!</string>
+    <string name="button_telegram">Наш Telegram-канал</string>
+
+    <string name="title_help" translatable="false">Помощь</string>
+
+    // settings Screen
+    <string name="setting_Card_title1">Настройки приложения</string>
+    <string name="setting_Card_title2">Помощь и действия</string>
+    <string name="btn_save">Сохранить</string>
+
+    <string name="setting_choose_theme_title">Выбрать тему</string>
+    <string name="light">Светлая</string>
+    <string name="dark">Темная</string>
+    <string name="system">Как в системе</string>
+
+    <string name="setting_choose_language_title">Выбрать Язык</string>
+
+    <string name="setting_currency_title">Валюта</string>
+    <string name="setting_numFormat_title">Формат чисел</string>
+    <string name="setting_numFormat_example">Пример</string>
+    <string name="number_format_space_title">Пробел</string>
+    <string name="number_format_comma_title">Запятая</string>
+    <string name="number_format_dot_title">Точка</string>
+
+    <string name="setting_language_title">Язык</string>
+    <string name="setting_help_title">Справочный центр</string>
+    <string name="setting_share_title">Поделиться</string>
+
+    // tezkor cardlar
+    <string name="quick_budjets" translatable="false">Бюджеты</string>
+    <string name="quick_shoppingList" translatable="false">Списки покупок</string>
+    <string name="quick_Debts" translatable="false">Долги</string>
+    <string name="quick_Balance" translatable="false">Баланс</string>
+    <string name="quick_Goals" translatable="false">Цели</string>
+
+    // Home/TotalBalance Card
+    <string name="total_balance" translatable="false">Общий Баланс</string>
+    <string name="empty_chart_hint">Введенные данные будут отображаться здесь</string>
+    <string name="filter_day" translatable="false">День</string>
+    <string name="filter_week" translatable="false">Неделя</string>
+    <string name="filter_month" translatable="false">Месяц</string>
+    <string name="filter_year" translatable="false">Год</string>
+    <string name="filter_all">Все</string>
+
+    <string name="empty_chart_view" translatable="false">Данные графика недоступны.</string>
+    <string name="total_balance_title_dialog">Выберите счета</string>
+    <string name="total_balance_save_button_txt">Сохранить</string>
+
+    // Cash Flow Card
+    <string name="title_cash_flow">Денежный поток</string>
+    <string name="title_income">Доход</string>
+    <string name="title_expense">Расход</string>
+    <string name="title_total">Итого</string>
+    <string name="dialog_title">Выберите время</string>
+    <string name="dialog_btn_txt">Сохранить</string>
+
+    // Expense Statistics Card
+    <string name="title_expense_statistics">Статистика расходов</string>
+    <string name="total_expense">ОБЩИЙ РАСХОД</string>
+    <string name="others">Другое</string>
+    <string name="empty" translatable="false">Расходы еще не были введены.</string>
+    <string name="title_dialog_expense_card" translatable="false">Выбор временного диапазона</string>
+    <string name="unknown">Неизвестно</string>
+
+    // Budget Card
+    <string name="budget_card_txt1">Отслеживайте, сколько денег осталось от вашего текущего бюджета.</string>
+    <string name="budget_card_txt2">Установите свой бюджет и контролируйте свои расходы.</string>
+    <string name="budget_card_sarf">Потрачено</string>
+    //BudgetScreen, detail
+    <string name="budget_label_limit">Лимит:</string>
+    <string name="budget_label_spent">Потрачено:</string>
+    <string name="budget_label_remaining">Остаток:</string>
+    <string name="budget_label_over_budget">Перерасход:</string>
+    <string name="budget_icon_content_description_category">Значок категории</string>
+    <string name="budget_icon_content_description_options">Параметры</string>
+    <string name="empty_budgets_title">Бюджеты еще не запланированы</string>
+    <string name="empty_budgets_subtitle">Контролируйте свои расходы, создав бюджет.</string>
+    <string name="empty_budgets_icon_desc">Значок кнопки добавить</string>
+    <string name="budget_period_start_date_only">С (%1$s)</string>
+    <string name="budget_period_range_dates">С (%1$s) по (%2$s)</string>
+    <string name="budget_label_created_at">Создано</string>
+    <string name="budget_daily_limit">Дневной лимит: %s</string>
+    // edit budget
+    <string name="edit_budget_title">Редактировать бюджет</string>
+    <string name="edit_budget_button_select">Выбрать</string>
+    <string name="edit_budget_button_update">Обновить</string>
+    <string name="snackbar_fill_fields_error">Пожалуйста, заполните все обязательные поля правильно.</string>
+    <string name="snackbar_budget_update_success">Бюджет успешно обновлен!</string>
+    <string name="content_desc_drag_handle">Ручка для перетаскивания</string>
+    // budget detail
+    <string name="budget_details_title_secondary">Информация о бюджете</string>
+    <string name="budget_details_icon_edit_desc">Редактировать бюджет</string>
+    <string name="budget_details_icon_delete_desc">Удалить бюджет</string>
+    <string name="budget_detail_label_period">Период</string>
+    <string name="budget_detail_label_start_date">Дата начала</string>
+    <string name="budget_detail_label_end_date">Дата окончания</string>
+    <string name="budget_detail_label_status">Статус</string>
+    <string name="budget_detail_label_remaining_days">Оставшиеся дни</string>
+    <string name="budget_detail_status_active">Активный</string>
+    <string name="budget_detail_status_inactive">Неактивный</string>
+    <string name="budget_detail_days_unit">%d дней</string>
+    <string name="budget_summary_label_max_budget">Максимальный бюджет</string>
+    <string name="budget_summary_label_spent_amount">Потраченная сумма</string>
+    <string name="budget_summary_label_remaining_amount">Остаток суммы</string>
+    <string name="budget_summary_progress_label">%d%% потрачено</string>
+    <string name="budget_delete_dialog_title">Удаление бюджета</string>
+    <string name="budget_delete_dialog_text">Вы уверены, что хотите удалить этот бюджет?</string>
+    <string name="create_first_budget">Создать первый бюджет</string>
+    // budget add Screen
+    <string name="budget_period_monthly">Ежемесячно</string>
+    <string name="budget_period_weekly">Еженедельно</string>
+    <string name="budget_period_range">Диапазон</string>
+    <string name="snackbar_success_budget_saved">Бюджет успешно добавлен!</string>
+    <string name="snackbar_success_budget_updated">Бюджет успешно обновлен!</string>
+    <string name="snackbar_success_budget_deleted">Бюджет успешно удален!</string>
+    <string name="snackbar_error_select_category">Пожалуйста, выберите категорию.</string>
+    <string name="snackbar_error_max_amount_zero">Максимальная сумма должна быть больше 0.</string>
+    <string name="snackbar_error_select_end_date">Выберите дату окончания для пользовательского бюджета.</string>
+    <string name="snackbar_error_end_date_invalid">Дата окончания должна быть позже даты начала.</string>
+    <string name="category_label_title">Категория</string>
+    <string name="category_label_placeholder">Выбрать категорию</string>
+    <string name="category_go_to_desc">Перейти к категориям</string>
+    <string name="category_selection_sheet_title">Выберите категорию</string>
+    <string name="category_selection_empty">Категории не найдены.</string>
+    <string name="input_label_max_amount">Максимальная сумма бюджета</string>
+    <string name="period_selector_title">Выберите период бюджета</string>
+    <string name="period_custom_range_title">Пользовательский диапазон бюджета</string>
+    <string name="date_input_label_start">Дата начала</string>
+    <string name="date_input_label_end">Дата окончания</string>
+    <string name="date_input_placeholder_end">Дата окончания</string>
+    <string name="date_picker_content_desc">Выбор даты</string>
+    <string name="preview_card_title">БЮДЖЕТ (РАСХОД)</string>
+    <string name="preview_card_period_label">ПЕРИОД</string>
+    <string name="preview_card_placeholder_category">Выбрать категорию</string>
+    <string name="date_picker_select_action">Выбрать</string>
+    <string name="date_picker_choose_action">Выбрать</string>
+    <string name="snackbar_success_budget_added">Бюджет успешно добавлен!</string>
+
+
+    // Add Transaction
+    <string name="tabrow_income">Доход</string>
+    <string name="tabrow_expense">Расход</string>
+    <string name="snackbar_transaction_saved_success">Транзакция успешно сохранена!</string>
+    <string name="add_note_title">Добавить примечание</string>
+    <string name="add_note_label">Введите ваше примечание</string>
+    <string name="add_note_placeholder">Например: Расходы в ресторане</string>
+    <string name="add_note_btn_txt_cancel">Отмена</string>
+    <string name="add_note_btn_txt_save">Сохранить</string>
+    <string name="isAmountValid_message">Введите сумму.</string>
+    <string name="isCategorySelected_message">Выберите категорию.</string>
+    <string name="else_message">Данные неполны для сохранения транзакции.</string>
+    <string name="ok">ОК</string>
+    <string name="cancel">ОТМЕНА</string>
+    <string name="select_time">Выберите время</string>
+    <string name="date_format">dd MMM yyyy</string>
+    <string name="snackbar_success_title">Успешно!</string>
+    <string name="label_today">Сегодня</string>
+    <string name="label_yesterday">Вчера</string>
+    <string name="title_select_wallet">Выберите кошелек</string>
+    <string name="subtitle_select_wallet">Какой счет вы используете?</string>
+    <string name="title_add_transaction">Добавить транзакцию</string>
+
+    //Account Screen Details
+    <string name="current_balance">Текущий баланс</string>
+    <string name="add_account_title">Добавить счет</string>
+    <string name="add_account_limit_reached">Лимит счетов достигнут (Максимум %1$d)</string>
+    <string name="add_account_name_input_label">Название счета</string>
+    <string name="add_account_balance_input_label">Баланс (необязательно)</string>
+    <string name="add_account_name_placeholder">Например: Моя карта, Сбербанк, Наличные</string>
+    <string name="add_account_balance_placeholder">Начальный баланс: 150000</string>
+    <string name="add_account_current_balance">Текущий баланс</string>
+    <string name="add_account_select_color">Выбрать цвет</string>
+    <string name="add_account_select_icon">Выбрать значок</string>
+    <string name="add_account_default_name">Название счета</string>
+    <string name="add_account_error_name_blank">Пожалуйста, введите название счета</string>
+    <string name="add_account_error_name_exists">Это имя уже используется</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_edit_account">Редактировать счет</string>
+    <string name="action_delete_account">Удалить счет</string>
+    <string name="account_delete_dialog_title">Удаление аккаунта</string>
+    <string name="account_delete_dialog_text">Вы уверены, что хотите удалить свой аккаунт? Это действие необратимо, и все ваши данные будут безвозвратно удалены.</string>
+    <string name="btn_delete_account">Удалить Аккаунт</string>
+    <string name="account_tag_main">ОСНОВНОЙ</string>
+    <string name="account_tag_custom">ЛИЧНЫЙ</string>
+    <string name="add_account_limit">Достигнут предел</string>
+
+
+    // Statistics Screen
+    <string name="tab_balance">Баланс</string>
+    <string name="tab_expense">Расход</string>
+    <string name="tab_income">Доход</string>
+    <string name="tab_reports">Отчеты</string>
+    <string name="empty_transactions_general">Пока не введено ни одной транзакции.</string>
+    <string name="empty_expenses">Пока не введено никаких расходов.</string>
+    <string name="empty_incomes">Пока не введено никаких доходов.</string>
+    <string name="action_sort">Сортировка</string>
+    <string name="unknown_category">Неизвестно</string>
+    <string name="action_back">Назад</string>
+
+    <string name="transaction_details_title">Детали транзакции</string>
+    <string name="total_amount_label">Общая сумма</string>
+    <string name="note_label">Заметка</string>
+    <string name="detail_account">Счет</string>
+    <string name="detail_type">Тип</string>
+    <string name="detail_date_time">Дата и время</string>
+    <string name="type_expense_value">Расход</string>
+    <string name="type_income_value">Доход</string>
+    <string name="action_edit">Редактировать</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_expand">Развернуть</string>
+    <string name="action_collapse">Свернуть</string>
+    <string name="delete_dialog_title">Удалить транзакцию</string>
+    <string name="delete_dialog_text">Вы уверены, что хотите удалить эту транзакцию?</string>
+    <string name="content_description_edit">Кнопка редактирования</string>
+    <string name="content_description_delete">Кнопка удаления</string>
+    <string name="content_description_note">Заметка</string>
+
+    <string name="title_balance_trend">Тренд баланса</string>
+    <string name="title_account_balance">Баланс счетов</string>
+    <string name="period_label">за период</string>
+    <string name="error_loading_data">Ошибка загрузки данных:</string>
+    <string name="error_generic">Ошибка:</string>
+    <string name="empty_trend_data">Данные по тренду недоступны.</string>
+    <string name="empty_account_balances">Нет балансов счетов.</string>
+    <string name="action_filter">Фильтр</string>
+    <string name="action_account_filter">Фильтр счетов</string>
+    <string name="content_description_filter">Кнопка фильтра</string>
+
+    <string name="no_data_available">Нет доступных данных</string>
+    <string name="total_label">Итого</string>
+    <string name="add_transactions_to_see_chart">Добавьте транзакции, чтобы увидеть график</string>
+
+    //Reports Screen
+    <string name="report_title_income">Доход</string>
+    <string name="report_title_expense">Расход</string>
+    <string name="report_general_summary">Общий отчет</string>
+    <string name="report_no_transactions_in_category">В этой категории пока нет доступных транзакций.</string>
+    <string name="transaction_note_label">Примечание:</string>
+    <string name="icon_content_description_close_details">Закрыть детали</string>
+    <string name="icon_content_description_open_details">Открыть детали</string>
+    <string name="icon_content_description_account">Счет</string>
+    <string name="icon_content_description_open_note">Открыть примечание</string>
+    <string name="icon_content_description_close_note">Закрыть примечание</string>
+
+    // Transaction Screen Sort dialog
+    <string name="sort_dialog_title">Выберите метод сортировки</string>
+    <string name="sort_option_date_desc">Дата (Новые)</string>
+    <string name="sort_option_amount_desc">Сумма (Макс.)</string>
+    <string name="sort_option_amount_asc">Сумма (Мин.)</string>
+    <string name="sort_button_save">Сохранить (%s)</string> <string name="sort_content_desc_selected">Выбрано</string>
+    <string name="sort_state_date_desc">Дата Новые</string>
+    <string name="sort_state_amount_desc">Сумма Макс</string>
+    <string name="sort_state_amount_asc">Сумма Мин</string>
+    <string name="icon_content_desc_date">Значок сортировки по дате</string>
+    <string name="icon_content_desc_amount_high_low">Значок сортировки по сумме (от макс. к мин.)</string>
+    <string name="icon_content_desc_amount_low_high">Значок сортировки по сумме (от мин. к макс.)</string>
+
+    // ShoppingList Screen
+    <string name="shopping_list_note_prefix">Список покупок: </string>
+    <string name="add_list_dialog_add">Добавить список</string>
+    <string name="add_list_dialog_edit">Редактировать список</string>
+    <string name="list_row_add_list_desc">Добавить новый список</string>
+    <string name="list_row_more_actions_desc">Дополнительные действия</string>
+    <string name="list_row_edit_button">Редактировать</string>
+    <string name="list_row_edit_desc">Редактировать список</string>
+    <string name="list_row_delete_button">Удалить</string>
+    <string name="list_row_delete_desc">Удалить список</string>
+    <string name="list_row_share_button">Поделиться</string>
+    <string name="list_row_share_desc">Поделиться списком</string>
+    <string name="list_items_bought_status">%1$d/%2$d товаров</string>
+    <string name="empty_list_title">У вас нет Списков покупок</string>
+    <string name="empty_list_subtitle">Для начала нажмите кнопку \'Добавить Список\' и создайте свой первый список.</string>
+    <string name="share_list_title">Детали Списка Покупок</string>
+    <string name="share_list_name">Название списка</string>
+    <string name="share_list_item_count">Количество товаров</string>
+    <string name="share_list_no_items">Товары для покупки еще не были добавлены.</string>
+    <string name="share_list_total_amount">Общая Сумма</string>
+    <string name="detail_screen_transaction_button">Купить (%1$d)</string>
+    <string name="detail_screen_transaction_desc">Создать транзакцию из выбранных товаров</string>
+    <string name="detail_screen_empty_items">Список пуст. Добавьте элемент.</string>
+    <string name="input_label_product_name">Название продукта</string>
+    <string name="input_label_price">Цена</string>
+    <string name="input_button_add_to_list">Добавить в список</string>
+    <string name="item_more_actions_desc">Дополнительные действия</string>
+    <string name="item_edit_desc">Редактировать товар</string>
+    <string name="item_delete_desc">Удалить товар</string>
+    <string name="dialog_delete_product_title">Удалить Товар</string>
+    <string name="dialog_delete_product_text">Вы уверены, что хотите удалить этот товар?</string>
+    / ShoppingList Dialogs
+    <string name="dialog_add_new_list_title">Добавить Новый Список</string>
+    <string name="dialog_edit_list_title">Редактировать Имя Списка</string>
+    <string name="dialog_label_list_name">Имя списка</string>
+    <string name="dialog_button_add">Добавить</string>
+    <string name="dialog_button_save">Сохранить</string>
+    <string name="dialog_button_cancel">Отмена</string>
+    <string name="dialog_edit_item_title">Редактировать</string>
+    <string name="dialog_label_item_name">Название</string>
+    <string name="dialog_label_amount">Сумма (%1$s)</string>
+    <string name="dialog_add_transaction_title">Покупка</string>
+    <string name="dialog_label_select_category">Выберите категорию</string>
+    <string name="dialog_label_category">Категория</string>
+    <string name="dialog_label_select_account">Выберите счет</string>
+    <string name="dialog_label_account">Счет</string>
+    <string name="dialog_label_amount_currency">Сумма (%1$s)</string>
+    <string name="dialog_label_note_optional">Заметка (Необязательно)</string>
+    <string name="dialog_button_save_transaction">Сохранить</string>
+
+    // Debt Screen
+    <string name="title_error">Произошла ошибка</string>
+    <string name="button_ok">ОК</string>
+    <string name="button_cancel">Отмена</string>
+    <string name="button_save">Сохранить</string>
+    <string name="button_delete">Удалить</string>
+    <string name="snackbar_debt_added">Новый долг успешно добавлен.</string>
+    <string name="snackbar_debt_updated">Долг успешно отредактирован.</string>
+    <string name="fab_new_debt_description">Добавить новый долг</string>
+    <string name="dialog_delete_debt_title">Удаление долга</string>
+    <string name="dialog_delete_debt_text">Вы действительно хотите удалить эту запись о долге?</string>
+    <string name="error_unknown">Неизвестная ошибка.</string>
+    <string name="debt_summary_title">Общий статус долгов</string>
+    <string name="debt_lent_title">Выданные долги (Вам должны)</string>
+    <string name="debt_owed_title">Взятые долги (Вы должны)</string>
+    <string name="error_select_account">Для выполнения операции с долгом необходимо выбрать счет.</string>
+    <string name="error_save_debt">Ошибка при сохранении долга: %s</string>
+    <string name="error_delete_debt">Ошибка при удалении долга: %s</string>
+    <string name="error_toggle_settled">Ошибка при изменении статуса оплаты: %s</string>
+    <string name="empty_debts_title">Долгов пока нет</string>
+    <string name="empty_debts_message">У вас пока нет активных долговых обязательств. Нажмите кнопку, чтобы добавить новый долг.</string>
+    <string name="empty_debts_description">Список долгов пуст</string>
+    <string name="button_edit">Редактировать</string>
+    <string name="content_description_actions">Действия</string>
+    <string name="debt_lent_you_gave">Вы дали</string>
+    <string name="debt_owed_you_took">Вы взяли</string>
+    <string name="status_settled">Возвращено</string>
+    <string name="status_pending">Ожидается</string>
+    <string name="action_toggle_settled">Вернуть</string>
+    <string name="debt_details_title">Детали долга</string>
+    <string name="detail_person_label">Лицо/Организация</string>
+    <string name="detail_date_label">Дата</string>
+    <string name="detail_status_label">Статус</string>
+    <string name="tab_i_lent">Я дал в долг</string>
+    <string name="tab_i_borrowed">Я взял в долг</string>
+    <string name="debt_status_creditor">Кредитор</string>
+    <string name="debt_status_debtor">Должник</string>
+    <string name="debt_net_balance">Чистый баланс</string>
+    <string name="debt_lent">Дано</string>
+    <string name="debt_borrowed">Взято</string>
+    <string name="empty_lent_debts">У вас нет выданных долгов</string>
+    <string name="empty_borrowed_debts">У вас нет полученных долгов</string>
+    <string name="status_creditor">Вы — кредитор</string>
+    <string name="status_debtor">Вы — должник</string>
+    <string name="debt_type_lent">ДАЛ В ДОЛГ</string>
+    <string name="debt_type_owed">ВЗЯЛ В ДОЛГ</string>
+    <string name="debt_status_settled">ЗАКРЫТО</string>
+    <string name="debt_payment">ПЛАТЕЖ</string>
+    <string name="add_payment">ДОБАВИТЬ ПЛАТЕЖ</string>
+    <string name="debt_settled">Оплачено</string>
+    <string name="debt_paid_percent">оплачено</string>
+    <string name="debt_start_date">Дата выдачи</string>
+    <string name="debt_due_date">Дата возврата</string>
+    <string name="debt_status_lent">Вам должны</string>
+    <string name="debt_status_borrowed">Вы должны</string>
+    <string name="remaining_amount">Остаток</string>
+    <string name="payment_history">История платежей</string>
+    <string name="no_payments_yet">Платежей пока нет</string>
+
+    <string name="button_add">Добавить</string>
+    <string name="button_select">Выбрать</string>
+    <string name="debt_mode_lent">Выдаете деньги (Расход)</string>
+    <string name="debt_mode_owed">Получаете деньги (Доход)</string>
+    <string name="debt_action_lent">Выдать долг</string>
+    <string name="debt_action_owed">Взять долг</string>
+    <string name="label_name">Имя/Организация</string>
+    <string name="label_amount">Сумма (%s)</string>
+    <string name="label_account">Счет</string>
+    <string name="label_date">Дата</string>
+    <string name="placeholder_select_account">Выберите счет</string>
+    <string name="snackbar_error_unknown">Произошла неизвестная ошибка</string>
+    <string name="snackbar_error_select_account">Выберите кошелек</string>
+    <string name="snackbar_payment_added_success">Платеж успешно добавлен</string>
+    <string name="snackbar_debt_deleted_success">Долг успешно удален</string>
+    <string name="snackbar_error_empty_name">Пожалуйста, введите имя</string>
+
+    <string name="debt_person_label">Кому / От кого</string>
+    <string name="debt_person_placeholder">Введите имя</string>
+    <string name="debt_amount_label">Сумма долга</string>
+
+    // edit transaction
+    <string name="edit_transaction">Изменить транзакцию</string>
+    <string name="save">Сохранить</string>
+    <string name="transaction_amount">Сумма транзакции</string>
+    <string name="details">Детали</string>
+    <string name="category">Категория</string>
+    <string name="account">Счет</string>
+    <string name="date_time">Дата и время</string>
+    <string name="note_hint">Заметка (опционально)</string>
+    <string name="select">Выбрать</string>
+    <string name="title_edit_category">Изменить категорию</string>
+    <string name="title_edit_account">Изменить счет</string>
+    <string name="title_edit_amount">Изменить сумму</string>
+    <string name="title_edit_note">Изменить заметку</string>
+
+
+
+    // Categorylar
+    <string name="acc_cash">Наличные</string>
+    <string name="acc_card">Карта</string>
+
+    <string name="cat_groceries">Продукты</string>
+    <string name="cat_dining_out">Еда вне дома</string>
+    <string name="cat_drinks_coffee">Напитки и кофе</string>
+    <string name="cat_restaurant">Ресторан</string>
+
+    <string name="cat_housing">Жилье</string>
+    <string name="cat_utilities">Коммунальные услуги</string>
+    <string name="cat_maintenance">Обслуживание</string>
+    <string name="cat_rent">Аренда</string>
+
+    <string name="cat_entertainment">Развлечения</string>
+    <string name="cat_subscriptions">Подписки</string>
+    <string name="cat_self_care">Уход за собой</string>
+    <string name="cat_hobbies">Хобби</string>
+
+    <string name="cat_education">Образовавание</string>
+    <string name="cat_books">Книги</string>
+    <string name="cat_courses">Курсы</string>
+    <string name="cat_certifications">Сертификаты</string>
+
+    <string name="cat_shopping">Шопинг</string>
+    <string name="cat_clothing">Одежда</string>
+    <string name="cat_electronics">Электроника</string>
+    <string name="cat_home_appliances">Бытовая техника</string>
+
+    <string name="cat_health">Здоровье</string>
+    <string name="cat_fitness">Фитнес</string>
+    <string name="cat_pharmacy">Аптека</string>
+    <string name="cat_dental">Стоматология</string>
+
+    <string name="cat_investment">Инвестиции</string>
+    <string name="cat_debt_loans">Долги и кредиты</string>
+    <string name="cat_gifts_donation">Подарки и пожертвования</string>
+    <string name="cat_other">Другое</string>
+
+    <string name="cat_main_salary">Основная зарплата</string>
+    <string name="cat_side_job">Подработка</string>
+    <string name="cat_business">Бизнес</string>
+    <string name="cat_freelance">Фриланс</string>
+    <string name="cat_passive_income">Пассивный доход</string>
+    <string name="cat_dividends">Дивиденды/Проценты</string>
+    <string name="cat_bonus">Бонус</string>
+    <string name="cat_cashback">Кэшбэк</string>
+    <string name="cat_grants">Гранты/Стипендия</string>
+    <string name="cat_gifts">Подарки</string>
+    <string name="cat_other_income">Прочий доход</string>
+
+    <string name="cat_lent">В долг (отдано)</string>
+    <string name="cat_borrowed">В долг (взято)</string>
+    <string name="cat_debt_payment">Выплата долга</string>
+
+
+</resources>
