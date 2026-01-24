@@ -170,6 +170,10 @@ class AddTransactionViewModel @Inject constructor(
         setAmount(totalAmount)
     }
 
+    fun resetSuccessState() {
+        uiState = uiState.copy(saveSuccess = false)
+    }
+
     fun clearState(keepTypeAndAccount: Boolean = true) {
         val defaultState = AddTransactionUiState()
         uiState = uiState.copy(

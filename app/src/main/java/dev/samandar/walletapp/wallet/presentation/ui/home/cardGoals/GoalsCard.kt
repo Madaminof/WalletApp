@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.samandar.walletapp.R
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.CircularIconButton
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.primaryAccent
 
@@ -67,7 +68,7 @@ fun GoalsCard(
                 )
                 CircularIconButton(
                     onClick = onCreateGoalClick,
-                    icon = Icons.Default.ArrowForwardIos,
+                    icon = R.drawable.arrow_right_ic,
                     contentDescription = "Go to goals list",
                     tint = primaryAccent,
                     backgroundColor = primaryAccent.copy(alpha = 0.1f),

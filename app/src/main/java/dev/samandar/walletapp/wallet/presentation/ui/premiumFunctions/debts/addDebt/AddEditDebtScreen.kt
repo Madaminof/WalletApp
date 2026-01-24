@@ -52,7 +52,7 @@ fun AddEditDebtScreen(
     var personName by remember { mutableStateOf(initialDebt?.personName ?: "") }
     var amountText by remember { mutableStateOf(initialDebt?.totalAmount?.toString()?.replace(".0", "") ?: "") }
 
-    val accentColor = if (selectedType == DebtType.LENT) incomeColor else expenseColor
+    val accentColor = if (selectedType == DebtType.LENT) MaterialTheme.colorScheme.primary else expenseColor
 
     val context = LocalContext.current
 

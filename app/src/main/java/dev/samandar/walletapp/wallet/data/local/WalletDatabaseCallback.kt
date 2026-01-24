@@ -15,8 +15,8 @@ class WalletDatabaseCallback @Inject constructor() : RoomDatabase.Callback() {
         db.beginTransaction()
         try {
             val defaultAccounts = listOf(
-                Triple("Cash", 0.0, "#FF26A69A") to R.drawable.money,
-                Triple("Card", 0.0, "#FF424666") to R.drawable.credit_card
+                Triple("Cash", 0.0, "#A3CB38") to R.drawable.cash_default_ic,
+                Triple("Card", 0.0, "#12CBC4") to R.drawable.card_ic
             )
 
             defaultAccounts.forEach { (triple, icon) ->
@@ -30,81 +30,67 @@ class WalletDatabaseCallback @Inject constructor() : RoomDatabase.Callback() {
 
             val categoryData = listOf(
                 // --- 1. FOOD & DRINK (Ovqatlanish) ---
-                // Emerald/Teal - barqaror ehtiyoj
-                Triple("Groceries", "EXPENSE", R.drawable.grocery) to 0xFF27AE60,
-                Triple("Dining out", "EXPENSE", R.drawable.dinning_out) to 0xFF2ECC71,
-                Triple("Drinks & Coffee", "EXPENSE", R.drawable.ic_coffee) to 0xFF1ABC9C,
-                Triple("Restaurant", "EXPENSE", R.drawable.ic_restaurant) to 0xFF16A085,
+                // Ikonalarda pushti va och yashil ustunlik qiladi
+                Triple("Groceries", "EXPENSE", R.drawable.groceries_ic) to 0xFFF3A683, // Sabzavotlar rangiga mos (Soft Orange)
+                Triple("Dining out", "EXPENSE", R.drawable.dining_out_ic) to 0xFFF78FB3, // Idish-tovoq detallari uchun (Pink)
+                Triple("Drinks & Coffee", "EXPENSE", R.drawable.drink_ic) to 0xFFCF6A87, // Shisha va ichimlik (Deep Rose)
+                Triple("Restaurant", "EXPENSE", R.drawable.restourant_ic) to 0xFFE77F67, // Ovqatlanish (Terracotta)
 
                 // --- 2. HOME & LIVING (Uy va Yashash) ---
-                // Blue/Indigo - barqarorlik va xavfsizlik
-                Triple("Housing", "EXPENSE", R.drawable.ic_home) to 0xFF2980B9,
-                Triple("Utilities", "EXPENSE", R.drawable.ic_bolt) to 0xFF3498DB,
-                Triple("Maintenance", "EXPENSE", R.drawable.maintenance) to 0xFF5758BB,
-                Triple("Rent", "EXPENSE", R.drawable.ic_apartment) to 0xFF4b7bec,
+                // Moviy va binafsha ohanglar
+                Triple("Housing", "EXPENSE", R.drawable.housing_ic) to 0xFF546DE5, // Uy (Royal Blue)
+                Triple("Utilities", "EXPENSE", R.drawable.utilities_ic) to 0xFF778BEB, // Kommunal (Soft Blue)
+                Triple("Rent", "EXPENSE", R.drawable.rent_ic) to 0xFF6379EE, // Ijara (Indigo)
+                Triple("Home Appliances", "EXPENSE", R.drawable.home_appliance_ic) to 0xFF596275, // Texnika (Steel Blue)
 
-                // --- 3. LIFESTYLE & LEISURE (Hayot tarzi va Hordiq) ---
-                // Purple/Pink - o'yin-kulgi va dam olish
-                Triple("Entertainment", "EXPENSE", R.drawable.ic_gaming) to 0xFF8E44AD,
-                Triple("Subscriptions", "EXPENSE", R.drawable.ic_subscriptions) to 0xFF9B59B6,
-                Triple("Self-Care", "EXPENSE", R.drawable.ic_spa) to 0xFFD980FA,
-                Triple("Hobbies", "EXPENSE", R.drawable.ic_palette) to 0xFFFDA7DF, // Yangi qo'shildi
+                // --- 3. TRANSPORT & AUTO ---
+                // Ikonadagi detallarga ko'ra ranglar
+                Triple("Transport", "EXPENSE", R.drawable.transport_ic) to 0xFF574B90, // Avtobus (Deep Purple)
+                Triple("Taxi", "EXPENSE", R.drawable.taxi_ic) to 0xFFF19066, // Sening ikonangdagi taksi rangi (Soft Salmon)
+                Triple("Fuel", "EXPENSE", R.drawable.fuel_ic) to 0xFFE66767, // Yoqilg'i (Soft Red)
+                Triple("Car Maintenance", "EXPENSE", R.drawable.car_service_ic) to 0xFF303952, // Servis (Dark Navy)
 
-                // --- 4. EDUCATION & GROWTH (Ta'lim va O'sish) ---
-                // Yellow/Amber - diqqat va intellekt
-                Triple("Education", "EXPENSE", R.drawable.ic_school) to 0xFFF1C40F,
-                Triple("Books", "EXPENSE", R.drawable.ic_menu_book) to 0xFFF39C12,
-                Triple("Courses", "EXPENSE", R.drawable.ic_laptop_mac) to 0xFFE67E22,
-                Triple("Certifications", "EXPENSE", R.drawable.ic_verified) to 0xFFD35400,
+                // --- 4. LIFESTYLE & LEISURE ---
+                // Quvnoq va yorqin ranglar
+                Triple("Entertainment", "EXPENSE", R.drawable.entertainment_ic) to 0xFFC44569, // O'yin-kulgi (Deep Pink)
+                Triple("Subscriptions", "EXPENSE", R.drawable.subscriptions_ic) to 0xFF786FA6, // Obunalar (Muted Purple)
+                Triple("Self-Care", "EXPENSE", R.drawable.self_care_ic) to 0xFFFDA7DF, // Parvarish (Candy Pink)
+                Triple("Hobbies", "EXPENSE", R.drawable.hobbies_ic) to 0xFF577EAA, // Qiziqishlar (Soft Greyish Blue)
 
-                // --- 5. SHOPPING (Xaridlar) ---
-                // Orange/Coral - quvonch va energiya
-                Triple("Shopping", "EXPENSE", R.drawable.ic_shopping_bag) to 0xFFE17055,
-                Triple("Clothing", "EXPENSE", R.drawable.ic_checkroom) to 0xFFFAB1A0,
-                Triple("Electronics", "EXPENSE", R.drawable.ic_devices) to 0xFFFF7675,
-                Triple("Home Appliances", "EXPENSE", R.drawable.ic_kitchen) to 0xFFEE5253,
+                // --- 5. EDUCATION & GROWTH ---
+                Triple("Education", "EXPENSE", R.drawable.education_ic) to 0xFF546DE5, // Ta'lim (Ocean Blue)
+                Triple("Books", "EXPENSE", R.drawable.books_ic) to 0xFFF5CD79, // Kitoblar (Sand Yellow)
+                Triple("Courses", "EXPENSE", R.drawable.course_ic) to 0xFF45AAF2, // Kurslar (Sky Blue)
+                Triple("Certifications", "EXPENSE", R.drawable.certificate_ic) to 0xFFF7D794, // Sertifikat (Cream Yellow)
 
-                // --- 6. HEALTH & WELLNESS (Salomatlik) ---
-                // Red/Pink - hayot va parvarish
-                Triple("Health", "EXPENSE", R.drawable.medical_team) to 0xFFEA2027,
-                Triple("Fitness", "EXPENSE", R.drawable.ic_fitness_center) to 0xFFFF4D4D,
-                Triple("Pharmacy", "EXPENSE", R.drawable.ic_medication) to 0xFFFF5E78,
-                Triple("Dental", "EXPENSE", R.drawable.ic_dentistry) to 0xFFFF7979,
+                // --- 6. SHOPPING ---
+                Triple("Shopping", "EXPENSE", R.drawable.shopping_ic) to 0xFFEA8685, // Xarid (Coral)
+                Triple("Clothing", "EXPENSE", R.drawable.clothing_ic) to 0xFFF8A5C2, // Kiyim (Soft Magenta)
+                Triple("Electronics", "EXPENSE", R.drawable.electronic_ic) to 0xFF3DC1D3, // Elektronika (Cyan)
+                Triple("Investment", "EXPENSE", R.drawable.investment_ic) to 0xFF20BF6B, // Investitsiya (Jade Green)
 
-                // --- 7. FINANCIAL & OTHER (Moliyaviy va Boshqalar) ---
-                // Deep Teal/Forest - Investitsiya (O'sish va boylik)
-                Triple("Investment", "EXPENSE", R.drawable.ic_show_chart) to 0xFF10AC84,
-                Triple("Debt & Loans", "EXPENSE", R.drawable.debt_loang) to 0xFFEE5253,
-                Triple("Gifts & Donation", "EXPENSE", R.drawable.ic_favorite) to 0xFFF368E0,
-                Triple("Other", "EXPENSE", R.drawable.ic_other) to 0xFF51B0E0,
-                Triple("Lent", "EXPENSE", R.drawable.debt_icon) to 0xFFE57373,
-                Triple("Debt Payment", "EXPENSE", R.drawable.ic_debt) to 0xFF4CAF50,
+                // --- 7. HEALTH & WELLNESS ---
+                Triple("Health", "EXPENSE", R.drawable.health_ic) to 0xFFE77F67, // Salomatlik (Apple Red)
+                Triple("Fitness", "EXPENSE", R.drawable.fitness_ic) to 0xFF6379EE, // Fitnes (Violet)
+                Triple("Pharmacy", "EXPENSE", R.drawable.pharmacy) to 0xFFF19066, // Dorixona (Orange Pastel)
+                Triple("Dental", "EXPENSE", R.drawable.dental_ic) to 0xFF7D5FFF, // Stomatolog (Neon Purple)
 
-                // --- 8. INCOME (Daromadlar) ---
-                // Deep Greens - Barqaror va asosiy daromadlar
-                Triple("Main Salary", "INCOME", R.drawable.ic_salary_payments) to 0xFF1B5E20,
-                Triple("Side Job", "INCOME", R.drawable.ic_work_outline) to 0xFF2E7D32, // Ikkinchi ish uchun
+                // --- 8. FINANCIAL & OTHER ---
+                Triple("Debt & Loans", "EXPENSE", R.drawable.debt_ic) to 0xFFCF6A87, // Qarz (Old Rose)
+                Triple("Gifts & Donation", "EXPENSE", R.drawable.gifts_ic) to 0xFFF78FB3, // Sovg'a (Flamingo Pink)
+                Triple("Other", "EXPENSE", R.drawable.other_ic) to 0xFF596275, // Boshqa (Charcoal)
 
-                // Vibrant Greens - Biznes va tadbirkorlik
-                Triple("Business", "INCOME", R.drawable.ic_business) to 0xFF27AE60,
-                Triple("Freelance", "INCOME", R.drawable.ic_laptop_mac) to 0xFF8BC34A,
-
-                // Teal & Cyan - Passiv va moliyaviy daromadlar
-                Triple("Passive Income", "INCOME", R.drawable.passive_income) to 0xFF009688,
-                Triple("Dividends/Interest", "INCOME", R.drawable.ic_treding_up) to 0xFF00ACC1, // Aksiyalar yoki depozit foizlari
-
-                // Gold & Azure - Bonuslar va kutilmagan tushumlar
-                Triple("Bonus", "INCOME", R.drawable.ic_stars) to 0xFFFBC02D, // Mukofot pullari
-                Triple("Cashback", "INCOME", R.drawable.ic_account_balance_wallet) to 0xFF0097A7, // Xaridlardan qaytgan pul
-                Triple("Grants/Scholarship", "INCOME", R.drawable.ic_school) to 0xFF43A047, // Grant yoki stipendiya
-
-                // Light Blue & Grey - Boshqa tushumlar
-                Triple("Gifts", "INCOME", R.drawable.gift_card) to 0xFF4FC3F7,
-                Triple("Other Income", "INCOME", R.drawable.other_income) to 0xFF78909C,
-                Triple("Borrowed", "INCOME", R.drawable.debt_icon) to 0xFF81C784,
-                Triple("Debt Payment", "INCOME", R.drawable.ic_debt) to 0xFF4CAF50
-
-
+                // --- 9. INCOME (Daromadlar) ---
+                // Yashil va Firuza ohanglar (Boylik ramzi)
+                Triple("Main Salary", "INCOME", R.drawable.salary_ic) to 0xFF26DE81, // Oylik (Vibrant Green)
+                Triple("Side Job", "INCOME", R.drawable.side_job_ic) to 0xFF20BF6B, // Qo'shimcha ish (Mountain Meadow)
+                Triple("Business", "INCOME", R.drawable.business_ic) to 0xFF05C46B, // Biznes (Emerald)
+                Triple("Passive Income", "INCOME", R.drawable.passive_income_ic) to 0xFF00D2D3, // Passiv (Cyan)
+                Triple("Dividends", "INCOME", R.drawable.divident_income_ic) to 0xFF32FF7E, // Dividend (Neon Green)
+                Triple("Bonus", "INCOME", R.drawable.bonus_ic) to 0xFFB3AF3E, // Bonus (Bright Yellow)
+                Triple("Cashback", "INCOME", R.drawable.cashback_ic) to 0xFF18DCFF, // Keshbek (Electric Blue)
+                Triple("Grants", "INCOME", R.drawable.grant_ic) to 0xFF7D5FFF, // Grant (Purple)
+                Triple("Other Income", "INCOME", R.drawable.other_income) to 0xFFA5B1C2 // Boshqa (Muted Blue)
             )
 
             categoryData.forEach { (data, color) ->

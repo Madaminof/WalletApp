@@ -16,6 +16,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.samandar.walletapp.wallet.data.repository.smartScannRepository.ReceiptRepositoryImpl
+import dev.samandar.walletapp.wallet.domain.repository.smartScannRepository.ReceiptRepository
 import javax.inject.Singleton
 
 @Module
@@ -54,5 +56,11 @@ abstract class RepositoryModule {
     abstract fun provideDebtsRepository(
         debtsRepositoryImpl: DebtsRepositoryImpl
     ): DebtsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindReceiptRepository(
+        receiptRepositoryImpl: ReceiptRepositoryImpl
+    ): ReceiptRepository
 
 }

@@ -53,9 +53,15 @@ fun DebtsScreen(
         uiState.debts.filter { it.type == currentType }
     }
     val fabColor by animateColorAsState(
-        targetValue = if (selectedTab == 0) incomeColor else expenseColor,
+        targetValue = if (selectedTab == 0) MaterialTheme.colorScheme.primary else expenseColor,
         label = "fabColor"
     )
+
+    val tabs = listOf(
+        stringResource(R.string.tab_i_lent),    // Bergan qarzlarim
+        stringResource(R.string.tab_i_borrowed) // Olgan qarzlarim
+    )
+    val activeColor = if (selectedTab == 0) MaterialTheme.colorScheme.primary else expenseColor
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
@@ -100,24 +106,26 @@ fun DebtsScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                DebtsSummaryCard(
+                PremiumDebtsSummaryCard(
                     totalLent = uiState.totalLent,
                     totalBorrowed = uiState.totalBorrowed
                 )
 
                 DebtTabRow(
                     selectedTab = selectedTab,
-                    onTabSelected = { selectedTab = it }
+                    onTabSelected = { selectedTab = it },
+                    tabs = tabs,
+                    activeColor = activeColor
                 )
 
-                // Ro'yxat yoki Yuklanish holati
                 if (uiState.isLoading) {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator(strokeWidth = 3.dp)
                     }
                 } else if (filteredDebts.isEmpty()) {
                     EmptyDebtsState(
-                        message = if (selectedTab == 0) stringResource(Strings.empty_lent_debts) else stringResource(Strings.empty_borrowed_debts)
+                        message = if (selectedTab == 0) stringResource(Strings.empty_lent_debts) else stringResource(Strings.empty_borrowed_debts),
+                        activeColor = activeColor
                     )
                 } else {
                     LazyColumn(
@@ -144,17 +152,16 @@ fun DebtsScreen(
         SnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier
-                .align(Alignment.TopCenter) // Yuqoriga joylash
-                .statusBarsPadding() // Status bar ostiga tushmasligi uchun
+                .align(Alignment.TopCenter)
+                .statusBarsPadding()
                 .padding(top = 8.dp)
                 .fillMaxWidth()
-                .zIndex(2f) // Hamma narsadan ustun turishi uchun
+                .zIndex(2f)
         ) { data ->
             ModernSnackbar(snackbarData = data)
         }
     }
 
-    // Modal va Dialoglarni boshqarish
     DebtDetailManager(
         selectedDebtForDetails = selectedDebtForDetails,
         viewModel = viewModel,
@@ -169,11 +176,11 @@ fun DebtsScreen(
             debt = showPaymentDialog!!,
             accounts = uiState.accounts,
             onDismiss = { showPaymentDialog = null },
-            onConfirm = { amount, account, date, note -> // 4 ta parametr: summa, hamyon, sana, eslatma
+            onConfirm = { amount, account, date, note ->
                 viewModel.addPayment(
                     debt = showPaymentDialog!!,
                     amount = amount,
-                    note = note    // Eslatma (ixtiyoriy)
+                    note = note
                 )
                 showPaymentDialog = null
             }

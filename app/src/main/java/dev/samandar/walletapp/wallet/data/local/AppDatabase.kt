@@ -11,6 +11,7 @@ import dev.samandar.walletapp.wallet.data.local.dao.ShoppingDao
 import dev.samandar.walletapp.wallet.data.local.dao.TransactionDao
 import dev.samandar.walletapp.wallet.data.local.dao.budjetDao.BudgetDao
 import dev.samandar.walletapp.wallet.data.local.dao.budjetDao.BudjetTransactionDao
+import dev.samandar.walletapp.wallet.data.local.dao.smartScannDao.ReceiptDao
 import dev.samandar.walletapp.wallet.data.local.entity.AccountEntity
 import dev.samandar.walletapp.wallet.data.local.entity.BudgetEntity
 import dev.samandar.walletapp.wallet.data.local.entity.CategoryEntity
@@ -19,6 +20,8 @@ import dev.samandar.walletapp.wallet.data.local.entity.ShoppingItemEntity
 import dev.samandar.walletapp.wallet.data.local.entity.ShoppingListEntity
 import dev.samandar.walletapp.wallet.data.local.entity.TransactionEntity
 import dev.samandar.walletapp.wallet.data.local.entity.debt.DebtTransactionEntity
+import dev.samandar.walletapp.wallet.data.local.entity.smartScannEntity.ReceiptEntity
+import dev.samandar.walletapp.wallet.data.local.entity.smartScannEntity.ReceiptItemEntity
 
 
 @Database(
@@ -30,7 +33,9 @@ import dev.samandar.walletapp.wallet.data.local.entity.debt.DebtTransactionEntit
         ShoppingListEntity::class,
         ShoppingItemEntity::class,
         DebtEntity::class,
-        DebtTransactionEntity::class
+        DebtTransactionEntity::class,
+        ReceiptEntity::class,      // Shular borligini tekshiring
+        ReceiptItemEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -45,9 +50,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun shoppingDao(): ShoppingDao
 
     abstract fun debtDao(): DebtDao
+    abstract fun receiptDao(): ReceiptDao
 
     companion object {
-        const val DATABASE_NAME = "db_wallet_app_V1.0.0"
+        const val DATABASE_NAME = "database_expense_tracker_v1.0.0"
 
 
     }

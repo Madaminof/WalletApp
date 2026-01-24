@@ -88,7 +88,7 @@ fun <T> SelectionList(
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.Medium,
                                 color = if (isSelected)
-                                    MaterialTheme.colorScheme.primary
+                                    itemThemeColor
                                 else
                                     MaterialTheme.colorScheme.onTertiary.copy(0.8f)
                             ),
@@ -99,7 +99,7 @@ fun <T> SelectionList(
                             Icon(
                                 imageVector = Icons.Rounded.CheckCircle,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
+                                tint = itemThemeColor,
                                 modifier = Modifier.size(24.dp)
                             )
                         } else {
@@ -127,3 +127,4 @@ fun <T> SelectionList(
         )
     }
 }
+

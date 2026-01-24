@@ -138,7 +138,7 @@ fun WalletCardItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Surface(
-                        color = contentColor.copy(alpha = 0.2f),
+                        color = contentColor.copy(alpha = 0.15f),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.size(40.dp)
                     ) {
@@ -163,7 +163,7 @@ fun WalletCardItem(
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Bold,
                             color = contentColor.copy(alpha = 0.8f),
-                            fontSize = 18.sp,
+                            fontSize = 16.sp,
                             letterSpacing = 0.5.sp
                         ),
                         maxLines = 1,

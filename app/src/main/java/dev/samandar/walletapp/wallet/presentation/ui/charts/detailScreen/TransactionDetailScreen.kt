@@ -1,17 +1,22 @@
 package dev.samandar.walletapp.wallet.presentation.ui.charts.detailScreen
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DeleteOutline
+import androidx.compose.material.icons.rounded.ReceiptLong
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -106,27 +111,60 @@ fun ActionButtonsRow(
     val context = LocalContext.current
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        if (!transaction.originalUrl.isNullOrBlank()) {
+            FilledTonalButton(
+                onClick = {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(transaction.originalUrl))
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                    }
+                },
+                modifier = Modifier.height(44.dp),
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+                colors = ButtonDefaults.filledTonalButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primary.copy(0.2f),
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.qr_code_icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = "Check",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+        }
+
+        // 2. ULASHISH TUGMASI
         FilledTonalButton(
             onClick = { shareTransaction(context, transaction, amountText) },
             modifier = Modifier.height(44.dp),
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
             colors = ButtonDefaults.filledTonalButtonColors(
-                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                containerColor = MaterialTheme.colorScheme.primary.copy(0.2f),
+                contentColor = MaterialTheme.colorScheme.primary
             )
         ) {
             Icon(
-                imageVector = Icons.Rounded.Share,
+                painter = painterResource(R.drawable.share_icon),
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
                 tint = MaterialTheme.colorScheme.primary
-
             )
             Spacer(Modifier.width(8.dp))
             Text(
@@ -138,20 +176,21 @@ fun ActionButtonsRow(
 
         Spacer(modifier = Modifier.width(12.dp))
 
+        // 3. O'CHIRISH TUGMASI
         FilledIconButton(
             onClick = onDelete,
             modifier = Modifier.size(44.dp),
             shape = RoundedCornerShape(12.dp),
             colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
+                containerColor = expenseColor.copy(0.15f),
                 contentColor = MaterialTheme.colorScheme.error
             )
         ) {
             Icon(
-                imageVector = Icons.Rounded.DeleteOutline,
+                painter = painterResource(R.drawable.delete_icon),
                 contentDescription = "Delete",
                 modifier = Modifier.size(22.dp),
-                tint = expenseColor
+                tint = MaterialTheme.colorScheme.error
             )
         }
     }

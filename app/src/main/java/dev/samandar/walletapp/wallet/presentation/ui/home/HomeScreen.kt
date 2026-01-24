@@ -7,11 +7,9 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -38,10 +36,9 @@ fun HomeScreen(
     navController: NavController,
     totalBalanceCardViewModel: TotalBalanceCardViewModel,
     budgetViewModel: BudgetViewModel = hiltViewModel(),
+    listState: LazyListState,
 ) {
     val budgetState by budgetViewModel.budgetCardState.collectAsState()
-    val listState = rememberLazyListState()
-
     val homeItems = remember(budgetState) {
         listOf<@Composable () -> Unit>(
             { TotalBalanceCard(onFilterClick = totalBalanceCardViewModel::onFilterClick) },
@@ -55,6 +52,7 @@ fun HomeScreen(
                     hasActiveBudget = budgetState.hasActiveBudget,
                     budgetLimit = budgetState.totalBudgetLimit,
                     spentAmount = budgetState.totalSpentAmount,
+                    navController = navController
                 )
             }
         )
@@ -79,6 +77,9 @@ fun HomeScreen(
                 HomeItemAnimator(index = index) {
                     itemContent()
                 }
+            }
+            item {
+                Spacer(modifier = Modifier.height(60.dp))
             }
         }
     }
@@ -138,10 +139,10 @@ fun QuickActionsRow(onActionClick: (String) -> Unit) {
         modifier = Modifier.fillMaxWidth()
     ) {
         val actions = listOf(
-            Triple(Icons.Default.AccountBalanceWallet, R.string.quick_budjets, Screen.Budgets.route),
-            Triple(Icons.Default.ShoppingCart, R.string.quick_shoppingList, Screen.ShoppingLists.route),
-            Triple(Icons.Default.Money, R.string.quick_Debts, Screen.DebtsScreen.route),
-            Triple(Icons.Default.Balance, R.string.quick_Balance, Screen.Charts.route)
+            Triple(R.drawable.budget_ic, R.string.quick_budjets, Screen.Budgets.route),
+            Triple(R.drawable.shopp_list_ic, R.string.quick_shoppingList, Screen.ShoppingLists.route),
+            Triple(R.drawable.debt_ic2, R.string.quick_Debts, Screen.DebtsScreen.route),
+            Triple(R.drawable.balance_ic, R.string.quick_Balance, Screen.Charts.route)
         )
 
         itemsIndexed(actions) { _, action ->
@@ -154,7 +155,9 @@ fun QuickActionsRow(onActionClick: (String) -> Unit) {
                     R.string.quick_Debts -> debts
                     else -> balance
                 },
-                onClick = { onActionClick(action.third) }
+                onClick = {
+                    onActionClick(action.third)
+                }
             )
         }
     }

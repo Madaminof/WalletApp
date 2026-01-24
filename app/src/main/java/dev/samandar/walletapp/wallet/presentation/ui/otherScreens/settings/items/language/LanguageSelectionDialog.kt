@@ -36,7 +36,7 @@ data class AppLanguage(
 
 val availableLanguages = listOf(
     AppLanguage("en", "English"),
-    //AppLanguage("ru", "Русский"),
+    AppLanguage("ru", "Русский"),
     AppLanguage("uz", "O'zbekcha")
 )
 

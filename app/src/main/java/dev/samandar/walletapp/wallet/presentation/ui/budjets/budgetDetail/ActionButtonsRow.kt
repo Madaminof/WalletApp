@@ -17,7 +17,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import dev.samandar.walletapp.R
 import dev.samandar.walletapp.ui.theme.expenseColor
 
 
@@ -56,15 +58,15 @@ fun ActionButtonsRow(
             modifier = Modifier.size(44.dp),
             shape = RoundedCornerShape(12.dp),
             colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
+                containerColor = expenseColor.copy(0.15f),
                 contentColor = MaterialTheme.colorScheme.error
             )
         ) {
             Icon(
-                imageVector = Icons.Rounded.DeleteOutline,
+                painter = painterResource(R.drawable.delete_icon),
                 contentDescription = "Delete",
                 modifier = Modifier.size(22.dp),
-                tint = expenseColor
+                tint = MaterialTheme.colorScheme.error
             )
         }
     }

@@ -30,6 +30,8 @@ data class BarChartItem(
 data class TotalBalanceUiState(
     val netBalance: Double = 0.0,
     val periodBalance: Double = 0.0,
+    val totalIncome: Double = 0.0,      // QO'SHILDI
+    val totalExpense: Double = 0.0,     // QO'SHILDI
     val periodLabel: String = "",
     val barChartData: List<BarChartItem> = emptyList(),
     val selectedFilter: String = FilterKeys.MONTH,
@@ -37,7 +39,14 @@ data class TotalBalanceUiState(
     val accounts: List<Account> = emptyList(),
     val selectedAccountIds: Set<String> = emptySet(),
     val isFilterDialogOpen: Boolean = false,
-)
+    val isIncomeMode: Boolean = false   // Switch orqali boshqariladigan rejim
+) {
+    // Grafik uchun maksimal limit (133K va 17K ni solishtirish uchun)
+    val globalMaxLimit: Double get() = maxOf(
+        netBalance.absoluteValue,
+        barChartData.maxOfOrNull { it.value } ?: 0.0
+    ).coerceAtLeast(1.0)
+}
 
 
 @HiltViewModel
@@ -53,6 +62,8 @@ class TotalBalanceCardViewModel @Inject constructor(
     private val accountsFlow: Flow<List<Account>> = getAllAccounts()
 
     private val _selectedFilter = MutableStateFlow(FilterKeys.MONTH)
+
+    private val _isShowingIncome = MutableStateFlow(false)
 
     private val _currentPeriodStart = MutableStateFlow(calculatePeriodBounds(Calendar.getInstance(), FilterKeys.MONTH).first)
 
@@ -76,13 +87,30 @@ class TotalBalanceCardViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         combine(
-            transactionsFlow,
-            _selectedFilter,
-            _currentPeriodStart,
-            _accountFilterState,
-            _isFilterDialogOpen
-        ) { transactions, filter, periodStart, accountPair, isDialogOpen ->
-            processTransactionsForPeriod(transactions, filter, periodStart, accountPair, isDialogOpen)
+            transactionsFlow,          // [0]
+            _selectedFilter,           // [1]
+            _currentPeriodStart,       // [2]
+            _accountFilterState,       // [3]
+            _isFilterDialogOpen,       // [4]
+            _isShowingIncome           // [5]
+        ) { args: Array<Any> ->
+            // Massivdan elementlarni o'z tipiga cast qilib olamiz
+            val transactions = args[0] as List<Transaction>
+            val filter = args[1] as String
+            val periodStart = args[2] as Long
+            val accountPair = args[3] as Pair<List<Account>, Set<String>>
+            val isDialogOpen = args[4] as Boolean
+            val isShowingIncome = args[5] as Boolean
+
+            // Endi hamma argumentlarni funksiyaga uzatamiz
+            processTransactionsForPeriod(
+                transactions,
+                filter,
+                periodStart,
+                accountPair,
+                isDialogOpen,
+                isShowingIncome
+            )
         }.onEach { newState ->
             _cardState.value = newState.copy(isLoading = false)
         }.launchIn(viewModelScope)
@@ -134,7 +162,8 @@ class TotalBalanceCardViewModel @Inject constructor(
         filter: String,
         periodStart: Long,
         accountPair: Pair<List<Account>, Set<String>>,
-        isDialogOpen: Boolean
+        isDialogOpen: Boolean,
+        manualShowIncome: Boolean
     ): TotalBalanceUiState {
         val (allAccounts, selectedAccountIds) = accountPair
         val (startTime, endTime, label) = calculatePeriodBounds(periodStart, filter)
@@ -143,27 +172,52 @@ class TotalBalanceCardViewModel @Inject constructor(
             selectedAccountIds.contains(it.account.id)
         }
 
-        val netBalance = accountFilteredTransactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount } -
-                accountFilteredTransactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
+        val totalInc = accountFilteredTransactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
+        val totalExp = accountFilteredTransactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
+        val netBalance = totalInc - totalExp
 
-        val filteredTransactionsByPeriodAndAccount = accountFilteredTransactions.filter {
+        // 3. TANLANGAN DAVR (Period) tranzaksiyalari
+        val periodTransactions = accountFilteredTransactions.filter {
             it.date >= startTime && it.date <= endTime
         }
-        val periodBalance = filteredTransactionsByPeriodAndAccount.filter { it.type == TransactionType.INCOME }.sumOf { it.amount } -
-                filteredTransactionsByPeriodAndAccount.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
 
-        val barData = createBarChartData(filteredTransactionsByPeriodAndAccount, filter, startTime, endTime)
+        val periodIncome = periodTransactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
+        val periodExpense = periodTransactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
+
+        // 4. CHART REJIMINI ANIQLASH (SMART LOGIC)
+        // Professional mantiq:
+        // - Agar foydalanuvchi UI'da "Income"ni tanlasa -> Income ko'rsatiladi.
+        // - Agar default holat bo'lsa:
+        //      - Umumiy balans minus bo'lsa (netBalance < 0) -> Expense ko'rsatiladi (Xavf rejimi).
+        //      - Shu davrda xarajat ko'p bo'lsa -> Expense ko'rsatiladi.
+        val isExpensePriority = netBalance < 0 || periodExpense > periodIncome
+
+        // Agar foydalanuvchi qo'lda tanlamagan bo'lsa (manualShowIncome - false bo'lsa),
+        // avtomatik ravishda isExpensePriority'ga teskari qiymat oladi.
+        val effectiveIncomeMode = if (manualShowIncome) true else !isExpensePriority
+
+        // 5. Grafik ma'lumotlarini tayyorlash
+        val barData = createBarChartData(
+            transactions = periodTransactions,
+            filter = filter,
+            startTime = startTime,
+            endTime = endTime,
+            showIncome = effectiveIncomeMode
+        )
 
         return TotalBalanceUiState(
-            netBalance = netBalance,
-            periodBalance = periodBalance,
+            netBalance = netBalance, // Masalan: -342 000
+            periodBalance = if (effectiveIncomeMode) periodIncome else periodExpense,
+            totalIncome = totalInc,
+            totalExpense = totalExp,
             periodLabel = label,
             barChartData = barData,
             selectedFilter = filter,
             isLoading = false,
             accounts = allAccounts,
             selectedAccountIds = selectedAccountIds,
-            isFilterDialogOpen = isDialogOpen
+            isFilterDialogOpen = isDialogOpen,
+            isIncomeMode = effectiveIncomeMode // Chart rangini (yashil/qizil) belgilaydi
         )
     }
 
@@ -224,89 +278,64 @@ class TotalBalanceCardViewModel @Inject constructor(
         transactions: List<Transaction>,
         filter: String,
         startTime: Long,
-        endTime: Long
+        endTime: Long,
+        showIncome: Boolean
     ): List<BarChartItem> {
+        val targetType = if (showIncome) TransactionType.INCOME else TransactionType.EXPENSE
+        val filteredTxs = transactions.filter { it.type == targetType }
 
-        if (transactions.isEmpty()) return emptyList()
+        // Agar ma'lumot bo'lmasa, o'qlar ko'rinishi uchun bo'sh bo'lmagan list qaytargan ma'qul
+        // yoki UI darajasida "Empty" holatini ko'rsatish kerak.
 
         val cal = Calendar.getInstance()
-        val expenseTransactions = transactions.filter { it.type == TransactionType.EXPENSE }
-
-        if (expenseTransactions.isEmpty()) return emptyList()
-
-
-        val (groupingUnit, _) = when (filter) {
-            FilterKeys.DAY -> Pair(Calendar.HOUR_OF_DAY, SimpleDateFormat("HH:00", Locale.getDefault()))
-
-            FilterKeys.WEEK -> Pair(Calendar.DAY_OF_WEEK, SimpleDateFormat("EE", Locale.getDefault()))
-
-            FilterKeys.MONTH -> Pair(Calendar.DAY_OF_MONTH, SimpleDateFormat("dd", Locale.getDefault()))
-
-            FilterKeys.YEAR, FilterKeys.ALL -> Pair(Calendar.MONTH, SimpleDateFormat("MMM", Locale.getDefault()))
-            else -> return emptyList()
+        val groupingUnit = when (filter) {
+            FilterKeys.DAY -> Calendar.HOUR_OF_DAY
+            FilterKeys.WEEK -> Calendar.DAY_OF_WEEK
+            FilterKeys.MONTH -> Calendar.DAY_OF_MONTH
+            FilterKeys.YEAR, FilterKeys.ALL -> Calendar.MONTH
+            else -> Calendar.DAY_OF_MONTH
         }
 
-        val dataMap = expenseTransactions.groupBy {
+        val dataMap = filteredTxs.groupBy {
             cal.timeInMillis = it.date
             cal.get(groupingUnit)
-        }.mapValues { (_, txs) -> txs.sumOf { it.amount } }
+        }.mapValues { (_, txs) -> txs.sumOf { it.amount }.absoluteValue }
 
         val barData = mutableListOf<BarChartItem>()
         val tempCal = Calendar.getInstance().apply { timeInMillis = startTime }
 
-        if (filter == FilterKeys.ALL) {
-            val minDate = expenseTransactions.minOf { it.date }
-            tempCal.timeInMillis = minDate
-            tempCal.set(Calendar.MONTH, Calendar.JANUARY)
-            tempCal.set(Calendar.DAY_OF_MONTH, 1)
-            tempCal.set(Calendar.HOUR_OF_DAY, 0)
-            tempCal.set(Calendar.MINUTE, 0)
-            tempCal.set(Calendar.SECOND, 0)
-            tempCal.set(Calendar.MILLISECOND, 0)
-        }
-
-        val maxIterations = when(filter) {
+        // Iteratsiyalar soni va loop mantiqi (Siz yozgan kod deyarli to'g'ri)
+        val maxIterations = when (filter) {
             FilterKeys.DAY -> 24
             FilterKeys.WEEK -> 7
             FilterKeys.MONTH -> tempCal.getActualMaximum(Calendar.DAY_OF_MONTH)
             FilterKeys.YEAR -> 12
-            FilterKeys.ALL -> 60
+            FilterKeys.ALL -> 12 // All time uchun oxirgi 12 oyni ko'rsatish optimal
             else -> 7
         }
-        var count = 0
-        val maxEndTime = if (filter == FilterKeys.ALL) Long.MAX_VALUE else endTime
 
-        while (tempCal.timeInMillis <= maxEndTime && count < maxIterations) {
-
+        repeat(maxIterations) {
             val unitKey = tempCal.get(groupingUnit)
-
-            val value = dataMap[unitKey]?.div(1000000.0) ?: 0.0
+            val value = dataMap[unitKey] ?: 0.0
 
             val label = when (filter) {
-                FilterKeys.DAY -> SimpleDateFormat("HH:00", Locale.getDefault()).format(tempCal.time)
-                FilterKeys.WEEK -> SimpleDateFormat("EE", Locale.getDefault()).format(tempCal.time) // Dushanba/Yakshanba
-                FilterKeys.MONTH -> SimpleDateFormat("dd", Locale.getDefault()).format(tempCal.time) // 01, 02, ...
-                FilterKeys.YEAR -> SimpleDateFormat("MMM", Locale.getDefault()).format(tempCal.time) // Yan, Fev, ...
-                FilterKeys.ALL -> SimpleDateFormat("MMM yyyy", Locale.getDefault()).format(tempCal.time) // Yan 2024, Fev 2024, ...
-                else -> SimpleDateFormat("HH:00", Locale.getDefault()).format(tempCal.time)
+                FilterKeys.DAY -> String.format("%02d:00", unitKey)
+                FilterKeys.WEEK -> SimpleDateFormat("EEE", Locale.getDefault()).format(tempCal.time)
+                FilterKeys.MONTH -> tempCal.get(Calendar.DAY_OF_MONTH).toString()
+                FilterKeys.YEAR -> SimpleDateFormat("MMM", Locale.getDefault()).format(tempCal.time)
+                else -> ""
             }
 
-            barData.add(BarChartItem(label, value.absoluteValue))
-            count++
+            barData.add(BarChartItem(label, value, !showIncome))
+
+            // Vaqtni siljitish
             when (filter) {
                 FilterKeys.DAY -> tempCal.add(Calendar.HOUR_OF_DAY, 1)
-
                 FilterKeys.WEEK, FilterKeys.MONTH -> tempCal.add(Calendar.DAY_OF_YEAR, 1)
-
-                FilterKeys.YEAR, FilterKeys.ALL -> tempCal.add(Calendar.MONTH, 1)
-            }
-
-            if (filter == FilterKeys.ALL) {
-                val currentCal = Calendar.getInstance()
-                if (tempCal.after(currentCal)) break
+                FilterKeys.YEAR -> tempCal.add(Calendar.MONTH, 1)
+                else -> tempCal.add(Calendar.DAY_OF_YEAR, 1)
             }
         }
-
         return barData
     }
 }

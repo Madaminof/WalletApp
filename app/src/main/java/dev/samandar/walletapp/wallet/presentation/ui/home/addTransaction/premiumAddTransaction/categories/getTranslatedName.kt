@@ -71,6 +71,10 @@ fun getTranslatedName(dbName: String): Any {
         "Lent" -> R.string.cat_lent
         "Borrowed" -> R.string.cat_borrowed
         "Debt Payment" -> R.string.cat_debt_payment
+        "Transport" -> R.string.cat_transport
+        "Taxi" -> R.string.cat_taxi
+        "Fuel" -> R.string.cat_fuel
+        "Car Maintenance" -> R.string.cat_car_maintenance
 
         else -> null
     }

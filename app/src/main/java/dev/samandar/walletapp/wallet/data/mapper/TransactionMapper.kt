@@ -17,6 +17,7 @@ fun Transaction.toEntity(): TransactionEntity {
         accountId = this.account.id,
         note = this.note,
         date = this.date,
+        originalUrl = this.originalUrl
     )
 }
 fun TransactionEntity.toDomain(category: Category, account: Account): Transaction {
@@ -27,7 +28,8 @@ fun TransactionEntity.toDomain(category: Category, account: Account): Transactio
         category = category,
         account = account,
         note = this.note,
-        date = this.date
+        date = this.date,
+        originalUrl = originalUrl
     )
 }
 fun Category.toCategoryEntity(): CategoryEntity {

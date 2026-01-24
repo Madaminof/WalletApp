@@ -7,7 +7,8 @@ data class Transaction(
     val category: Category,
     val account: Account,
     val note: String? = null,
-    val date: Long
+    val date: Long,
+    val originalUrl: String? = null
 )
 data class Category(
     val id: String,

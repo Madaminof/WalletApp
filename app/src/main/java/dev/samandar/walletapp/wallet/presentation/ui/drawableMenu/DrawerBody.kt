@@ -39,11 +39,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import dev.samandar.walletapp.R
 import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.ui.theme.CurrencyRates
 import dev.samandar.walletapp.ui.theme.Follow
@@ -62,7 +64,7 @@ import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items
 
 
 data class NavItem(
-    val icon: ImageVector,
+    val icon: Int,
     val labelRes: Int,
     val color: Color,
     val route: String? = null,
@@ -81,18 +83,18 @@ fun DrawerBody(
     val menuGroups = remember {
         listOf(
             listOf(
-                NavItem(Icons.Default.Home, Strings.drawer_menu_title_home, Home, Screen.Home.route),
-                NavItem(Icons.Default.AccountBalance, Strings.title_account, Records, Screen.Wallet.route),
-                NavItem(Icons.Default.BarChart, Strings.title_statistics, Statistics, Screen.Charts.route)
+                NavItem(R.drawable.home_icon, Strings.drawer_menu_title_home, Home, Screen.Home.route),
+                NavItem(R.drawable.account_icon, Strings.title_account, Records, Screen.Wallet.route),
+                NavItem(R.drawable.statistic_icon, Strings.title_statistics, Statistics, Screen.Charts.route)
             ),
             listOf(
-                NavItem(Icons.Default.AccountBalanceWallet, Strings.title_budgets, budjets, Screen.Budgets.route),
-                NavItem(Icons.Default.ShoppingCart, Strings.title_shopping_lists, shoppingList, Screen.ShoppingLists.route),
-                NavItem(Icons.Rounded.Money, Strings.title_debts, debts, Screen.DebtsScreen.route),
-                NavItem(Icons.Default.CurrencyExchange, Strings.title_currency_rates, CurrencyRates, isDialog = true)
+                NavItem(R.drawable.budget_ic, Strings.title_budgets, budjets, Screen.Budgets.route),
+                NavItem(R.drawable.shopp_list_ic, Strings.title_shopping_lists, shoppingList, Screen.ShoppingLists.route),
+                NavItem(R.drawable.debt_ic2, Strings.title_debts, debts, Screen.DebtsScreen.route),
+                NavItem(R.drawable.currency_rates_icon, Strings.title_currency_rates, CurrencyRates, isDialog = true)
             ),
             listOf(
-                NavItem(Icons.Default.Settings, Strings.title_settings, Settings, Screen.SettingScreen.route)
+                NavItem(R.drawable.setting_icon, Strings.title_settings, Settings, Screen.SettingScreen.route)
             )
         )
     }
@@ -118,7 +120,7 @@ fun DrawerBody(
                     },
                     icon = {
                         Icon(
-                            imageVector = item.icon,
+                            painter = painterResource(item.icon),
                             contentDescription = null,
                             tint = if (isSelected) MaterialTheme.colorScheme.primary else item.color,
                             modifier = Modifier.size(24.dp)

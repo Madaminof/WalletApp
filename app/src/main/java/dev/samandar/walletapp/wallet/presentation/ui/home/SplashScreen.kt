@@ -92,7 +92,8 @@ fun SplashContent(scale: Float, alpha: Float) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 40.dp),
+                .navigationBarsPadding()
+                .padding(bottom = 8.dp),
             contentAlignment = Alignment.BottomCenter
         ) {
             Text(

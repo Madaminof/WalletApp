@@ -11,12 +11,12 @@ android {
     namespace = "dev.samandar.walletapp"
     compileSdk = 35
 
-    defaultConfig {
+    defaultConfig { 
         applicationId = "dev.samandar.walletapp"
         minSdk = 24
         targetSdk = 35 // Android 15 qo'llab-quvvatlash
-        versionCode = 8 // Google Console uchun doim oshirib boring
-        versionName = "1.4"
+        versionCode = 10 // Google Console uchun doim oshirib boring
+        versionName = "1.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -56,6 +56,10 @@ android {
     buildFeatures {
         compose = true
     }
+
+    bundle {
+        language.enableSplit = false
+    }
 }
 
 dependencies {
@@ -65,6 +69,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.foundation)
+    implementation(libs.play.services.mlkit.barcode.scanning)
     debugImplementation(libs.androidx.ui.tooling)
     implementation("androidx.compose.material:material-icons-extended")
 
@@ -111,6 +116,26 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.constraintlayout.compose)
 
+
+    implementation ("com.google.mlkit:text-recognition:16.0.0")
+    val camerax_version = "1.3.1"
+    implementation ("androidx.camera:camera-core:${camerax_version}")
+    implementation ("androidx.camera:camera-camera2:${camerax_version}")
+    implementation ("androidx.camera:camera-lifecycle:${camerax_version}")
+    implementation ("androidx.camera:camera-video:${camerax_version}")
+    implementation ("androidx.camera:camera-view:${camerax_version}")
+    implementation ("androidx.camera:camera-extensions:${camerax_version}")
+
+    // Guava (CameraX ishlashi uchun ba'zida kerak bo'ladi)
+    implementation ("com.google.guava:guava:32.1.3-android")
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+
+    implementation("org.jsoup:jsoup:1.17.2")
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+
+    
+
     // --- Google Services ---
     implementation(libs.play.services.location)
     implementation(libs.play.services.auth)
@@ -119,4 +144,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("androidx.compose.material3:material3:1.2.0")
+
+
 }

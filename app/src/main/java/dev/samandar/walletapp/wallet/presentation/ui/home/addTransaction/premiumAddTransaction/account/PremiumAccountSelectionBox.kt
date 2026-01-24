@@ -39,7 +39,7 @@ fun PremiumAccountSelectionBox(
         modifier = modifier.height(48.dp),
         shape = RoundedCornerShape(14.dp),
         color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.15f))
+        border = BorderStroke(1.dp, accColor.copy(alpha = 0.3f))
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 8.dp),
@@ -48,9 +48,9 @@ fun PremiumAccountSelectionBox(
             // Icon qismi
             Box(
                 modifier = Modifier
-                    .size(30.dp)
+                    .size(36.dp)
                     .background(
-                        accColor.copy(0.2f),
+                        accColor.copy(0.3f),
                         RoundedCornerShape(8.dp)
                     ),
                 contentAlignment = Alignment.Center
@@ -59,7 +59,7 @@ fun PremiumAccountSelectionBox(
                     painter = painterResource(id = selectedAccount?.iconResId ?: R.drawable.ic_card_default),
                     contentDescription = null,
                     tint = Color.Unspecified,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(24.dp)
                 )
             }
 

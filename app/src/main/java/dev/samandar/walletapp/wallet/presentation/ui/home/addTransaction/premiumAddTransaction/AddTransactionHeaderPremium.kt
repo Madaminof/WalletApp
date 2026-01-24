@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -28,9 +29,9 @@ fun AddTransactionHeaderPremium(
     ) {
         IconButton(onClick = onClose) {
             Icon(
-                imageVector = Icons.Default.Close,
+                painter = painterResource(R.drawable.close_ic),
                 contentDescription = "Close",
-                tint = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
+                tint = MaterialTheme.colorScheme.primary.copy(0.8f)
             )
         }
         Box(
@@ -40,7 +41,7 @@ fun AddTransactionHeaderPremium(
                 Text(
                     text = stringResource(R.string.title_add_transaction),
                     style = MaterialTheme.typography.labelLarge.copy(
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.ExtraBold
                     ),
                     color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
                     fontSize = 20.sp

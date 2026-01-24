@@ -81,7 +81,7 @@ fun TransactionMainCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
+        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -100,7 +100,7 @@ fun TransactionMainCard(
                 ) {
                     IconBox(
                         iconRes = transaction.category.iconResId,
-                        color = Color(transaction.category.colorArgb).copy(alpha = 0.1f)
+                        color = Color(transaction.category.colorArgb).copy(alpha = 0.15f)
                     )
 
                     Spacer(modifier = Modifier.width(12.dp))

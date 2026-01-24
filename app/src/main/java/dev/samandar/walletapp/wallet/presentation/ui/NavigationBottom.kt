@@ -1,6 +1,8 @@
 package dev.samandar.walletapp.wallet.presentation.ui
 
+import android.media.MediaPlayer
 import android.os.Build
+import android.os.Build.VERSION_CODES.S
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
@@ -9,6 +11,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -32,8 +35,10 @@ import dev.samandar.walletapp.wallet.presentation.ui.drawableMenu.DrawerBody
 import dev.samandar.walletapp.wallet.presentation.ui.drawableMenu.DrawerHeader
 import dev.samandar.walletapp.wallet.presentation.ui.home.HomeScreen
 import dev.samandar.walletapp.wallet.presentation.ui.home.HomeTopBar
+import dev.samandar.walletapp.wallet.presentation.ui.home.ModernBottomActions
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.snackbar.ModernSnackbar
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.TotalBalanceCardViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -44,7 +49,8 @@ fun Navigation(
     totalBalanceCardViewModel: TotalBalanceCardViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val haptic = LocalHapticFeedback.current
+
+    val listState = rememberLazyListState()
 
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -60,9 +66,9 @@ fun Navigation(
         if (!message.isNullOrBlank()) {
             handle.set("success_key", null)
 
-            var mediaPlayer: android.media.MediaPlayer? = null
+            var mediaPlayer: MediaPlayer? = null
             try {
-                mediaPlayer = android.media.MediaPlayer.create(context, R.raw.transaction_save)
+                mediaPlayer = MediaPlayer.create(context, R.raw.transaction_save)
                 mediaPlayer?.setVolume(0.3f, 0.3f)
                 mediaPlayer?.start()
 
@@ -77,15 +83,14 @@ fun Navigation(
                 e.printStackTrace()
             } finally {
                 scope.launch {
-                    kotlinx.coroutines.delay(3000L)
+                    delay(3000L)
                     mediaPlayer?.release()
                 }
             }
         }
     }
 
-    val currentRoute = navBackStackEntry?.destination?.route
-
+    val currentRoute = navBackStackEntry?.destination?.route ?: Screen.Home.route
     val onNavigate: (String) -> Unit = { route ->
         if (currentRoute != route) {
             navController.navigate(route) {
@@ -126,26 +131,13 @@ fun Navigation(
                         navController = navController
                     )
                 },
-                floatingActionButton = {
-                    FloatingActionButton(
-                        onClick = {
-                            navController.navigate(Screen.addTransaction.route)
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-
-                        },
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = Color.White,
-                        shape = CircleShape
-                    ) {
-                        Icon(imageVector = Icons.Default.Add, contentDescription = null)
-                    }
-                }
             ) { paddingValues ->
                 Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
                     HomeScreen(
                         onActionClick = { route -> navController.navigate(route) },
                         navController = navController,
-                        totalBalanceCardViewModel = totalBalanceCardViewModel
+                        totalBalanceCardViewModel = totalBalanceCardViewModel,
+                        listState = listState
                     )
                 }
             }

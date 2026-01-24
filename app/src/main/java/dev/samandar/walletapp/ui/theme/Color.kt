@@ -11,24 +11,38 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-// tezkor kirish cards
-val budjets = Color(0xFFEE165F)
-val balance = Color(0xFF1D8621)
-val shoppingList = Color(0xFFCD3939)
-val debts = Color(0xFFE64A19)
-val goals = Color(0xFF00796B)
+// drawable icon color
+val drawableColor = Color(0xFF4759C1)
 
-val Home = Color(0xFF5F9C29)
-val Records = Color(0xFFFFA000)
-val Investments = Color(0xFF1B611E)
-val Statistics = Color(0xFF1976D2)
-val CurrencyRates = Color(0xFF303F9F)
+// --- ASOSIY BO'LIMLAR (Main Sections) ---
+val budjets = Color(0xFF786FA6)         // Yumshoq binafsha (Muted Purple)
+val balance = Color(0xFF26DE81)         // Yangi pul rangi (Fresh Green)
+val shoppingList = Color(0xFFE76E6D)    // Mayin marjon (Soft Coral)
+val debts = Color(0xFFC65C7A)           // To'q pushti (Old Rose)
+val goals = Color(0xFF3DC1D3)           // Firuza (Cyan Pastel)
 
-val InviteFrient = Color(0xFF4A2BAD)
-val Follow = Color(0xFFC2185B)
-val Help = Color(0xFFFBC02D)
-val Settings = Color(0xFF0F9915)
+// --- NAVIGATSIYA VA TAHLIL (Navigation & Analysis) ---
+val Home = Color(0xFF778BEB)            // Ishonchli moviy (Soft Blue)
+val Records = Color(0xFFF5CD79)         // Qumli sariq (Sand Yellow)
+val Investments = Color(0xFF20BF6B)     // O'sish yashili (Jade Green)
+val Statistics = Color(0xFF546DE5)      // Professional ko'k (Royal Blue)
+val CurrencyRates = Color(0xFF574B90)   // To'q binafsha konturga mos (Deep Purple)
 
+// --- YORDAMCHI VA IJTIMOIY (Others) ---
+val InviteFrient = Color(0xFF6379EE)    // Indigo (Vibrant Blue)
+val Follow = Color(0xFFF8A5C2)          // Flamingo pushtisi (Pink)
+val Help = Color(0xFFF7D794)            // Yordam saryog' rang (Cream)
+val Settings = Color(0xFF596275)        // Neytral kulrang-moviy (Steel Grey)
+
+// --- SOZLAMALAR VA QO'SHIMCHA ---
+val theme = Color(0xFF546DE5)         // Royal Blue (Soft)
+val numberFormat = Color(0xFF3DC1D3)  // Cyan / Turquoise
+val language = Color(0xFF097CC2)      // Muted Purple
+val followUs = Color(0xFFD27394)      // Flamingo Pink
+
+// add transaction manual and qr-code
+val manualColor = Color(0xFF4759C1)      // Muted Purple
+val qr_codeColor = Color(0xFF5A902A)      // Flamingo Pink
 
 
 

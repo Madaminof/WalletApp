@@ -1,13 +1,17 @@
 package dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen
 
+import androidx.camera.core.processing.SurfaceProcessorNode.In
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -18,11 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.samandar.walletapp.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,8 +55,8 @@ fun CustomTopBar(
         navigationIcon = {
             PremiumButton(
                 onClick = onBackClick,
-                icon = Icons.Default.ArrowBackIosNew,
-                color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+                icon = R.drawable.back_ic,
+                color = MaterialTheme.colorScheme.primary.copy(0.8f),
                 modifier = Modifier
             )
         },
@@ -66,70 +73,24 @@ fun CustomTopBar(
 @Composable
 fun PremiumButton(
     onClick: () -> Unit,
-    icon:ImageVector,
+    icon:Int,
     color: Color,
     modifier: Modifier
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
 
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.88f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioLowBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
-        label = "backScale"
-    )
-
-    Box(
+    Icon(
+        painter = painterResource(id = icon),
+        contentDescription = "Back",
+        tint = color,
         modifier = modifier
             .padding(start = 12.dp)
-            .size(36.dp)
-            .scale(scale)
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f))
-            .clickableSingle {
-                onClick()
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = "Back",
-            tint = color,
-            modifier = Modifier.size(20.dp)
-        )
-    }
+            .size(32.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            )
+    )
 }
 
-
-fun Modifier.clickableSingle(
-    enabled: Boolean = true,
-    onClick: () -> Unit
-) = composed {
-    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
-    Modifier.clickable(
-        enabled = enabled,
-        indication = ripple(),
-        interactionSource = remember { MutableInteractionSource() }
-    ) {
-        multipleEventsCutter.processEvent { onClick() }
-    }
-}
-
-internal class MultipleEventsCutter {
-    private val now: Long get() = System.currentTimeMillis()
-    private var lastEventTime: Long = 0
-
-    fun processEvent(event: () -> Unit) {
-        if (now - lastEventTime >= 500L) {
-            event()
-        }
-        lastEventTime = now
-    }
-
-    companion object {
-        fun get(): MultipleEventsCutter = MultipleEventsCutter()
-    }
-}

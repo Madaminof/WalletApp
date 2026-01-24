@@ -190,6 +190,11 @@
     <string name="title_select_wallet">Select Wallet</string>
     <string name="subtitle_select_wallet">Which account are you using?</string>
     <string name="title_add_transaction">Add Transaction</string>
+    <string name="add_transaction_subtitle">Select input method</string>
+    <string name="method_manual">Manual</string>
+    <string name="method_manual_desc">Enter details manually</string>
+    <string name="method_qr">QR Scanner</string>
+    <string name="method_qr_desc">Scan the receipt</string>
 
     // ui/account
     <string name="current_balance" translatable="false">Current Balance</string>
@@ -228,6 +233,7 @@
     <string name="action_sort">Sort</string>
     <string name="unknown_category">Unknown</string>
     <string name="action_back">Back</string>
+    <string name="statistics">STATISTICS</string>
 
     <string name="transaction_details_title">Transaction Details</string>
     <string name="total_amount_label">Total Amount</string>
@@ -318,6 +324,10 @@
     <string name="item_delete_desc">Delete item</string>
     <string name="dialog_delete_product_title">Delete Product</string>
     <string name="dialog_delete_product_text">Are you sure you want to delete the product?</string>
+    <string name="checked_items_count">Selected: %1$d items</string>
+    <string name="total_sum_label">Purchase total:</string>
+    <string name="items_label">items</string>
+    <string name="spent_label">Spent</string>
     // ShoppingList Dialogs
     <string name="dialog_add_new_list_title">Add New List</string>
     <string name="dialog_edit_list_title">Edit List Name</string>
@@ -336,6 +346,10 @@
     <string name="dialog_label_amount_currency">Amount (%1$s)</string>
     <string name="dialog_label_note_optional">Note (Optional)</string>
     <string name="dialog_button_save_transaction">Save</string>
+
+    <string name="label_product">Product</string>
+    <string name="title_review_purchase">Review Purchase</string>
+    <string name="label_purchase_content">Purchase Details</string>
 
     // Debt Screen
     <string name="title_error">An Error Occurred</string>
@@ -400,6 +414,7 @@
     <string name="remaining_amount">Remaining amount</string>
     <string name="payment_history">Payment history</string>
     <string name="no_payments_yet">No payments yet</string>
+    <string name="empty_debts_desc">Your financial records are currently up to date.</string>
 
 
     <string name="button_add">Add</string>
@@ -489,10 +504,19 @@
     <string name="cat_lent">Lent</string>
     <string name="cat_borrowed">Borrowed</string>
     <string name="cat_debt_payment">Debt payment</string>
+    <string name="cat_transport">Transport</string>
+    <string name="cat_taxi">Taxi</string>
+    <string name="cat_fuel">Fuel</string>
+    <string name="cat_car_maintenance">Car Maintenance</string>
 
 
 
 
+    // Scanner QR
+    <string name="scan_qr_code">Scan the QR code</string>
+    <string name="tax_receipt_required">Must be a tax receipt</string>
+    <string name="fetching_data">Fetching data...</string>
+    <string name="please_wait">Please wait</string>
 
 
 

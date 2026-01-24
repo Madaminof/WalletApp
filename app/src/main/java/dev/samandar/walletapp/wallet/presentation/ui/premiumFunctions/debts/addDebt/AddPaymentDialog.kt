@@ -57,7 +57,7 @@ fun AddPaymentDialog(
         mutableStateOf(accounts.find { it.id == debt.accountId } ?: accounts.firstOrNull())
     }
 
-    val activeColor = if (debt.type == DebtType.LENT) incomeColor else expenseColor
+    val activeColor = if (debt.type == DebtType.LENT) MaterialTheme.colorScheme.primary else expenseColor
 
     AlertDialog(
         onDismissRequest = onDismiss,

@@ -1,11 +1,10 @@
 package dev.samandar.walletapp.wallet.presentation.ui.home.cardStatistics
 
-import android.graphics.Paint
-import android.graphics.Typeface
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,58 +13,66 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.samandar.walletapp.ui.theme.expenseColor
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.presentation.viewmodel.CategoryData
-import java.text.DecimalFormat
+import kotlinx.coroutines.launch
 
 @Composable
 fun PremiumDoughnutChart(
     data: List<CategoryData>,
     totalAmount: Double,
+    selectedFilter: String,
     modifier: Modifier = Modifier,
-    chartThickness: Dp = 18.dp
+    chartThickness: Dp = 22.dp
 ) {
-    val density = LocalDensity.current
-    val totalLabel = stringResource(Strings.total_expense).uppercase()
-    val formatter = remember { DecimalFormat("#,###") }
-    val formattedTotal = formatter.format(totalAmount)
-
-    val dynamicFontSize = when {
-        formattedTotal.length > 12 -> 13.sp
-        formattedTotal.length > 9 -> 15.sp
-        else -> 16.sp
-    }
-
     val animatedProgress = remember { Animatable(0f) }
-    LaunchedEffect(data, totalAmount) {
-        animatedProgress.animateTo(1f, spring(0.75f, Spring.StiffnessLow))
+    val scaleAlpha = remember { Animatable(0.8f) }
+
+    LaunchedEffect(data, selectedFilter) {
+        launch {
+            animatedProgress.snapTo(0f)
+            animatedProgress.animateTo(
+                targetValue = 1f,
+                animationSpec = spring(Spring.DampingRatioLowBouncy, Spring.StiffnessLow)
+            )
+        }
+        launch {
+            scaleAlpha.snapTo(0.8f)
+            scaleAlpha.animateTo(1f, spring(Spring.DampingRatioMediumBouncy))
+        }
     }
 
-    val colorAmount = expenseColor.toArgb()
-    val colorLabel = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.5f).toArgb()
+    val filterDisplay = remember(selectedFilter) {
+        selectedFilter.replaceFirstChar { it.uppercase() }
+    }
 
     Box(
-        modifier = modifier.aspectRatio(1f),
+        modifier = modifier
+            .aspectRatio(1f)
+            .graphicsLayer {
+                scaleX = scaleAlpha.value
+                scaleY = scaleAlpha.value
+                alpha = scaleAlpha.value
+            },
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.fillMaxSize().padding(8.dp)) {
-            val canvasSize = size
+        Canvas(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             val thicknessPx = chartThickness.toPx()
-            val diameter = minOf(canvasSize.width, canvasSize.height)
+            val diameter = minOf(size.width, size.height)
             val rectSize = Size(diameter - thicknessPx, diameter - thicknessPx)
-            val topLeft = Offset((canvasSize.width - rectSize.width) / 2, (canvasSize.height - rectSize.height) / 2)
+            val topLeft = Offset(
+                (size.width - rectSize.width) / 2,
+                (size.height - rectSize.height) / 2
+            )
 
             drawCircle(
-                color = Color.Gray.copy(alpha = 0.08f),
+                color = Color.Gray.copy(alpha = 0.05f),
                 radius = rectSize.width / 2,
                 center = center,
                 style = Stroke(width = thicknessPx)
@@ -74,6 +81,17 @@ fun PremiumDoughnutChart(
             var startAngle = -90f
             data.forEach { item ->
                 val sweepAngle = (item.amount / totalAmount).toFloat() * 360f
+
+                drawArc(
+                    color = item.color.copy(alpha = 0.15f),
+                    startAngle = startAngle,
+                    sweepAngle = sweepAngle * animatedProgress.value,
+                    useCenter = false,
+                    topLeft = topLeft,
+                    size = rectSize,
+                    style = Stroke(width = thicknessPx + 4.dp.toPx(), cap = StrokeCap.Round)
+                )
+
                 drawArc(
                     color = item.color,
                     startAngle = startAngle,
@@ -81,43 +99,32 @@ fun PremiumDoughnutChart(
                     useCenter = false,
                     topLeft = topLeft,
                     size = rectSize,
-                    style = Stroke(width = thicknessPx, cap = StrokeCap.Butt)
+                    style = Stroke(width = thicknessPx, cap = StrokeCap.Round)
                 )
                 startAngle += sweepAngle
             }
+        }
 
-            drawIntoCanvas { canvas ->
-                val paintAmount = Paint().apply {
-                    color = colorAmount
-                    textSize = with(density) { dynamicFontSize.toPx() }
-                    typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-                    textAlign = Paint.Align.CENTER
-                    isAntiAlias = true
-                }
-
-                val paintLabel = Paint().apply {
-                    color = colorLabel
-                    textSize = with(density) { 9.sp.toPx() }
-                    typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-                    textAlign = Paint.Align.CENTER
-                    isAntiAlias = true
-                }
-
-                val amountMetrics = paintAmount.fontMetrics
-                val labelMetrics = paintLabel.fontMetrics
-
-                val spacing = with(density) { 2.dp.toPx() }
-
-                val totalBlockHeight = (labelMetrics.descent - labelMetrics.ascent) + spacing + (amountMetrics.descent - amountMetrics.ascent)
-
-                val startY = center.y - (totalBlockHeight / 2)
-
-                val labelY = startY - labelMetrics.ascent
-                canvas.nativeCanvas.drawText(totalLabel, center.x, labelY, paintLabel)
-
-                val amountY = labelY + labelMetrics.descent + spacing - amountMetrics.ascent
-                canvas.nativeCanvas.drawText(formattedTotal, center.x, amountY, paintAmount)
-            }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = filterDisplay,
+                style = MaterialTheme.typography.labelMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.2.sp
+                ),
+                color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.6f)
+            )
+            Text(
+                text = stringResource(Strings.statistics),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontSize = 8.sp,
+                    fontWeight = FontWeight.ExtraBold
+                ),
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+            )
         }
     }
 }

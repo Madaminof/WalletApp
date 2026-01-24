@@ -39,6 +39,7 @@ coroutines = "1.9.0"
 junit = "4.13.2"
 junitExt = "1.2.1"
 espresso = "3.6.1"
+playServicesMlkitBarcodeScanning = "18.3.1"
 
 [libraries]
 # Kotlin Coroutines
@@ -101,6 +102,7 @@ accompanist-navigation-animation = { group = "com.google.accompanist", name = "a
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+play-services-mlkit-barcode-scanning = { group = "com.google.android.gms", name = "play-services-mlkit-barcode-scanning", version.ref = "playServicesMlkitBarcodeScanning" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

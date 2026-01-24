@@ -182,6 +182,11 @@
     <string name="title_select_wallet">Выберите кошелек</string>
     <string name="subtitle_select_wallet">Какой счет вы используете?</string>
     <string name="title_add_transaction">Добавить транзакцию</string>
+    <string name="add_transaction_subtitle">Выберите способ ввода</string>
+    <string name="method_manual">Вручную</string>
+    <string name="method_manual_desc">Ввести данные вручную</string>
+    <string name="method_qr">QR Сканер</string>
+    <string name="method_qr_desc">Сканировать чек</string>
 
     //Account Screen Details
     <string name="current_balance">Текущий баланс</string>
@@ -220,6 +225,7 @@
     <string name="action_sort">Сортировка</string>
     <string name="unknown_category">Неизвестно</string>
     <string name="action_back">Назад</string>
+    <string name="statistics">СТАТИСТИКА</string>
 
     <string name="transaction_details_title">Детали транзакции</string>
     <string name="total_amount_label">Общая сумма</string>
@@ -310,6 +316,12 @@
     <string name="item_delete_desc">Удалить товар</string>
     <string name="dialog_delete_product_title">Удалить Товар</string>
     <string name="dialog_delete_product_text">Вы уверены, что хотите удалить этот товар?</string>
+
+    <string name="checked_items_count">Выбрано: %1$d шт.</string>
+    <string name="total_sum_label">Сумма покупки:</string>
+    <string name="items_label">товаров</string>
+    <string name="spent_label">Потрачено</string>
+
     / ShoppingList Dialogs
     <string name="dialog_add_new_list_title">Добавить Новый Список</string>
     <string name="dialog_edit_list_title">Редактировать Имя Списка</string>
@@ -328,6 +340,10 @@
     <string name="dialog_label_amount_currency">Сумма (%1$s)</string>
     <string name="dialog_label_note_optional">Заметка (Необязательно)</string>
     <string name="dialog_button_save_transaction">Сохранить</string>
+
+    <string name="label_product">Товар</string>
+    <string name="title_review_purchase">Проверка покупки</string>
+    <string name="label_purchase_content">Состав покупки</string>
 
     // Debt Screen
     <string name="title_error">Произошла ошибка</string>
@@ -387,6 +403,7 @@
     <string name="remaining_amount">Остаток</string>
     <string name="payment_history">История платежей</string>
     <string name="no_payments_yet">Платежей пока нет</string>
+    <string name="empty_debts_desc">На данный момент все счета в порядке.</string>
 
     <string name="button_add">Добавить</string>
     <string name="button_select">Выбрать</string>
@@ -480,6 +497,17 @@
     <string name="cat_lent">В долг (отдано)</string>
     <string name="cat_borrowed">В долг (взято)</string>
     <string name="cat_debt_payment">Выплата долга</string>
+    <string name="cat_transport">Транспорт</string>
+    <string name="cat_taxi">Такси</string>
+    <string name="cat_fuel">Топливо</string>
+    <string name="cat_car_maintenance">Обслуживание авто</string>
+
+
+    // Scanner QR
+    <string name="scan_qr_code">Отсканируйте QR-код</string>
+    <string name="tax_receipt_required">Должен быть фискальный чек</string>
+    <string name="fetching_data">Получение данных...</string>
+    <string name="please_wait">Пожалуйста, подождите</string>
 
 
 </resources>

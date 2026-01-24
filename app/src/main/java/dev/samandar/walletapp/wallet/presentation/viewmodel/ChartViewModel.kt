@@ -15,65 +15,73 @@ data class CategoryData(
     val color: Color
 )
 
-
 val categoryColors = mapOf(
     // --- 1. FOOD & DRINK (Ovqatlanish) ---
-    "Groceries" to Color(0xFF27AE60),
-    "Dining out" to Color(0xFF2ECC71),
-    "Drinks & Coffee" to Color(0xFF1ABC9C),
-    "Restaurant" to Color(0xFF16A085),
+    // Soft & Warm tones
+    "Groceries" to Color(0xFFF3A683),       // Soft Orange
+    "Dining out" to Color(0xFFF78FB3),      // Pinkish
+    "Drinks & Coffee" to Color(0xFFCF6A87), // Muted Rose
+    "Restaurant" to Color(0xFFE77F67),      // Terracotta
 
     // --- 2. HOME & LIVING (Uy va Yashash) ---
-    "Housing" to Color(0xFF2980B9),
-    "Utilities" to Color(0xFF3498DB),
-    "Maintenance" to Color(0xFF5758BB),
-    "Rent" to Color(0xFF4B7BEC),
+    // Calm Blues & Indigos
+    "Housing" to Color(0xFF546DE5),         // Royal Blue
+    "Utilities" to Color(0xFF778BEB),       // Soft Blue
+    "Rent" to Color(0xFF6379EE),            // Indigo
+    "Maintenance" to Color(0xFF596275),     // Steel Blue
 
-    // --- 3. LIFESTYLE & LEISURE (Hayot tarzi) ---
-    "Entertainment" to Color(0xFF8E44AD),
-    "Subscriptions" to Color(0xFF9B59B6),
-    "Self-Care" to Color(0xFFD980FA),
-    "Hobbies" to Color(0xFFFDA7DF),
+    // --- 3. TRANSPORT & AUTO ---
+    "Transport" to Color(0xFF574B90),       // Deep Purple (Bus/Metro)
+    "Taxi" to Color(0xFFF19066),            // Soft Salmon (Icon color)
+    "Fuel" to Color(0xFFE66767),             // Muted Red
+    "Car Maintenance" to Color(0xFF303952), // Dark Navy
 
-    // --- 4. EDUCATION & GROWTH (Ta'lim) ---
-    "Education" to Color(0xFFF1C40F),
-    "Books" to Color(0xFFF39C12),
-    "Courses" to Color(0xFFE67E22),
-    "Certifications" to Color(0xFFD35400),
+    // --- 4. LIFESTYLE & LEISURE ---
+    "Entertainment" to Color(0xFFC44569),   // Deep Pink
+    "Subscriptions" to Color(0xFF786FA6),   // Muted Purple
+    "Self-Care" to Color(0xFFFDA7DF),       // Candy Pink
+    "Hobbies" to Color(0xFF577EAA),         // Soft Greyish Blue
 
-    // --- 5. SHOPPING (Xaridlar) ---
-    "Shopping" to Color(0xFFE17055),
-    "Clothing" to Color(0xFFFAB1A0),
-    "Electronics" to Color(0xFFFF7675),
-    "Home Appliances" to Color(0xFFEE5253),
+    // --- 5. EDUCATION & GROWTH ---
+    "Education" to Color(0xFF546DE5),       // Ocean Blue
+    "Books" to Color(0xFFF5CD79),           // Sand Yellow
+    "Courses" to Color(0xFF45AAF2),          // Sky Blue
+    "Certifications" to Color(0xFFF7D794),  // Cream Yellow
 
-    // --- 6. HEALTH & WELLNESS (Salomatlik) ---
-    "Health" to Color(0xFFEA2027),
-    "Fitness" to Color(0xFFFF4D4D),
-    "Pharmacy" to Color(0xFFFF5E78),
-    "Dental" to Color(0xFFFF7979),
+    // --- 6. SHOPPING ---
+    "Shopping" to Color(0xFFEA8685),        // Coral
+    "Clothing" to Color(0xFFF8A5C2),        // Soft Magenta
+    "Electronics" to Color(0xFF3DC1D3),     // Cyan
+    "Home Appliances" to Color(0xFF596275), // Steel Blue
 
-    "Investment" to Color(0xFF10AC84),
-    "Debt & Loans" to Color(0xFFEE5253),
-    "Gifts & Donation" to Color(0xFFF368E0),
-    "Other" to Color(0xFF51B0E0),
+    // --- 7. HEALTH & WELLNESS ---
+    "Health" to Color(0xFFE77F67),          // Apple Red
+    "Fitness" to Color(0xFF6379EE),         // Violet
+    "Pharmacy" to Color(0xFFF19066),        // Orange Pastel
+    "Dental" to Color(0xFF7D5FFF),          // Neon Purple
 
-    // --- 8. INCOME (Daromadlar) ---
-    "Main Salary" to Color(0xFF1B5E20),
-    "Side Job" to Color(0xFF2E7D32),
-    "Business" to Color(0xFF27AE60),
-    "Freelance" to Color(0xFF8BC34A),
-    "Passive Income" to Color(0xFF009688),
-    "Dividends/Interest" to Color(0xFF00ACC1),
-    "Bonus" to Color(0xFFFBC02D),
-    "Cashback" to Color(0xFF0097A7),
-    "Grants/Scholarship" to Color(0xFF43A047),
-    "Gifts" to Color(0xFF4FC3F7),
-    "Other Income" to Color(0xFF78909C),
+    // --- 8. FINANCIAL & OTHER ---
+    "Investment" to Color(0xFF20BF6B),      // Jade Green
+    "Debt & Loans" to Color(0xFFCF6A87),    // Old Rose
+    "Gifts & Donation" to Color(0xFFF78FB3), // Flamingo Pink
+    "Other" to Color(0xFF596275),           // Charcoal
+    "Lent" to Color(0xFFE57373),            // Soft Red (Outgoing)
+    "Borrowed" to Color(0xFF81C784),        // Soft Green (Incoming)
+    "Debt Payment" to Color(0xFF4CAF50),    // Success Green
 
-    "Lent" to Color(0xFFE57373),
-    "Borrowed" to Color(0xFF81C784),
-    "Debt Payment" to Color(0xFF4CAF50)
+    // --- 9. INCOME (Daromadlar) ---
+    // Fresh & Wealthy Greens
+    "Main Salary" to Color(0xFF26DE81),     // Vibrant Green
+    "Side Job" to Color(0xFF20BF6B),        // Mountain Meadow
+    "Business" to Color(0xFF05C46B),        // Emerald
+    "Freelance" to Color(0xFF8BC34A),       // Light Green
+    "Passive Income" to Color(0xFF00D2D3),  // Cyan
+    "Dividends" to Color(0xFF32FF7E), // Neon Green
+    "Bonus" to Color(0xFFB3AF3E),           // Bright Yellow
+    "Cashback" to Color(0xFF18DCFF),        // Electric Blue
+    "Grants/Scholarship" to Color(0xFF7D5FFF), // Purple (Achievement)
+    "Gifts" to Color(0xFF4FC3F7),           // Sky Blue
+    "Other Income" to Color(0xFFA5B1C2)     // Muted Blue Grey
 )
 
 

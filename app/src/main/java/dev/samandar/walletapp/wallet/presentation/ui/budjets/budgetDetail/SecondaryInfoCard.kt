@@ -25,7 +25,7 @@ fun SecondaryInfoCard(status: BudgetStatus) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
+        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
     ){
         Column(
             modifier = Modifier.padding(20.dp),

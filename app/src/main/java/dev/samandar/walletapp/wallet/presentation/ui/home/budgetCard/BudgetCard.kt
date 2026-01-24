@@ -22,10 +22,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import dev.samandar.walletapp.R
+import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.ui.theme.budjets
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.PremiumCustomLinearProgressIndicator
@@ -44,9 +48,10 @@ fun BudgetCard(
     hasActiveBudget: Boolean,
     budgetLimit: Double = 0.0,
     spentAmount: Double = 0.0,
+    navController: NavController
 ) {
-    val budgetPrimary = budjets
-    val budgetSecondary = budjets
+    val budgetPrimary = budjets.copy(0.15f)
+    val budgetSecondary = budjets.copy(0.15f)
 
     val progress = if (budgetLimit > 0) min((spentAmount / budgetLimit).toFloat(), 1.0f) else 0.0f
 
@@ -69,7 +74,7 @@ fun BudgetCard(
             .pointerInput(Unit) {
                 detectTapGestures(onPress = { isPressed = true; tryAwaitRelease(); isPressed = false })
             },
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
@@ -92,9 +97,9 @@ fun BudgetCard(
                 )
                 CircularIconButton(
                     onClick = onCardClick,
-                    icon = Icons.Default.ArrowForwardIos,
+                    icon = R.drawable.arrow_right_ic,
                     contentDescription = "Go to budgets list",
-                    tint = primaryAccent,
+                    tint = primaryAccent.copy(0.8f),
                     backgroundColor = primaryAccent.copy(alpha = 0.1f),
                     size = 32.dp
                 )
@@ -128,9 +133,9 @@ fun BudgetCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Default.AccountBalanceWallet,
+                        painter = painterResource(R.drawable.budget_ic),
                         contentDescription = "Budget Icon",
-                        tint = Color.White,
+                        tint = budjets,
                         modifier = Modifier.size(25.dp)
                     )
                 }
@@ -164,6 +169,10 @@ fun BudgetCard(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = budgetPrimary,
+                        modifier = Modifier
+                            .clickable {
+                                navController.navigate(Screen.budjetAdd.route)
+                            }
                     )
                 }
             }

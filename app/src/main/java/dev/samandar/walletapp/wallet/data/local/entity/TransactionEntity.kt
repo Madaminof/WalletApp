@@ -27,7 +27,8 @@ data class TransactionEntity(
     val categoryId: String,
     val accountId: String,
     val note: String? = null,
-    val date: Long
+    val date: Long,
+    val originalUrl: String? = null
 )
 
 @Entity(tableName = "categories")

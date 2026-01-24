@@ -34,7 +34,7 @@ fun DebtItemRow(
     onClick: (Debt) -> Unit,
     onQuickAddPayment: (Debt) -> Unit
 ) {
-    val activeColor = if (debt.type == DebtType.LENT) incomeColor else expenseColor
+    val activeColor = if (debt.type == DebtType.LENT) MaterialTheme.colorScheme.primary else expenseColor
     val isOverdue = debt.dueDate != null && debt.dueDate < System.currentTimeMillis() && !debt.isSettled
 
     val progress = if (debt.totalAmount > 0) {
@@ -49,7 +49,7 @@ fun DebtItemRow(
             .fillMaxWidth()
             .clickable { onClick(debt) }
             .padding(horizontal = 16.dp, vertical = 10.dp)
-            .alpha(contentAlpha) // Butun itemni xiralashtirish
+            .alpha(contentAlpha)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -60,7 +60,7 @@ fun DebtItemRow(
                 CircularProgressIndicator(
                     progress = { if (debt.isSettled) 1f else progress },
                     modifier = Modifier.fillMaxSize(),
-                    color = if (debt.isSettled) incomeColor else activeColor,
+                    color = if (debt.isSettled) MaterialTheme.colorScheme.primary else activeColor,
                     strokeWidth = 2.5.dp,
                     trackColor = activeColor.copy(alpha = 0.1f),
                     strokeCap = StrokeCap.Round
@@ -70,7 +70,7 @@ fun DebtItemRow(
                     else if (debt.type == DebtType.LENT) Icons.Rounded.CallMade
                     else Icons.Rounded.CallReceived,
                     contentDescription = null,
-                    tint = if (debt.isSettled) incomeColor else activeColor,
+                    tint = if (debt.isSettled) MaterialTheme.colorScheme.primary else activeColor,
                     modifier = Modifier.size(18.dp)
                 )
             }
@@ -114,7 +114,7 @@ fun DebtItemRow(
                             Text(
                                 text = "${(progress * 100).toInt()}% ${stringResource(Strings.debt_settled)}",
                                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                color = incomeColor.copy(alpha = 0.8f)
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                             )
                             Spacer(Modifier.width(8.dp))
                         }
@@ -132,7 +132,7 @@ fun DebtItemRow(
                     Text(
                         text = stringResource(Strings.debt_paid_percent).replaceFirstChar { it.uppercase() },
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
-                        color = incomeColor,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 2.dp)
                     )
                 }
@@ -144,7 +144,7 @@ fun DebtItemRow(
             Text(
                 text = debt.description,
                 style = MaterialTheme.typography.bodySmall.copy(textDecoration = textDecoration),
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.7f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(start = 54.dp, top = 2.dp)

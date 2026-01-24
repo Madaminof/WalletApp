@@ -17,11 +17,11 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorScheme = darkColorScheme(
     primary = Color(0xFF4759C1),
-    primaryContainer = Color(0xFF212A34), // topbarContainer va background color default(0xFF1E262F)
+    primaryContainer = Color(0xFF161B1F), // topbarContainer va background color default(0xFF1E262F)
     onPrimaryContainer = Color(0xFF1B2228),// cardContainer  0xFF212A34
     secondary = PurpleGrey80,
     tertiary = Pink80,
-    background = Color(0xFF212A34),
+    background = Color(0xFF161B1F),
     onBackground = Color(0xFF171C23),
     surface = Color(0xFF1A1A1A),
     onPrimary = Color.White,
@@ -32,11 +32,11 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF4759C1),
-    primaryContainer = Color(0xFFE9EDEE),// topbarContainer va background color 0xFFECF3F6, 0xFFE3EDF1
+    primaryContainer = Color(0xFFF0F2F3),// topbarContainer va background color 0xFFECF3F6, 0xFFE3EDF1
     onPrimaryContainer = Color(0xFFFCFCFC),// cardContainer
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    background = Color(0xFFE9EDEE),
+    background = Color(0xFFF0F2F3),
     onBackground = Color(0xFFDBE1E2),
     surface = Color(0xFFFFFFFF),
     onPrimary = Color.White,

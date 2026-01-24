@@ -164,7 +164,7 @@ fun InputFieldsSection(
                 },
                 leadingIcon = {
                     Icon(
-                        painter = painterResource(id = R.drawable.cash2),
+                        painter = painterResource(id = R.drawable.cash_ic3),
                         contentDescription = null,
                         tint = primaryColor.copy(0.6f),
                         modifier = Modifier.size(20.dp)

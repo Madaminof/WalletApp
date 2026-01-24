@@ -82,7 +82,7 @@ fun AccountItem(
                 painter = painterResource(id = account.iconResId?: R.drawable.ic_card_default),
                 contentDescription = account.name,
                 tint = Color.Unspecified,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
 
@@ -129,7 +129,7 @@ fun AccountCardSkeleton() {
             .fillMaxWidth()
             .height(180.dp)
             .padding(horizontal = 16.dp, vertical = 4.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -212,7 +212,7 @@ fun AccountCard(
                 )
                 CircularIconButton(
                     onClick = {navController.navigate(Screen.Wallet.route)},
-                    icon = Icons.Default.ArrowForwardIos,
+                    icon = R.drawable.arrow_right_ic,
                     contentDescription = "Go to accounts list",
                     tint = primaryAccent,
                     backgroundColor = primaryAccent.copy(alpha = 0.1f),

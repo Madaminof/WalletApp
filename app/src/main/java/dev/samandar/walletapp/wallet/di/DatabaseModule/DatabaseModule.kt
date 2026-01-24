@@ -27,6 +27,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.samandar.walletapp.wallet.data.local.dao.smartScannDao.ReceiptDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
@@ -78,6 +79,12 @@ object DatabaseModule {
     fun provideDebtsRepositoryDao(
         db: AppDatabase
     ): DebtDao = db.debtDao()
+
+    @Provides
+    @Singleton
+    fun provideReceiptDao(database: AppDatabase): ReceiptDao {
+        return database.receiptDao() // AppDatabase ichida 'receiptDao()' abstract funksiyasi bo'lishi shart
+    }
 
 
     @Provides

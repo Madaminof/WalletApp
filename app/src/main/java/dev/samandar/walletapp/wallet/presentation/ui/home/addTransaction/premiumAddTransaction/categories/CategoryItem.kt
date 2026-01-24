@@ -62,7 +62,7 @@ fun CategoryItem(
         label = "scale"
     )
     val animatedBgColor by animateColorAsState(
-        targetValue = if (isSelected) primaryColor else MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.05f),
+        targetValue = if (isSelected) primaryColor else MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.03f),
         animationSpec = tween(250),
         label = "bgColor"
     )
@@ -97,7 +97,7 @@ fun CategoryItem(
                     contentDescription = null,
                     tint = Color.Unspecified,
                     modifier = Modifier
-                        .padding(14.dp)
+                        .padding(12.dp)
                         .graphicsLayer {
                             val s = if (isSelected) 1.1f else 1f
                             scaleX = s

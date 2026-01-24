@@ -20,11 +20,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import dev.samandar.walletapp.R
+import dev.samandar.walletapp.ui.theme.CurrencyRates
+import dev.samandar.walletapp.ui.theme.followUs
+import dev.samandar.walletapp.ui.theme.language
+import dev.samandar.walletapp.ui.theme.numberFormat
+import dev.samandar.walletapp.ui.theme.theme
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.presentation.ui.drawableMenu.FollowUsDialog
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencySelectionDialog
@@ -35,7 +42,7 @@ import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.Custom
 
 data class SettingItem(
     val title: String,
-    val icon: ImageVector,
+    val icon: Int,
     val iconTint: Color,
     val route: String? = null,
     val action: (() -> Unit)? = null
@@ -76,26 +83,26 @@ fun SettingsScreen(navController: NavController) {
                     items = listOf(
                         SettingItem(
                             stringResource(Strings.setting_choose_theme_title),
-                            Icons.Default.DarkMode,
-                            Color(0xFFFFB74D),
+                            R.drawable.setting_theme,
+                            theme,
                             action = { showThemeDialog = true }
                         ),
                         SettingItem(
                             stringResource(Strings.setting_currency_title),
-                            Icons.Default.CurrencyExchange,
-                            Color(0xFF4DB6AC),
+                            R.drawable.currency_rates_icon,
+                            CurrencyRates,
                             action = { showCurrencyDialog = true }
                         ),
                         SettingItem(
                             stringResource(Strings.setting_numFormat_title),
-                            Icons.Default.FormatListNumbered,
-                            Color(0xFFFFB74D),
+                            R.drawable.setting_nubers,
+                            numberFormat,
                             action = { showformatNumberDialog = true }
                         ),
                         SettingItem(
                             stringResource(Strings.setting_language_title),
-                            Icons.Default.Language,
-                            Color(0xFF7986CB),
+                            R.drawable.setting_language,
+                            language,
                             action = {showLanguageDialog = true}
                         ),
                     ),
@@ -108,9 +115,10 @@ fun SettingsScreen(navController: NavController) {
             SettingsSection(title = stringResource(Strings.setting_Card_title2)) {
                 SettingCard(
                     items = listOf(
-                        SettingItem(stringResource(Strings.title_follow_us), Icons.Default.Public, Color(
-                            0xFFEC1D65
-                        ), action = {showFollowUseDialog = true}
+                        SettingItem(stringResource(Strings.title_follow_us),
+                            R.drawable.setting_follow_us,
+                            followUs,
+                            action = {showFollowUseDialog = true}
                         ),
                     ),
                     navController = navController
@@ -212,7 +220,7 @@ fun SettingRow(item: SettingItem, onClick: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    item.icon,
+                    painter = painterResource(item.icon),
                     contentDescription = item.title,
                     tint = item.iconTint,
                     modifier = Modifier.size(20.dp)

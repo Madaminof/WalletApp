@@ -28,15 +28,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
 fun QuickInCards(
-    icon: ImageVector,
+    icon: Int,
     title: String,
     color: Color,
     modifier: Modifier = Modifier,
@@ -75,7 +75,7 @@ fun QuickInCards(
                         pressed = false
                     }
                 )
-            }
+            },
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -88,9 +88,10 @@ fun QuickInCards(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = icon,
+                    // imageVector o'rniga painter ishlatamiz
+                    painter = painterResource(id = icon),
                     contentDescription = title,
-                    tint = color,
+                    tint = color, // PNG ikonkani ko'rsatilgan rangga bo'yaydi
                     modifier = Modifier.size(16.dp)
                 )
             }

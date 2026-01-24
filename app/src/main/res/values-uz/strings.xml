@@ -183,6 +183,11 @@
     <string name="title_select_wallet">Hamyonni tanlang</string>
     <string name="subtitle_select_wallet">Qaysi hisobdan foydalanayapsiz?</string>
     <string name="title_add_transaction">Tranzaksiya qo\'shish</string>
+    <string name="add_transaction_subtitle">Kiritish usulini tanlang</string>
+    <string name="method_manual">Qo\'lda</string>
+    <string name="method_manual_desc">Ma\'lumotlarni yozish</string>
+    <string name="method_qr">QR Skaner</string>
+    <string name="method_qr_desc">Chekni skanerlash</string>
 
     // Account Screen Details
     <string name="current_balance">Joriy balans</string>
@@ -221,6 +226,7 @@
     <string name="action_sort">Saralash</string>
     <string name="unknown_category">Noma\'lum</string>
     <string name="action_back">Orqaga</string>
+    <string name="statistics">STATISTIKA</string>
 
     <string name="transaction_details_title">Tranzaksiya ma\'lumotlari</string>
     <string name="total_amount_label">Umumiy Miqdor</string>
@@ -314,6 +320,16 @@
     <string name="item_delete_desc">Mahsulotni o\ʻchirish</string>
     <string name="dialog_delete_product_title">Mahsulotni O\ʻchirish</string>
     <string name="dialog_delete_product_text">Rostdan ham mahsulotni o\ʻchirishni xohlaysizmi?</string>
+
+    <string name="label_product">Mahsulot</string>
+    <string name="title_review_purchase">Xaridni tekshirish</string>
+    <string name="label_purchase_content">Xarid tarkibi</string>
+
+    <string name="checked_items_count">Tanlangan: %1$d ta</string>
+    <string name="total_sum_label">Xarid summasi:</string>
+    <string name="items_label">mahsulot</string>
+    <string name="spent_label">Sarflandi</string>
+
     // Shop[ingList Dialogs
     <string name="dialog_add_new_list_title">Yangi Ro\ʻyxat Qo\ʻshish</string>
     <string name="dialog_edit_list_title">Ro\ʻyxat Nomini Tahrirlash</string>
@@ -396,6 +412,7 @@
     <string name="remaining_amount">Qolgan summa</string>
     <string name="payment_history">To\'lovlar tarixi</string>
     <string name="no_payments_yet">Hali to\'lovlar mavjud emas</string>
+    <string name="empty_debts_desc">Hozircha hamma hisob-kitoblar joyida.</string>
 
 
     <string name="button_add">Qo\'shish</string>
@@ -484,6 +501,22 @@
     <string name="cat_lent">Qarz berish</string>
     <string name="cat_borrowed">Qarz olish</string>
     <string name="cat_debt_payment">Qarz to\'lovi</string>
+    <string name="cat_transport">Transport</string>
+    <string name="cat_taxi">Taksi</string>
+    <string name="cat_fuel">Yoqilg\'i</string>
+    <string name="cat_car_maintenance">Mashina xizmati</string>
+
+
+
+
+
+
+
+    // Scanner QR
+    <string name="scan_qr_code">QR kodni skanerlang</string>
+    <string name="tax_receipt_required">Soliq cheki bo\'lishi shart</string>
+    <string name="fetching_data">Ma\'lumotlar olinmoqda...</string>
+    <string name="please_wait">Iltimos, kuting</string>
 
 
 </resources>

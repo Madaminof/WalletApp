@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -58,7 +59,7 @@ val activeCurrency by CurrencyManager.currentCurrency
 
 @Composable
 fun CashFlowItem(
-    icon: ImageVector,
+    icon: Int,
     label: String,
     amount: Double,
     itemColor: Color,
@@ -78,10 +79,10 @@ fun CashFlowItem(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                imageVector = icon,
+                painter = painterResource(icon),
                 contentDescription = label,
                 tint = displayColor,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(20.dp)
             )
             Spacer(Modifier.width(8.dp))
 
@@ -122,7 +123,7 @@ fun CashFlowCard(
                 .pointerInput(Unit) {
                     detectTapGestures(onPress = { isPressed = true; tryAwaitRelease(); isPressed = false })
                 },
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(22.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer),
         ) {
             Column(
@@ -142,9 +143,9 @@ fun CashFlowCard(
                     )
                     CircularIconButton(
                         onClick = viewModel::onFilterClick,
-                        icon = Icons.Default.FilterList,
+                        icon = R.drawable.filter_ic,
                         contentDescription = "Filter",
-                        tint = primaryAccent,
+                        tint = primaryAccent.copy(0.8f),
                         backgroundColor = primaryAccent.copy(alpha = 0.1f),
                         size = 32.dp
                     )
@@ -157,13 +158,13 @@ fun CashFlowCard(
                 Text(text = label, fontSize = 10.sp, color = MaterialTheme.colorScheme.onTertiary.copy(0.7f))
                 Spacer(Modifier.height(4.dp))
 
-                CashFlowItem(Icons.Default.ArrowUpward, stringResource(Strings.title_income), state.income, incomeColor)
-                CashFlowItem(Icons.Default.ArrowDownward,stringResource(Strings.title_expense), state.expenses, expenseColor)
+                CashFlowItem(R.drawable.arrow_top, stringResource(Strings.title_income), state.income, incomeColor)
+                CashFlowItem(R.drawable.arrow_down,stringResource(Strings.title_expense), state.expenses, expenseColor)
 
                 Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f))
 
                 CashFlowItem(
-                    icon = Icons.Default.Balance,
+                    icon = R.drawable.balance_ic,
                     label = stringResource(Strings.title_total),
                     amount = state.total,
                     itemColor = if (state.total < 0) expenseColor else incomeColor,

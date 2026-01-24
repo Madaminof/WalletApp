@@ -89,16 +89,6 @@ fun BudgetsScreen(
                     onBackClick = { navController.popBackStack() },
                 )
             },
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = { navController.navigate(Screen.budjetAdd.route) },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    shape = RoundedCornerShape(50)
-                ) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add Budget")
-                }
-            },
             containerColor = MaterialTheme.colorScheme.background
         ) { paddingValues ->
             if (budgetStatuses.isEmpty()) {
@@ -112,7 +102,7 @@ fun BudgetsScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
-                    contentPadding = PaddingValues(top = 8.dp, bottom = 80.dp),
+                    contentPadding = PaddingValues(top = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     itemsIndexed(
@@ -130,6 +120,9 @@ fun BudgetsScreen(
                                 viewModel.deleteBudjet(status.budget)
                             }
                         )
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(60.dp))
                     }
                 }
             }

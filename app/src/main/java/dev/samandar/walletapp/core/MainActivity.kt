@@ -23,7 +23,6 @@ import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.Setti
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.numFormat.NumberFormatManager
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.themes.ThemeManager
-import dev.samandar.walletapp.wallet.presentation.ui.premiumFunctions.debts.DebtsViewModel
 import dev.samandar.walletapp.wallet.presentation.viewmodel.*
 import java.util.Locale
 
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        SoundManager.init(this) // SHU YERDA
+        SoundManager.init(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
@@ -53,10 +52,8 @@ class MainActivity : AppCompatActivity() {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     NavGraph(
                         viewModel = hiltViewModel<HomeViewModel>(),
-                        viewModel1 = hiltViewModel<AddTransactionViewModel>(),
                         addAccountViewModel = hiltViewModel<AccountViewModel>(),
                         budgetViewModel = hiltViewModel<BudgetViewModel>(),
-                        debtsViewModel = hiltViewModel<DebtsViewModel>(),
                     )
                 }
             }

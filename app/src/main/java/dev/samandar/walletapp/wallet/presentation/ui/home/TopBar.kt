@@ -1,9 +1,7 @@
 package dev.samandar.walletapp.wallet.presentation.ui.home
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,7 +10,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import dev.samandar.walletapp.R
 import dev.samandar.walletapp.navigation.Screen
+import dev.samandar.walletapp.ui.theme.Settings
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.PremiumButton
 
@@ -36,7 +36,7 @@ fun HomeTopBar(
         navigationIcon = {
             PremiumButton(
                 onClick = onMenuClick,
-                icon = Icons.Outlined.Menu,
+                icon = R.drawable.menu_icon2,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
             )
@@ -44,8 +44,8 @@ fun HomeTopBar(
         actions = {
             PremiumButton(
                 onClick = {navController.navigate(Screen.SettingScreen.route)},
-                icon = Icons.Default.Settings,
-                color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+                icon = R.drawable.setting_icon,
+                color = Settings,
                 modifier = Modifier.padding(end = 16.dp)
             )
         },

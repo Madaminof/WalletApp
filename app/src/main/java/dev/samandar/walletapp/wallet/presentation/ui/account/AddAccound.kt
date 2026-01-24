@@ -46,14 +46,19 @@ private val extendedColors = listOf(
     Color(0xFF37474F), Color(0xFF3F51B5), Color(0xFFFF5722)
 )
 private val extendedIcons = listOf(
-    R.drawable.cash1,
-    R.drawable.cash2,
-    R.drawable.cash3,
-    R.drawable.cash4,
-    R.drawable.card1,
-    R.drawable.card2,
-    R.drawable.card3
-)
+    R.drawable.cash_ic,
+    R.drawable.cash_default_ic,
+    R.drawable.cash_ic2,
+    R.drawable.cash_ic3,
+    R.drawable.cash_ic4,
+    R.drawable.cash_ic5,
+    R.drawable.cash_ic6,
+    R.drawable.cash_ic8,
+    R.drawable.cash_ic9,
+    R.drawable.cash_ic10,
+    R.drawable.cash_ic11,
+    R.drawable.cash_ic12,
+    )
 
 private fun isLightColor(color: Color): Boolean {
     val r = color.red
@@ -230,7 +235,7 @@ fun AccountPreviewCard(
                     modifier = Modifier
                         .size(56.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surface.copy(0.3f)),
+                        .background(MaterialTheme.colorScheme.onTertiary.copy(0.2f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(

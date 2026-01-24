@@ -116,7 +116,7 @@ fun AccountDetailBottomSheet(
                 account.iconResId?.let { iconRes ->
                     Box(
                         modifier = Modifier
-                            .size(60.dp)
+                            .size(54.dp)
                             .clip(CircleShape)
                             .background(iconBackgroundColor),
                         contentAlignment = Alignment.Center,

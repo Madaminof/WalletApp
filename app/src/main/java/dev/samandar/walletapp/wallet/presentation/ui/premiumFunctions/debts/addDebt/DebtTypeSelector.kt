@@ -32,7 +32,7 @@ fun DebtTypeSelector(
 ) {
     val isLent = selectedType == DebtType.LENT
 
-    val targetActiveColor = if (isLent) incomeColor else expenseColor
+    val targetActiveColor = if (isLent) MaterialTheme.colorScheme.primary else expenseColor
     val animatedColor by animateColorAsState(
         targetValue = targetActiveColor,
         animationSpec = tween(400),

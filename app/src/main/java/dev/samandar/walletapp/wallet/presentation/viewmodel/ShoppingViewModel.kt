@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 data class ListStats(
@@ -128,5 +129,28 @@ class ShoppingViewModel @Inject constructor(
     }
     fun deleteItem(itemId: String) {
         viewModelScope.launch { useCases.deleteItem(itemId) }
+    }
+
+    fun createList(title: String, onSuccess: (String) -> Unit) {
+        val newListId = UUID.randomUUID().toString()
+        val currentTime = System.currentTimeMillis()
+
+        val newList = ShoppingList(
+            id = newListId,
+            title = title,
+            createdAt = currentTime
+        )
+
+        viewModelScope.launch {
+            try {
+                // repository.insertList emas, useCases ichidagi createList dan foydalanamiz
+                useCases.createList(newList)
+
+                // Muvaffaqiyatli bo'lsa, IDni qaytaramiz (Navigatsiya uchun)
+                onSuccess(newListId)
+            } catch (e: Exception) {
+                Log.e("ShoppingViewModel", "Ro'yxat yaratishda xato: ${e.message}")
+            }
+        }
     }
 }

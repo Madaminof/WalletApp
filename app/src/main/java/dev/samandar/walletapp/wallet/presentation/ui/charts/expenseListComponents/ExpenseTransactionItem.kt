@@ -91,7 +91,7 @@ private fun ExpenseTransactionItemContent(transaction: Transaction) {
         Box(
             modifier = Modifier
                 .size(35.dp)
-                .background(iconColor.copy(0.1f), CircleShape),
+                .background(iconColor.copy(0.15f), CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Icon(

@@ -90,12 +90,12 @@ fun ExpensesListScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         CircularIconButton(
                             onClick = {showSortDialog = true},
-                            icon = Icons.Default.FilterList,
+                            icon = R.drawable.filter_ic,
                             contentDescription = "Filter",
-                            tint = primaryAccent,
                             backgroundColor = primaryAccent.copy(alpha = 0.1f),
                             size = 32.dp,
-                        )
+                            tint = primaryAccent.copy(0.8f),
+                            )
                         Spacer(modifier = Modifier.width(12.dp))
                     }
 
@@ -169,7 +169,6 @@ fun ExpensesListScreen(
                             .fillMaxWidth()
                             .weight(1f)
                             .background(MaterialTheme.colorScheme.primaryContainer),
-                        contentPadding = PaddingValues(bottom = 16.dp)
                     ) {
                         itemsIndexed(
                             items = currentTransactions,
@@ -186,6 +185,9 @@ fun ExpensesListScreen(
                                     placementSpec = spring(stiffness = Spring.StiffnessMedium)
                                 )
                             )
+                        }
+                        item {
+                            Spacer(modifier = Modifier.height(60.dp))
                         }
                     }
                 }
