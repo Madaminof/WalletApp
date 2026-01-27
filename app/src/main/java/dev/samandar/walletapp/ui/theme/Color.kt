@@ -45,6 +45,10 @@ val manualColor = Color(0xFF4759C1)      // Muted Purple
 val qr_codeColor = Color(0xFF5A902A)      // Flamingo Pink
 
 
+val defaultColor = Color(0xFF596275)        // Neytral kulrang-moviy (Steel Grey)
+
+
+
 
 
 val incomeColor = Color(0xFF5A902A)

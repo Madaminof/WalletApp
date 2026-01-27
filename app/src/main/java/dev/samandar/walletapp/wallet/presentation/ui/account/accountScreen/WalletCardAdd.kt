@@ -1,7 +1,9 @@
 package dev.samandar.walletapp.wallet.presentation.ui.account.accountScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,48 +31,78 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.sp
+import dev.samandar.walletapp.R
 import dev.samandar.walletapp.utils.Strings
 
 @Composable
 fun WalletCardAdd(canAddMore: Boolean, onClick: () -> Unit) {
-    val strokeColor = if (canAddMore) MaterialTheme.colorScheme.primary.copy(0.4f)
-    else MaterialTheme.colorScheme.onTertiary.copy(0.1f)
+    val contentColor = if (canAddMore) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        Color.Gray.copy(0.5f)
+    }
 
-    val dashEffect = remember { PathEffect.dashPathEffect(floatArrayOf(15f, 15f), 0f) }
+    val backgroundColor = if (canAddMore) {
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.03f)
+    } else {
+        MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.01f)
+    }
+
+    val dashEffect = remember { PathEffect.dashPathEffect(floatArrayOf(20f, 20f), 0f) }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
-            .clip(RoundedCornerShape(24.dp))
-            .clickable { onClick() }
+            .height(160.dp)
+            .clip(RoundedCornerShape(28.dp))
+            .background(backgroundColor)
+            .clickable(enabled = canAddMore) { onClick() }
             .drawBehind {
                 drawRoundRect(
-                    color = strokeColor,
-                    style = Stroke(width = 2.dp.toPx(), pathEffect = dashEffect),
-                    cornerRadius = CornerRadius(24.dp.toPx())
+                    color = contentColor.copy(alpha = 0.4f),
+                    style = Stroke(
+                        width = 1.5.dp.toPx(),
+                        pathEffect = dashEffect
+                    ),
+                    cornerRadius = CornerRadius(28.dp.toPx())
                 )
             },
         contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = null,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Box(
                 modifier = Modifier
-                    .size(40.dp)
-                    .background(strokeColor.copy(alpha = 0.05f), CircleShape)
-                    .padding(8.dp),
-                tint = if (canAddMore) MaterialTheme.colorScheme.primary else Color.Gray
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+                    .size(56.dp)
+                    .background(contentColor.copy(alpha = 0.1f), CircleShape)
+                    .border(0.5.dp, contentColor.copy(alpha = 0.2f), CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(28.dp),
+                    tint = contentColor
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             Text(
-                text = if (canAddMore) stringResource(Strings.add_account_title) else stringResource(Strings.add_account_limit),
-                style = MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.ExtraBold,
-                    color = if (canAddMore) MaterialTheme.colorScheme.primary else Color.Gray
+                text = if (canAddMore)
+                    stringResource(R.string.add_account_title)
+                else
+                    stringResource(R.string.add_account_limit),
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = contentColor,
+                    letterSpacing = 0.5.sp
                 )
             )
         }
     }
 }
+

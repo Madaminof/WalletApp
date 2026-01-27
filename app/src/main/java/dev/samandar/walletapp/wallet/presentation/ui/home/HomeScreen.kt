@@ -25,6 +25,7 @@ import dev.samandar.walletapp.ui.theme.*
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.home.budgetCard.BudgetCard
 import dev.samandar.walletapp.wallet.presentation.ui.home.cardStatistics.ExpenseStatisticCardPremium
+import dev.samandar.walletapp.wallet.presentation.ui.home.quickCards.QuickInCards
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.TotalBalanceCard
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.TotalBalanceCardViewModel
 
@@ -44,7 +45,7 @@ fun HomeScreen(
             { TotalBalanceCard(onFilterClick = totalBalanceCardViewModel::onFilterClick) },
             { QuickActionsRow(onActionClick) },
             { CashFlowCard() },
-            { ExpenseStatisticCardPremium { navController.navigate(Screen.ExpenseList.route) } },
+            { ExpenseStatisticCardPremium { navController.navigate(Screen.CategoryStatisticsScreen.route) } },
             { AccountCard(navController = navController) },
             {
                 BudgetCard(
@@ -142,7 +143,7 @@ fun QuickActionsRow(onActionClick: (String) -> Unit) {
             Triple(R.drawable.budget_ic, R.string.quick_budjets, Screen.Budgets.route),
             Triple(R.drawable.shopp_list_ic, R.string.quick_shoppingList, Screen.ShoppingLists.route),
             Triple(R.drawable.debt_ic2, R.string.quick_Debts, Screen.DebtsScreen.route),
-            Triple(R.drawable.balance_ic, R.string.quick_Balance, Screen.Charts.route)
+            Triple(R.drawable.statistic_icon, R.string.title_statistics, Screen.CategoryStatisticsScreen.route)
         )
 
         itemsIndexed(actions) { _, action ->
@@ -153,7 +154,7 @@ fun QuickActionsRow(onActionClick: (String) -> Unit) {
                     R.string.quick_budjets -> budjets
                     R.string.quick_shoppingList -> shoppingList
                     R.string.quick_Debts -> debts
-                    else -> balance
+                    else -> MaterialTheme.colorScheme.primary
                 },
                 onClick = {
                     onActionClick(action.third)

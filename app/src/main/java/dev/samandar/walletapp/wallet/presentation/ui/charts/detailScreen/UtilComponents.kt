@@ -23,32 +23,16 @@ import java.util.Locale
 
 
 @Composable
-fun DetailActionButton(
-    icon: ImageVector,
-    color: Color = Color.Black,
-    onClick: () -> Unit
-) {
-    IconButton(onClick = onClick, modifier = Modifier.size(48.dp)) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = color,
-            modifier = Modifier.size(28.dp)
-        )
-    }
-}
-
-@Composable
 fun IconBox(iconRes: Int?, color: Color) {
     Surface(
         modifier = Modifier.size(48.dp),
         shape = RoundedCornerShape(12.dp),
-        color = color
+        color = color.copy(0.1f)
     ) {
         Icon(
             painter = painterResource(id = iconRes ?: R.drawable.ic_wallet_2),
             contentDescription = null,
-            tint = Color.Unspecified,
+            tint = color,
             modifier = Modifier.padding(10.dp)
         )
     }

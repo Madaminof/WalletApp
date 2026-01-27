@@ -17,7 +17,16 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.animation.core.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BarChart
+import androidx.compose.ui.res.painterResource
 import dev.samandar.walletapp.R
+
+
+enum class ChartTab(val titleResId: Int) {
+    BALANCE(R.string.tab_balance),
+    EXPENSE(R.string.tab_expense),
+    INCOME(R.string.tab_income),
+    REPORTS(R.string.tab_reports)
+}
 
 @Composable
 fun EmptyChartState(
@@ -40,7 +49,7 @@ fun EmptyChartState(
         verticalArrangement = Arrangement.Center
     ) {
         Box(
-            modifier = Modifier.size(80.dp),
+            modifier = Modifier.size(100.dp),
             contentAlignment = Alignment.Center
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
@@ -55,20 +64,12 @@ fun EmptyChartState(
                     )
                 )
             }
-            Surface(
-                shape = CircleShape,
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
-                modifier = Modifier
-                    .size(48.dp)
-                    .graphicsLayer { this.alpha = alpha }
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.BarChart,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                    modifier = Modifier.padding(10.dp)
-                )
-            }
+            Icon(
+                painter = painterResource(R.drawable.chart_ic),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                modifier = Modifier.size(60.dp)
+            )
         }
         Spacer(Modifier.height(12.dp))
         Text(
@@ -78,7 +79,7 @@ fun EmptyChartState(
                 stringResource(R.string.empty_incomes),
             style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
+                fontSize = 16.sp
             ),
             color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.7f),
             textAlign = TextAlign.Center
@@ -86,7 +87,7 @@ fun EmptyChartState(
         Text(
             text = stringResource(R.string.add_transactions_to_see_chart),
             style = MaterialTheme.typography.labelSmall.copy(
-                fontSize = 11.sp,
+                fontSize = 14.sp,
                 fontWeight = FontWeight.Normal
             ),
             color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.4f),

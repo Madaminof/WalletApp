@@ -160,7 +160,7 @@ private fun AccountPremiumItem(
                 Icon(
                     painter = painterResource(id = acc.iconResId ?: R.drawable.ic_card_default),
                     contentDescription = null,
-                    tint = Color.Unspecified,
+                    tint = accColor,
                     modifier = Modifier.size(24.dp)
                 )
             }

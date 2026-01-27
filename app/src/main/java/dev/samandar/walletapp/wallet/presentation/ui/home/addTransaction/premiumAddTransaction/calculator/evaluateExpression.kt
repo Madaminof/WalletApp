@@ -28,11 +28,25 @@ fun evaluateExpression(state: CalculatorState, action: CalculatorAction, onSave:
 
     when (action) {
         is CalculatorAction.Number -> {
-            if (display == "Error" || isNewInput) display = action.number
-            else if (action.number == "000") display += "000"
-            else if (display == "0") display = action.number
-            else display += action.number
-            isNewInput = false
+            val input = action.number
+
+            if (display == "Error" || isNewInput) {
+                display = if (input == "000") "0" else input
+                isNewInput = false
+            } else {
+                val currentDigits = display.filter { it.isDigit() }.length
+                val inputDigits = input.filter { it.isDigit() }.length
+
+                if (currentDigits + inputDigits <= 9) {
+                    when {
+                        display == "0" && (input == "0" || input == "000") -> { /* O'zgarishsiz qoladi */ }
+
+                        display == "0" && input != "000" -> display = input
+
+                        else -> display += input
+                    }
+                }
+            }
         }
         is CalculatorAction.Operation -> {
             if (firstOperand == null) firstOperand = display.toDoubleOrNull()

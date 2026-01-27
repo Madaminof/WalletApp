@@ -79,7 +79,6 @@
 
     // Expense Statistics Card
     <string name="title_expense_statistics">Статистика расходов</string>
-    <string name="total_expense">ОБЩИЙ РАСХОД</string>
     <string name="others">Другое</string>
     <string name="empty" translatable="false">Расходы еще не были введены.</string>
     <string name="title_dialog_expense_card" translatable="false">Выбор временного диапазона</string>
@@ -158,7 +157,7 @@
     <string name="date_picker_select_action">Выбрать</string>
     <string name="date_picker_choose_action">Выбрать</string>
     <string name="snackbar_success_budget_added">Бюджет успешно добавлен!</string>
-
+    <string name="preview_card_limit_label">Текущий лимит</string>
 
     // Add Transaction
     <string name="tabrow_income">Доход</string>
@@ -226,6 +225,20 @@
     <string name="unknown_category">Неизвестно</string>
     <string name="action_back">Назад</string>
     <string name="statistics">СТАТИСТИКА</string>
+    <string name="total_income">Общий доход</string>
+    <string name="total_expense">Общий расход</string>
+    <string name="max_expense">Самый большой расход</string>
+    <string name="max_income">Самый большой доход</string>
+    <string name="transactions_count">Транзакции</string>
+    <string name="average_value">Среднее значение</string>
+    <string name="count_format">%1$d шт</string>
+
+    <string name="expense_dynamics">Динамика расходов</string>
+    <string name="income_dynamics">Динамика доходов</string>
+    <string name="chart_hint">Нажмите и ведите для анализа</string>
+
+    <string name="all_transactions">Все операции</string>
+    <string name="no_data_found">Данные не найдены</string>
 
     <string name="transaction_details_title">Детали транзакции</string>
     <string name="total_amount_label">Общая сумма</string>

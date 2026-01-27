@@ -5,7 +5,6 @@ sealed class Screen(val route: String) {
 
     object Splash: Screen("splash")
 
-
     object Home : Screen("home")
     object Charts : Screen("charts")
     object Wallet : Screen("wallet")
@@ -16,12 +15,19 @@ sealed class Screen(val route: String) {
     object ExpenseList: Screen("expense_list")
     object DebtsScreen: Screen("debts_screen")
     object SettingScreen: Screen("settings")
-
+    object CategoryStatisticsScreen: Screen("categoryStatistic")
+    object CategoryDetail : Screen("categoryDetail/{categoryName}/{transactionType}") {
+        fun passArgs(name: String, type: String): String {
+            return "categoryDetail/$name/$type"
+        }
+    }
     object Add : Screen("add")
     object budjetAdd : Screen("add_budjet")
     object addTransaction: Screen("add_transaction")
     object addAccound: Screen("add_accound")
-    object ADD_EDIT_DEBT_SCREEN:Screen("add_edit_debt?debtId={debtId}")
+
+    object AddEditDebt : Screen("add_edit_debt")
+    object editAccount : Screen("editAccount")
 
 
     object detailTransaction : Screen("detail")

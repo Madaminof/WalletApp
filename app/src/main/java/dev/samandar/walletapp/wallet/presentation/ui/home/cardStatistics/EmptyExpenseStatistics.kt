@@ -17,12 +17,14 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.model.content.CircleShape
+import dev.samandar.walletapp.R
 
 
 @Composable
@@ -65,10 +67,9 @@ fun EmptyExpenseStatistics(modifier: Modifier = Modifier) {
                 },
             contentAlignment = Alignment.Center
         ) {
-            // 1. Fon uchun nozik "Dashed Circle"
             Canvas(modifier = Modifier
                 .fillMaxSize()
-                .graphicsLayer { rotationZ = rotation } // Sekin aylanadi
+                .graphicsLayer { rotationZ = rotation }
             ) {
                 drawArc(
                     brush = Brush.sweepGradient(
@@ -95,7 +96,6 @@ fun EmptyExpenseStatistics(modifier: Modifier = Modifier) {
                 )
             }
 
-            // 2. Markazdagi Premium Icon Surface
             Surface(
                 modifier = Modifier.size(50.dp),
                 shape = RoundedCornerShape(20.dp),
@@ -104,7 +104,7 @@ fun EmptyExpenseStatistics(modifier: Modifier = Modifier) {
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
-                        imageVector = Icons.Rounded.PieChartOutline,
+                        painter = painterResource(R.drawable.chart_ic),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                         modifier = Modifier.size(28.dp)
@@ -115,7 +115,6 @@ fun EmptyExpenseStatistics(modifier: Modifier = Modifier) {
 
         Spacer(Modifier.height(16.dp))
 
-        // 3. Matnlar (Yaxshilangan tipografiya)
         Text(
             text = stringResource(dev.samandar.walletapp.utils.Strings.empty_chart_view),
             style = MaterialTheme.typography.titleSmall.copy(
@@ -128,7 +127,7 @@ fun EmptyExpenseStatistics(modifier: Modifier = Modifier) {
         )
 
         Text(
-            text = stringResource(dev.samandar.walletapp.R.string.empty_chart_hint),
+            text = stringResource(R.string.empty_chart_hint),
             style = MaterialTheme.typography.bodySmall.copy(
                 lineHeight = 14.sp
             ),

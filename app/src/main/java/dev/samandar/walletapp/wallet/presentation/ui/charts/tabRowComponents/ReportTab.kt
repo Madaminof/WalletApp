@@ -159,7 +159,7 @@ fun DetailedCategorySection(
                 Icon(
                     painter = painterResource(id = category.iconResId ?: 0),
                     contentDescription = category.name,
-                    tint = Color.Unspecified,
+                    tint = Color(category.colorArgb),
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -233,6 +233,11 @@ fun TransactionItem(
     val note = transaction.note.takeIf { !it.isNullOrBlank() }
 
     var noteExpanded by remember { mutableStateOf(false) }
+    val hexColor = try {
+        Color(android.graphics.Color.parseColor(transaction.account.colorHex ?: "#AAAAAA"))
+    } catch (e: IllegalArgumentException) {
+        Color.Gray
+    }
 
 
     Column(
@@ -250,7 +255,7 @@ fun TransactionItem(
                 Icon(
                    painter = painterResource(transaction.account.iconResId?: R.drawable.ic_wallet_2),
                     contentDescription = stringResource(Strings.icon_content_description_account),
-                    tint = Color.Unspecified,
+                    tint = hexColor,
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))

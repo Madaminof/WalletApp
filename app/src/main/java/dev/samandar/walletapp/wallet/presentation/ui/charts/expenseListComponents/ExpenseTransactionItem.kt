@@ -91,13 +91,13 @@ private fun ExpenseTransactionItemContent(transaction: Transaction) {
         Box(
             modifier = Modifier
                 .size(35.dp)
-                .background(iconColor.copy(0.15f), CircleShape),
+                .background(iconColor.copy(0.1f), CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 painter = painterResource(id = category.iconResId ?: R.drawable.ic_other),
                 contentDescription = null,
-                tint = Color.Unspecified,
+                tint = iconColor,
                 modifier = Modifier.size(20.dp)
             )
         }

@@ -128,8 +128,8 @@ fun ActionButtonsRow(
                 shape = RoundedCornerShape(12.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 colors = ButtonDefaults.filledTonalButtonColors(
-                    containerColor = MaterialTheme.colorScheme.primary.copy(0.2f),
-                    contentColor = MaterialTheme.colorScheme.primary
+                    containerColor =MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f),
+                    contentColor =MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
                 )
             ) {
                 Icon(
@@ -156,8 +156,8 @@ fun ActionButtonsRow(
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
             colors = ButtonDefaults.filledTonalButtonColors(
-                containerColor = MaterialTheme.colorScheme.primary.copy(0.2f),
-                contentColor = MaterialTheme.colorScheme.primary
+                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f),
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
             )
         ) {
             Icon(
@@ -182,14 +182,14 @@ fun ActionButtonsRow(
             modifier = Modifier.size(44.dp),
             shape = RoundedCornerShape(12.dp),
             colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = expenseColor.copy(0.15f),
-                contentColor = MaterialTheme.colorScheme.error
+                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f),
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
             )
         ) {
             Icon(
                 painter = painterResource(R.drawable.delete_icon),
                 contentDescription = "Delete",
-                modifier = Modifier.size(22.dp),
+                modifier = Modifier.size(20.dp),
                 tint = MaterialTheme.colorScheme.error
             )
         }

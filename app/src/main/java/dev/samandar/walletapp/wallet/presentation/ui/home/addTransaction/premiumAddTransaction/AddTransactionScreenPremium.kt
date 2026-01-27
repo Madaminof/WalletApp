@@ -17,6 +17,7 @@ import dev.samandar.walletapp.wallet.presentation.viewmodel.AddTransactionViewMo
 import dev.samandar.walletapp.wallet.presentation.viewmodel.TransactionEvent
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.account.AccountSelectionDialog
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.calculator.CalculatorPadPremium
+import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.calculator.CalculatorPadPremiumUI
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.CategoryListSectionPremium
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.dateTime.PremiumDateTimePickerDialog
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.helperFunctions.ZoomDialog
@@ -122,7 +123,7 @@ fun AddTransactionScreenPremium(
                             .fillMaxWidth()
                             .navigationBarsPadding()
                     ) {
-                        CalculatorPadPremium(
+                        CalculatorPadPremiumUI(
                             onDisplayChange = { currentDisplayString = it },
                             onSaveConfirmed = { finalAmount ->
                                 viewModel.saveTransaction(finalAmount)

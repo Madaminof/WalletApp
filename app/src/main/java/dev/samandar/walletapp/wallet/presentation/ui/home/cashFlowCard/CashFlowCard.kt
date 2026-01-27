@@ -44,13 +44,16 @@ import dev.samandar.walletapp.ui.theme.expenseColor
 import dev.samandar.walletapp.ui.theme.incomeColor
 import dev.samandar.walletapp.utils.FilterKeys
 import dev.samandar.walletapp.utils.Strings
-import dev.samandar.walletapp.wallet.presentation.ui.home.cashFlowCard.CashFlowFilterDialog
+import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.FilterActionButton
+import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.UniversalFilterMenu
+import dev.samandar.walletapp.wallet.presentation.ui.home.cashFlowCard.CashFlowFilterMenu
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.CircularIconButton
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.primaryAccent
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 import dev.samandar.walletapp.wallet.presentation.utils.FormatAmount
 import dev.samandar.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import dev.samandar.walletapp.wallet.presentation.viewmodel.CashFlowViewModel
+import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.TimeFilter
 import java.text.NumberFormat
 import java.util.Locale
 import kotlin.math.absoluteValue
@@ -106,6 +109,7 @@ fun CashFlowItem(
 fun CashFlowCard(
     viewModel: CashFlowViewModel = hiltViewModel()
 ) {
+    var isFilterMenuExpanded by remember { mutableStateOf(false) }
     val state by viewModel.cardState.collectAsState()
     var isPressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
@@ -141,14 +145,22 @@ fun CashFlowCard(
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.8f)
                     )
-                    CircularIconButton(
-                        onClick = viewModel::onFilterClick,
-                        icon = R.drawable.filter_ic,
-                        contentDescription = "Filter",
-                        tint = primaryAccent.copy(0.8f),
-                        backgroundColor = primaryAccent.copy(alpha = 0.1f),
-                        size = 32.dp
-                    )
+                    Box(contentAlignment = Alignment.TopEnd) {
+                        FilterActionButton(
+                            onClick = { isFilterMenuExpanded = true },
+                            icon = Icons.Default.FilterList,
+                            size = 30.dp
+                        )
+
+                        CashFlowFilterMenu(
+                            isExpanded = isFilterMenuExpanded,
+                            onDismiss = { isFilterMenuExpanded = false },
+                            selectedFilter = state.selectedFilter,
+                            onFilterSelected = { newFilter ->
+                                viewModel.onFilterChange(newFilter)
+                            }
+                        )
+                    }
                 }
                 val label = if (state.selectedFilter == FilterKeys.ALL) {
                     stringResource(R.string.filter_all)
@@ -174,13 +186,6 @@ fun CashFlowCard(
         }
     }
 
-    if (state.isFilterDialogOpen) {
-        CashFlowFilterDialog(
-            initialSelectedFilter = viewModel.cardState.collectAsState().value.periodLabel,
-            onFilterChange = viewModel::onFilterChange,
-            onDismiss = viewModel::onFilterDismiss
-        )
-    }
 }
 
 @Composable

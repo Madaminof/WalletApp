@@ -1,16 +1,13 @@
 package dev.samandar.walletapp.wallet.presentation.ui.budjets.addBudget
 
+import androidx.compose.animation.core.Spring
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.samandar.walletapp.utils.Strings
@@ -22,6 +19,20 @@ import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.UUID
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
+import dev.samandar.walletapp.R
+
 
 @Composable
 fun SaveButton(
@@ -41,6 +52,9 @@ fun SaveButton(
     val selectTime2 = stringResource(Strings.snackbar_error_end_date_invalid)
     val successMessage = stringResource(Strings.snackbar_success_budget_added)
 
+    val amount = maxAmountInput.toDoubleOrNull() ?: 0.0
+    val isFormValid = selectedCategory != null && amount > 0.0
+
     fun showTemporarySnackbar(message: String) {
         scope.launch {
             snackbarHostState.currentSnackbarData?.dismiss()
@@ -50,31 +64,39 @@ fun SaveButton(
                     duration = SnackbarDuration.Indefinite
                 )
             }
-            kotlinx.coroutines.delay(1000L)
+            kotlinx.coroutines.delay(1200L)
             snackJob.cancel()
             snackbarHostState.currentSnackbarData?.dismiss()
         }
     }
 
-    TextButton(
+    PremiumIconButton(
+        icon = R.drawable.check_icon,
+        enabled = true,
+        color = if (isFormValid) {
+            MaterialTheme.colorScheme.primary.copy(0.9f)
+        } else {
+            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+        },
+        modifier = Modifier.padding(end = 16.dp),
         onClick = {
-            val amount = maxAmountInput.toDoubleOrNull()
+            val finalAmount = maxAmountInput.toDoubleOrNull()
 
             if (selectedCategory == null) {
                 showTemporarySnackbar(selectCategory)
-                return@TextButton
+                return@PremiumIconButton
             }
-            if (amount == null || amount <= 0) {
+            if (finalAmount == null || finalAmount <= 0) {
                 showTemporarySnackbar(maxSum)
-                return@TextButton
+                return@PremiumIconButton
             }
             if (selectedPeriod == BudgetPeriod.RANGE && endDateMillis == null) {
                 showTemporarySnackbar(selectTime)
-                return@TextButton
+                return@PremiumIconButton
             }
             if (selectedPeriod == BudgetPeriod.RANGE && endDateMillis != null && endDateMillis <= startDateMillis) {
                 showTemporarySnackbar(selectTime2)
-                return@TextButton
+                return@PremiumIconButton
             }
 
             val finalStartDate: Long
@@ -85,12 +107,10 @@ fun SaveButton(
                     finalStartDate = BudgetDateUtils.getStartOfMonth()
                     finalEndDate = BudgetDateUtils.getEndOfMonth()
                 }
-
                 BudgetPeriod.WEEKLY -> {
                     finalStartDate = BudgetDateUtils.getStartOfCurrentWeek()
                     finalEndDate = BudgetDateUtils.getEndOfCurrentWeek()
                 }
-
                 BudgetPeriod.RANGE -> {
                     finalStartDate = startDateMillis
                     finalEndDate = endDateMillis
@@ -100,7 +120,7 @@ fun SaveButton(
             val newBudget = Budget(
                 id = UUID.randomUUID().toString(),
                 category = selectedCategory,
-                maxAmount = amount,
+                maxAmount = finalAmount,
                 period = selectedPeriod,
                 startDate = finalStartDate,
                 endDate = finalEndDate,
@@ -111,16 +131,47 @@ fun SaveButton(
             viewModel.saveBudget(newBudget)
             navController.previousBackStackEntry?.savedStateHandle?.set("success_key", successMessage)
             navController.popBackStack()
-        },
-        modifier = Modifier.padding(end = 8.dp),
-        colors = ButtonDefaults.textButtonColors(
-            contentColor = MaterialTheme.colorScheme.primary
-        )
-    ) {
-        Text(
-            text = stringResource(Strings.action_save),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
-    }
+        }
+    )
+}
+
+@Composable
+fun PremiumIconButton(
+    icon: Int,
+    onClick: () -> Unit,
+    color: Color,
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.85f else 1f,
+        animationSpec = spring(stiffness = Spring.StiffnessLow),
+        label = "scale"
+    )
+
+    val alpha by animateFloatAsState(
+        targetValue = if (enabled) 1f else 0.4f,
+        label = "alpha"
+    )
+
+    Icon(
+        painter = painterResource(id = icon),
+        contentDescription = null,
+        tint = color,
+        modifier = modifier
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+                this.alpha = alpha
+            }
+            .size(32.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = { if (enabled) onClick() }
+            )
+    )
 }

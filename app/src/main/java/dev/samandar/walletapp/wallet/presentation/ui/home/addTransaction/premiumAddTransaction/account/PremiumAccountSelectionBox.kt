@@ -30,7 +30,8 @@ fun PremiumAccountSelectionBox(
 ) {
     val accColor = remember(selectedAccount?.colorHex) {
         try { Color(selectedAccount?.colorHex?.toColorInt() ?: 0xFF6200EE.toInt()) }
-        catch (e: Exception) { Color(0xFF6200EE.toInt()) }
+        catch (e: Exception) { Color(0xFF00838F)
+        }
     }
     val accountName = getTranslatedName(selectedAccount?.name ?: stringResource(R.string.placeholder_select_account))
 
@@ -38,8 +39,8 @@ fun PremiumAccountSelectionBox(
         onClick = onClick,
         modifier = modifier.height(48.dp),
         shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f),
-        border = BorderStroke(1.dp, accColor.copy(alpha = 0.3f))
+        color = accColor.copy(alpha = 0.05f),
+        border = BorderStroke(1.dp, accColor.copy(alpha = 0.2f))
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 8.dp),
@@ -50,7 +51,7 @@ fun PremiumAccountSelectionBox(
                 modifier = Modifier
                     .size(36.dp)
                     .background(
-                        accColor.copy(0.3f),
+                        accColor.copy(0.15f),
                         RoundedCornerShape(8.dp)
                     ),
                 contentAlignment = Alignment.Center
@@ -58,7 +59,7 @@ fun PremiumAccountSelectionBox(
                 Icon(
                     painter = painterResource(id = selectedAccount?.iconResId ?: R.drawable.ic_card_default),
                     contentDescription = null,
-                    tint = Color.Unspecified,
+                    tint = accColor,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -84,7 +85,9 @@ fun PremiumAccountSelectionBox(
                         fontSize = 9.sp,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                        lineHeight = 9.sp
+                        lineHeight = 9.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

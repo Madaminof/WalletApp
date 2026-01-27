@@ -78,7 +78,7 @@ fun BudgetHeaderSection(
         ) {
             IconBox(
                 iconRes = budget.category.iconResId,
-                color = Color(budget.category.colorArgb).copy(alpha = 0.15f),
+                color = Color(budget.category.colorArgb),
             )
             Spacer(modifier = Modifier.width(12.dp))
 

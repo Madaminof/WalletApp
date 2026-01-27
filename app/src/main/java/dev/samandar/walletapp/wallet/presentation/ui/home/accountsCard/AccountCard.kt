@@ -79,9 +79,9 @@ fun AccountItem(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(id = account.iconResId?: R.drawable.ic_card_default),
+                painter = painterResource(id = account.iconResId?: R.drawable.cash_icon2),
                 contentDescription = account.name,
-                tint = Color.Unspecified,
+                tint = hexColor,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -262,8 +262,8 @@ fun AccountCard(
             account = account,
             onDismiss = { selectedAccount = null },
             onUpdate = { acc ->
-                // TODO: Update logic
                 selectedAccount = null
+                navController.navigate(Screen.editAccount.route + "/${acc.id}")
             },
             onDelete = { acc ->
                 viewModel.deleteAccount(acc)

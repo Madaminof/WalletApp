@@ -2,7 +2,6 @@ package dev.samandar.walletapp.wallet.presentation.ui
 
 import android.media.MediaPlayer
 import android.os.Build
-import android.os.Build.VERSION_CODES.S
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
@@ -12,18 +11,12 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -34,8 +27,7 @@ import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.wallet.presentation.ui.drawableMenu.DrawerBody
 import dev.samandar.walletapp.wallet.presentation.ui.drawableMenu.DrawerHeader
 import dev.samandar.walletapp.wallet.presentation.ui.home.HomeScreen
-import dev.samandar.walletapp.wallet.presentation.ui.home.HomeTopBar
-import dev.samandar.walletapp.wallet.presentation.ui.home.ModernBottomActions
+import dev.samandar.walletapp.wallet.presentation.ui.home.homeTopBar.HomeTopBar
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.snackbar.ModernSnackbar
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.TotalBalanceCardViewModel
 import kotlinx.coroutines.delay

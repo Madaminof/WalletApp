@@ -22,7 +22,7 @@ class AccountRepositoryImpl @Inject constructor(
 
     override suspend fun addAccount(account: Account): Result<Unit> = runCatching {
         val entity = account.toAccountEntity()
-        accountDao.insertAccount(entity)
+        accountDao.upsertAccount(entity)
     }
 
     override suspend fun getAccountById(accountId: String): Result<Account> = runCatching {

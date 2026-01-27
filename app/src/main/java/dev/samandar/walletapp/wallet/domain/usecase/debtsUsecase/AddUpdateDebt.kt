@@ -63,7 +63,7 @@ class AddUpdateDebt @Inject constructor(
                 id = UUID.randomUUID().toString(),
                 name = name,
                 type = type,
-                iconResId = R.drawable.debt_icon,
+                iconResId = R.drawable.debt_ic2,
                 colorArgb = 0xFFFFA500
             ).also { categoryRepository.addCategory(it) }
     }

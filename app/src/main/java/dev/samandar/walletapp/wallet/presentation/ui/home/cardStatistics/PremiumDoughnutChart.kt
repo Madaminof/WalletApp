@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.samandar.walletapp.utils.Strings
-import dev.samandar.walletapp.wallet.presentation.viewmodel.CategoryData
+import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.CategoryData
 import kotlinx.coroutines.launch
 
 @Composable

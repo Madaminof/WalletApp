@@ -4,6 +4,9 @@ import android.media.MediaPlayer
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -28,7 +31,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.utils.Strings
+import dev.samandar.walletapp.wallet.domain.model.Budget
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
+import dev.samandar.walletapp.wallet.presentation.ui.budjets.editBudget.EditBudgetSheet
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.snackbar.ModernSnackbar
 import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.CustomTopBar
 import kotlinx.coroutines.delay
@@ -102,7 +107,7 @@ fun BudgetsScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
-                    contentPadding = PaddingValues(top = 8.dp),
+                    contentPadding = PaddingValues(top = 4.dp, bottom = 80.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     itemsIndexed(
@@ -111,18 +116,18 @@ fun BudgetsScreen(
                     ) { index, status ->
                         BudgetRowItem(
                             status = status,
-                            onClick = {
-                                navController.navigate("budget_detail/${status.budget.id}")
-                            },
-                            modifier = Modifier.animateItem(),
                             index = index,
-                            onDelete = {
-                                viewModel.deleteBudjet(status.budget)
-                            }
+                            onClick = { navController.navigate("budget_detail/${status.budget.id}") },
+                            onDelete = { viewModel.deleteBudjet(status.budget) },
+                            modifier = Modifier.animateItem(
+                                fadeInSpec = tween(500),
+                                placementSpec = spring(
+                                    dampingRatio = Spring.DampingRatioLowBouncy,
+                                    stiffness = Spring.StiffnessLow
+                                ),
+                                fadeOutSpec = tween(400)
+                            ),
                         )
-                    }
-                    item {
-                        Spacer(modifier = Modifier.height(60.dp))
                     }
                 }
             }

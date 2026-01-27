@@ -5,6 +5,7 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.hilt)
     id("com.google.gms.google-services")
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -15,8 +16,8 @@ android {
         applicationId = "dev.samandar.walletapp"
         minSdk = 24
         targetSdk = 35 // Android 15 qo'llab-quvvatlash
-        versionCode = 10 // Google Console uchun doim oshirib boring
-        versionName = "1.6"
+        versionCode = 12 // Google Console uchun doim oshirib boring
+        versionName = "1.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -70,6 +71,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.foundation)
     implementation(libs.play.services.mlkit.barcode.scanning)
+    implementation(libs.firebase.crashlytics)
     debugImplementation(libs.androidx.ui.tooling)
     implementation("androidx.compose.material:material-icons-extended")
 
@@ -146,6 +148,11 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation("androidx.compose.material3:material3:1.2.0")
+
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    implementation(libs.firebase.crashlytics) // Toml ichidagi SDK'ni chaqiradi
+    implementation("com.google.firebase:firebase-analytics")
 
 
 }

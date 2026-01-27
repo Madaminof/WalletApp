@@ -37,8 +37,7 @@ import dev.samandar.walletapp.R
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 import dev.samandar.walletapp.wallet.presentation.utils.formatAmountWithCurrency
-import dev.samandar.walletapp.wallet.presentation.viewmodel.CategoryData
-import java.text.DecimalFormat
+import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.CategoryData
 import kotlin.math.roundToInt
 
 val activeCurrency by CurrencyManager.currentCurrency

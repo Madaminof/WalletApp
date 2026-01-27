@@ -1,5 +1,6 @@
 @file:Suppress("IMPLICIT_CAST_TO_ANY")
 package dev.samandar.walletapp.wallet.presentation.ui.charts.detailScreen.edit
+
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

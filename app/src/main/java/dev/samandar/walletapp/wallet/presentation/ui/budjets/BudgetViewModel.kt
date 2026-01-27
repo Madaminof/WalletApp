@@ -108,14 +108,7 @@ class BudgetViewModel @Inject constructor(
             }
         }
     }
-/*
-    fun getBudgetById(budgetId: String?): Flow<BudgetWithCategory?> {
-        return if (budgetId != null) {
-            budgetRepository.getBudgetById(budgetId)
-        } else {
-            emptyFlow()
-        }
-    }*/
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun getBudgetStatusById(budgetId: String): Flow<BudgetStatus?> {
         return activeBudgetStatuses.map { statuses ->

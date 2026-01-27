@@ -90,7 +90,7 @@ fun AddBudgetScreen(
                     categoryName = selectedCategory?.name,
                     maxAmount = maxAmountInput.toDoubleOrNull() ?: 0.0,
                     period = selectedPeriod,
-                    color = selectedCategory?.let { Color(it.colorArgb) } ?: colorFalse
+                    selectedColor = selectedCategory?.let { Color(it.colorArgb) } ?: colorFalse
                 )
 
                 InputFieldsSection(

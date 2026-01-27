@@ -30,26 +30,25 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dev.samandar.walletapp.wallet.domain.model.debt.DebtType
 import dev.samandar.walletapp.wallet.presentation.ui.Navigation
-import dev.samandar.walletapp.wallet.presentation.ui.account.AddAccountScreen
+import dev.samandar.walletapp.wallet.presentation.ui.account.addAccount.AddAccountScreen
 import dev.samandar.walletapp.wallet.presentation.ui.account.accountScreen.WalletScreen
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.budgetScreen.BudgetsScreen
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.addBudget.AddBudgetScreen
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.budgetDetail.BudgetDetailScreen
-import dev.samandar.walletapp.wallet.presentation.ui.charts.ChartsScreen
 import dev.samandar.walletapp.wallet.presentation.ui.charts.ExpensesListScreen
 import dev.samandar.walletapp.wallet.presentation.ui.charts.detailScreen.TransactionDetailScreen
-import dev.samandar.walletapp.wallet.presentation.ui.home.ModernBottomActions
+import dev.samandar.walletapp.wallet.presentation.ui.home.NavBarActionButton.ModernBottomActions
 import dev.samandar.walletapp.wallet.presentation.ui.home.SplashScreen
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.AddTransactionScreenPremium
-import dev.samandar.walletapp.wallet.presentation.ui.premiumFunctions.debts.debtScreen.DebtsScreen
-import dev.samandar.walletapp.wallet.presentation.ui.premiumFunctions.goals.GoalsScreen
+import dev.samandar.walletapp.wallet.presentation.ui.features.debts.debtScreen.DebtsScreen
+import dev.samandar.walletapp.wallet.presentation.ui.features.goals.GoalsScreen
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.SettingsScreen
-import dev.samandar.walletapp.wallet.presentation.ui.premiumFunctions.shoppingLists.shoppingListDetail.ShoppingListDetailScreen
-import dev.samandar.walletapp.wallet.presentation.ui.premiumFunctions.shoppingLists.shoppingListScreen.ShoppingListScreen
+import dev.samandar.walletapp.wallet.presentation.ui.features.shoppingLists.shoppingListDetail.ShoppingListDetailScreen
+import dev.samandar.walletapp.wallet.presentation.ui.features.shoppingLists.shoppingListScreen.ShoppingListScreen
 import dev.samandar.walletapp.wallet.presentation.viewmodel.AccountViewModel
-import dev.samandar.walletapp.wallet.presentation.ui.premiumFunctions.debts.DebtsViewModel
-import dev.samandar.walletapp.wallet.presentation.ui.premiumFunctions.debts.addDebt.AddEditDebtScreen
+import dev.samandar.walletapp.wallet.presentation.ui.features.debts.DebtsViewModel
+import dev.samandar.walletapp.wallet.presentation.ui.features.debts.addDebt.AddEditDebtScreen
 import dev.samandar.walletapp.wallet.presentation.viewmodel.HomeViewModel
 import dev.samandar.walletapp.wallet.smartScann.scannScreen.ReceiptScannerScreen
 import dev.samandar.walletapp.wallet.smartScann.ReviewViewModel
@@ -61,9 +60,15 @@ import com.google.accompanist.permissions.rememberPermissionState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.shouldShowRationale
+import dev.samandar.walletapp.wallet.domain.model.TransactionType
+import dev.samandar.walletapp.wallet.presentation.ui.account.EditAccountScreen
+import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.CategoryDetail.CategoryDetailScreen
+import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.CategoryStatisticsScreen
+import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.viewmodel.CategoryStatisticsViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.AddTransactionBottomSheet
 import dev.samandar.walletapp.wallet.smartScann.PermissionRationaleUI
 
+/*
 
 const val TRANSITION_DURATION = 360
 const val MODAL_TRANSITION_DURATION = 400
@@ -108,6 +113,7 @@ val ModalExitTransition = slideOutVertically(
     animationSpec = tween(MODAL_TRANSITION_DURATION, easing = StandardEasing)
 )
 
+*/
 
 
 
@@ -119,7 +125,9 @@ fun NavGraph(
     viewModel: HomeViewModel,
     addAccountViewModel: AccountViewModel,
     budgetViewModel: BudgetViewModel,
-) {
+    categoryViewModel: CategoryStatisticsViewModel
+
+    ) {
     val accounts by viewModel.accounts.collectAsState()
     val navController = rememberAnimatedNavController()
 
@@ -199,7 +207,6 @@ fun NavGraph(
                     popExitTransition = { ZoomOutBackward }
                 ) { backStackEntry ->
                     when (backStackEntry.destination.route) {
-                        Screen.Charts.route -> ChartsScreen(viewModel = viewModel, navController = navController)
                         Screen.Budgets.route -> BudgetsScreen(
                             viewModel = budgetViewModel,
                             navController = navController
@@ -323,6 +330,44 @@ fun NavGraph(
                 )
             }
 
+            composable(
+                route = Screen.CategoryStatisticsScreen.route,
+                enterTransition = { ZoomInForward },
+                exitTransition = { ZoomOutForward },
+                popEnterTransition = { ZoomInBackward },
+                popExitTransition = { ZoomOutBackward }
+            ) { backStackEntry ->
+                CategoryStatisticsScreen(
+                    navController = navController,
+                    categoryViewModel = categoryViewModel
+                )
+            }
+
+            composable(
+                route = Screen.CategoryDetail.route,
+                arguments = listOf(
+                    navArgument("categoryName") { type = NavType.StringType },
+                    navArgument("transactionType") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val categoryName = backStackEntry.arguments?.getString("categoryName") ?: ""
+                val typeStr = backStackEntry.arguments?.getString("transactionType") ?: "EXPENSE"
+
+                // Stringdan Enumga o'tkazamiz
+                val type = try {
+                    TransactionType.valueOf(typeStr)
+                } catch (e: Exception) {
+                    TransactionType.EXPENSE
+                }
+
+                CategoryDetailScreen(
+                    categoryName = categoryName,
+                    transactionType = type,
+                    navController = navController
+                )
+            }
+
+
 
             composable(
                 route = Screen.DebtsScreen.route,
@@ -338,7 +383,7 @@ fun NavGraph(
                 )
             }
             composable(
-                route = Screen.ADD_EDIT_DEBT_SCREEN.route + "?debtId={debtId}&debtType={debtType}",
+                route = Screen.AddEditDebt.route + "?debtId={debtId}&debtType={debtType}",
                 enterTransition = { ModalEnterTransition },
                 exitTransition = { ModalExitTransition },
                 arguments = listOf(
@@ -388,6 +433,27 @@ fun NavGraph(
                 popExitTransition = { ZoomOutBackward }
             ) { backStackEntry ->
                 SettingsScreen(navController)
+            }
+
+            composable(
+                route = Screen.editAccount.route + "/{accountId}",
+                arguments = listOf(navArgument("accountId") { type = NavType.StringType }) // UUID bo'lgani uchun StringType qilamiz
+            ) { backStackEntry ->
+                val accountId = backStackEntry.arguments?.getString("accountId")
+                val state by addAccountViewModel.cardState.collectAsState()
+
+                val accountToEdit = state.accounts.find { it.id == accountId }
+
+                accountToEdit?.let { account ->
+                    EditAccountScreen(
+                        account = account,
+                        onSaveClick = { updatedAccount ->
+                            addAccountViewModel.updateAccount(updatedAccount)
+                            navController.popBackStack()
+                        },
+                        navController = navController,
+                    )
+                }
             }
 
 
@@ -505,9 +571,4 @@ fun NavGraph(
             }
         }
     }
-
-
-    
-    
-
 }

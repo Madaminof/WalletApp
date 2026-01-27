@@ -32,7 +32,6 @@ fun DateRangeSelector(
     onStartDateClick: (Long) -> Unit,
     onEndDateClick: (Long) -> Unit
 ) {
-    // Dialoglarni boshqarish uchun lokal state (Recomposition minimallashtirilgan)
     var showStartPicker by remember { mutableStateOf(false) }
     var showEndPicker by remember { mutableStateOf(false) }
 

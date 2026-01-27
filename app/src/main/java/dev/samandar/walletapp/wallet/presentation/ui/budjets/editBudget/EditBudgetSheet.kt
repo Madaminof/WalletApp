@@ -39,8 +39,6 @@ fun EditBudgetSheet(
     onDismiss: () -> Unit,
     viewModel: BudgetViewModel = hiltViewModel(),
 ) {
-    val categoryName = getTranslatedName(budgetToEdit.category.name)
-
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
@@ -60,13 +58,11 @@ fun EditBudgetSheet(
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
         val scrollState = rememberScrollState()
-
         var selectedCategory by remember(budgetToEdit.category) { mutableStateOf<Category?>(budgetToEdit.category) }
         var maxAmountInput by remember(budgetToEdit.maxAmount) { mutableStateOf(budgetToEdit.maxAmount.toString()) }
         var selectedPeriod by remember(budgetToEdit.period) { mutableStateOf(budgetToEdit.period) }
         var startDateMillis by remember(budgetToEdit.startDate) { mutableStateOf(budgetToEdit.startDate) }
         var endDateMillis by remember(budgetToEdit.endDate) { mutableStateOf(budgetToEdit.endDate) }
-
         var showCategorySheet by remember { mutableStateOf(false) }
 
         if (showCategorySheet) {
@@ -120,7 +116,7 @@ fun EditBudgetSheet(
                 categoryName = selectedCategory?.name,
                 maxAmount = maxAmountInput.toDoubleOrNull() ?: 0.0,
                 period = selectedPeriod,
-                color = selectedCategory?.let { Color(it.colorArgb) } ?: MaterialTheme.colorScheme.primaryContainer
+                selectedColor = selectedCategory?.let { Color(it.colorArgb) } ?: MaterialTheme.colorScheme.primaryContainer
             )
 
             Spacer(modifier = Modifier.height(16.dp))

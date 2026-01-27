@@ -15,9 +15,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import dev.samandar.walletapp.navigation.NavGraph
+import dev.samandar.walletapp.navigation.NavGraphMain
 import dev.samandar.walletapp.ui.theme.WalletAppTheme
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
+import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.viewmodel.CategoryStatisticsViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.SoundManager
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.SettingsViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
@@ -50,10 +51,17 @@ class MainActivity : AppCompatActivity() {
 
             WalletAppTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    NavGraph(
+                    /*NavGraph(
                         viewModel = hiltViewModel<HomeViewModel>(),
                         addAccountViewModel = hiltViewModel<AccountViewModel>(),
                         budgetViewModel = hiltViewModel<BudgetViewModel>(),
+                        categoryViewModel = hiltViewModel<CategoryStatisticsViewModel>(),
+                    )*/
+                    NavGraphMain(
+                        viewModel = hiltViewModel<HomeViewModel>(),
+                        addAccountViewModel = hiltViewModel<AccountViewModel>(),
+                        budgetViewModel = hiltViewModel<BudgetViewModel>(),
+                        categoryViewModel = hiltViewModel<CategoryStatisticsViewModel>(),
                     )
                 }
             }

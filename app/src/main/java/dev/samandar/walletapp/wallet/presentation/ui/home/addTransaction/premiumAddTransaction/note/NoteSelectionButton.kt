@@ -2,6 +2,7 @@ package dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiu
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -29,21 +30,19 @@ fun NoteSelectionButton(
     Surface(
         onClick = onClick,
         modifier = modifier
-            .padding(horizontal = 20.dp)
-            .wrapContentSize(),
-        shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.9f),
+            .padding(horizontal = 20.dp),
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f),
         border = BorderStroke(
             width = 0.5.dp,
-            color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.2f)
-        ),
-        tonalElevation = 2.dp
+            color = Color.White.copy(alpha = 0.1f)
+        )
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 14.dp, vertical = 6.dp)
-                .blur(radius = 8.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 14.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             Icon(
                 imageVector = Icons.Default.Edit,

@@ -1,11 +1,13 @@
 package dev.samandar.walletapp.wallet.presentation.ui.budjets.budgetScreen
 
+import androidx.compose.animation.core.EaseOutQuart
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,9 +23,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -52,8 +56,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.samandar.walletapp.R
+import dev.samandar.walletapp.wallet.domain.model.Budget
 import dev.samandar.walletapp.wallet.domain.model.BudgetStatus
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.PremiumCustomLinearProgressIndicator
+import dev.samandar.walletapp.wallet.presentation.ui.budjets.editBudget.EditBudgetSheet
 import dev.samandar.walletapp.wallet.presentation.ui.charts.expenseListComponents.DeleteConfirmationDialog
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
 import dev.samandar.walletapp.wallet.presentation.utils.FormatAmount
@@ -74,8 +80,25 @@ fun BudgetRowItem(
     modifier: Modifier = Modifier,
 ) {
     val categoryName = getTranslatedName(status.budget.category.name)
+    val iconTxtColor =  MaterialTheme.colorScheme.onTertiary.copy(0.8f)
 
     var isVisible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        delay(index * 15L)
+        isVisible = true
+    }
+    val alpha by animateFloatAsState(
+        targetValue = if (isVisible) 1f else 0f,
+        animationSpec = tween(600, easing = EaseOutQuart), label = "alpha"
+    )
+    val translateY by animateFloatAsState(
+        targetValue = if (isVisible) 0f else 50f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessLow
+        ), label = "y"
+    )
 
     val dateFormatter = remember { SimpleDateFormat("dd-MMM, HH:mm", Locale.getDefault()) }
     val createdDateString = remember(status.budget.createdAt) {
@@ -86,38 +109,13 @@ fun BudgetRowItem(
     var showDeleteDialog by remember { mutableStateOf(false) }
 
 
-    LaunchedEffect(key1 = status.budget.id) {
-        delay(index * 20L)
-        isVisible = true
-    }
-
-    val alpha by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0f,
-        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing),
-        label = "fade"
-    )
-
-    val offsetY by animateFloatAsState(
-        targetValue = if (isVisible) 0f else 100f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioLowBouncy,
-            stiffness = Spring.StiffnessLow
-        ),
-        label = "slide"
-    )
-
-    val scale by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0.8f,
-        animationSpec = tween(durationMillis = 500),
-        label = "scale"
-    )
-
     val progress = (status.percentageUsed / 100).toFloat().coerceIn(0f, 1f)
     val progressFloat by animateFloatAsState(
         targetValue = progress,
         animationSpec = tween(800, easing = FastOutSlowInEasing),
         label = "progressAnim"
     )
+
     val remaining = remember(status.budget.maxAmount, status.spentAmount) {
         status.budget.maxAmount - status.spentAmount
     }
@@ -131,18 +129,17 @@ fun BudgetRowItem(
 
     Surface(
         modifier = modifier
+            .fillMaxWidth()
             .graphicsLayer {
                 this.alpha = alpha
-                this.translationY = offsetY
-                this.scaleX = scale
-                this.scaleY = scale
+                this.translationY = translateY
             }
-            .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(16.dp))
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f),
+        tonalElevation = 12.dp
     ){
         Column(
             modifier = Modifier.padding(16.dp)
@@ -162,7 +159,7 @@ fun BudgetRowItem(
                     Icon(
                         painter = painterResource(id = status.budget.category.iconResId?: R.drawable.ic_wallet_2),
                         contentDescription = stringResource(R.string.budget_icon_content_description_category),
-                        tint = Color.Unspecified,
+                        tint = Color(status.budget.category.colorArgb),
                         modifier = Modifier.size(20.dp),
                     )
                 }
@@ -178,44 +175,41 @@ fun BudgetRowItem(
                         Text(
                             text = categoryName.toString(),
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
+                            color = iconTxtColor
                         )
                         Box(contentAlignment = Alignment.TopEnd) {
                             IconButton(
                                 onClick = { showMenu = true },
-                                modifier = Modifier.size(25.dp)
+                                modifier = Modifier.size(32.dp)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.MoreVert,
-                                    contentDescription = "More",
-                                    tint = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+                                    Icons.Default.MoreVert,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onTertiary.copy(0.5f),
                                     modifier = Modifier.size(20.dp)
                                 )
                             }
+
                             DropdownMenu(
                                 expanded = showMenu,
                                 onDismissRequest = { showMenu = false },
                                 modifier = Modifier
-                                    .background(MaterialTheme.colorScheme.primaryContainer)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(MaterialTheme.colorScheme.onPrimaryContainer)
+                                    .border(0.5.dp, Color.LightGray.copy(0.2f), RoundedCornerShape(12.dp)),
+                                shape = RoundedCornerShape(12.dp)
                             ) {
                                 DropdownMenuItem(
                                     text = {
                                         Text(
                                             text = stringResource(R.string.action_delete),
-                                            style = MaterialTheme.typography.bodyLarge,
-                                            color = MaterialTheme.colorScheme.error,
-                                            fontSize = 14.sp
+                                            style = MaterialTheme.typography.bodyLarge.copy(
+                                                fontWeight = FontWeight.SemiBold,
+                                                fontSize = 15.sp
+                                            )
                                         )
                                     },
-                                    leadingIcon = {
-                                        Icon(
-                                            imageVector = Icons.Default.Delete,
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.error,
-                                            modifier = Modifier.size(20.dp)
-                                        )
-                                    },
+                                    leadingIcon = { Icon(painter = painterResource(R.drawable.delete_icon), null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(18.dp)) },
+
                                     onClick = {
                                         showMenu = false
                                         showDeleteDialog = true
@@ -226,6 +220,7 @@ fun BudgetRowItem(
                                     )
                                 )
                             }
+
                         }
                     }
                     Text(

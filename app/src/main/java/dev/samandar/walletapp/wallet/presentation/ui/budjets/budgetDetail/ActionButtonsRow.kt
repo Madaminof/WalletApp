@@ -17,9 +17,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import dev.samandar.walletapp.R
+import dev.samandar.walletapp.ui.theme.defaultColor
 import dev.samandar.walletapp.ui.theme.expenseColor
 
 
@@ -39,15 +41,15 @@ fun ActionButtonsRow(
             modifier = Modifier.size(44.dp),
             shape = RoundedCornerShape(12.dp),
             colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
-                contentColor = MaterialTheme.colorScheme.error
+                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f),
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
             )
         ) {
             Icon(
-                imageVector = Icons.Rounded.Edit,
+                painter = painterResource(R.drawable.edit2_icon),
                 contentDescription = "Edit",
                 modifier = Modifier.size(22.dp),
-                tint = MaterialTheme.colorScheme.onTertiary.copy(0.7f)
+                tint = MaterialTheme.colorScheme.primary
             )
         }
 
@@ -58,8 +60,8 @@ fun ActionButtonsRow(
             modifier = Modifier.size(44.dp),
             shape = RoundedCornerShape(12.dp),
             colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = expenseColor.copy(0.15f),
-                contentColor = MaterialTheme.colorScheme.error
+                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f),
+                contentColor =MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
             )
         ) {
             Icon(

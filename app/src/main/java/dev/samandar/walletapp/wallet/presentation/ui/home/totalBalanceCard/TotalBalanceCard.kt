@@ -39,7 +39,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
+import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.FilterActionButton
+import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.UniversalFilterMenu
 import dev.samandar.walletapp.wallet.presentation.ui.home.activeCurrency
+import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.TimeFilter
 
 val primaryAccent = Color(0xFF4759C1)
 
@@ -53,7 +56,7 @@ fun TotalBalanceCard(
     val state by viewModel.cardState.collectAsState()
 
     val balanceColor = if (state.netBalance < 0) expenseColor else incomeColor
-
+    var isMenuExpanded by remember { mutableStateOf(false) }
 
     var isPressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
@@ -107,16 +110,24 @@ fun TotalBalanceCard(
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.8f)
                 )
-                CircularIconButton(
-                    onClick = onFilterClick,
-                    icon = R.drawable.filter_ic,
-                    contentDescription = "Filter",
-                    tint = primaryAccent.copy(0.8f),
-                    backgroundColor = primaryAccent.copy(alpha = 0.1f),
-                    size = 32.dp
-                )
-            }
 
+                // MUHIM: Tugma va Menyu bitta Box ichida bo'lishi shart!
+                Box(contentAlignment = Alignment.TopEnd) {
+                    FilterActionButton(
+                        onClick = { isMenuExpanded = true },
+                        icon = Icons.Default.FilterList,
+                        size = 30.dp
+                    )
+
+                    UniversalAccountFilterMenu(
+                        isExpanded = isMenuExpanded,
+                        onDismiss = { isMenuExpanded = false },
+                        accounts = state.accounts,
+                        selectedAccountIds = state.selectedAccountIds,
+                        onAccountSelectionChange = viewModel::onAccountSelectionChange
+                    )
+                }
+            }
             Spacer(Modifier.height(4.dp))
 
             Text(
@@ -144,7 +155,9 @@ fun TotalBalanceCard(
                     contentAlignment = Alignment.Center
                 ) {
                     val periodAmount = String.format("%,.0f", state.periodBalance)
-                    val sign = if (state.periodBalance >= 0) "+" else ""
+                    val sign = if (state.isIncomeMode && state.periodBalance>0) "+"
+                    else if (!state.isIncomeMode && state.periodBalance>0) "-"
+                    else ""
 
                     Text(
                         text = "$sign$periodAmount ${getCurrencySymbol(activeCurrency)}, ${state.periodLabel}",
@@ -154,7 +167,7 @@ fun TotalBalanceCard(
                     )
                 }
                 PeriodNavigationButton(
-                    icon = R.drawable.next_ic,
+                    icon = R.drawable.arrow_right,
                     onClick = { viewModel.onPeriodNavigate(forward = true) },
                     size = 32.dp,
                 )
@@ -165,22 +178,13 @@ fun TotalBalanceCard(
             BalanceLineChart(
                 data = state.barChartData,
                 isIncomeMode = state.isIncomeMode,
-                globalMaxLimit = state.globalMaxLimit // ViewModel'dagi maxOf(netBalance, chartMax)
+                globalMaxLimit = state.globalMaxLimit
             )
 
             Spacer(Modifier.height(8.dp))
 
             TimeFilterRow(state.selectedFilter, onFilterChange = viewModel::onFilterChange)
         }
-    }
-    if (state.isFilterDialogOpen) {
-        AccountFilterDialog(
-            accounts = state.accounts,
-            selectedAccountIds = state.selectedAccountIds,
-            onAccountSelectionChange = viewModel::onAccountSelectionChange,
-            onDismiss = viewModel::onFilterDismiss,
-            onApply = viewModel::onFilterDismiss
-        )
     }
 }
 
@@ -192,7 +196,8 @@ fun CircularIconButton(
     contentDescription: String,
     tint: Color,
     backgroundColor: Color = Color.Transparent,
-    size: Dp = 32.dp
+    size: Dp = 32.dp,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = Modifier

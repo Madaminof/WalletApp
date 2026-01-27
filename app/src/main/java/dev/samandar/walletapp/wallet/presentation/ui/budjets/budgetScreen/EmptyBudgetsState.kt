@@ -81,7 +81,7 @@ fun EmptyBudgetsState(
                         painter = painterResource(id = R.drawable.budget_ic),
                         contentDescription = null,
                         tint = budjets,
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(50.dp)
                     )
                 }
             }
@@ -90,23 +90,24 @@ fun EmptyBudgetsState(
         Spacer(Modifier.height(32.dp))
         Text(
             text = stringResource(R.string.empty_budgets_title),
-            style = MaterialTheme.typography.headlineMedium.copy(
-                fontWeight = FontWeight.ExtraBold,
-                letterSpacing = (-0.5).sp
+            style = MaterialTheme.typography.titleSmall.copy(
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
             ),
             color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
             textAlign = TextAlign.Center
         )
 
-        Spacer(Modifier.height(12.dp))
-
         Text(
             text = stringResource(R.string.empty_budgets_subtitle),
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.labelSmall.copy(
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal
+            ),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.5f),
-            modifier = Modifier.padding(horizontal = 24.dp),
-            lineHeight = 24.sp
+            modifier = Modifier.padding(horizontal = 24.dp).padding(top = 4.dp),
+            lineHeight = 24.sp,
         )
     }
 }

@@ -15,8 +15,8 @@ import dev.samandar.walletapp.wallet.domain.model.Transaction
 import dev.samandar.walletapp.wallet.domain.model.TransactionType
 import dev.samandar.walletapp.wallet.domain.usecase.category.GetCategoriesByType
 import dev.samandar.walletapp.wallet.domain.usecase.transaction.GetAllTransactions
-import dev.samandar.walletapp.wallet.presentation.viewmodel.CategoryData
-import dev.samandar.walletapp.wallet.presentation.viewmodel.getCategoryColor
+import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.CategoryData
+import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.getCategoryColor
 import kotlinx.coroutines.flow.*
 import java.time.Instant
 import java.time.LocalDate

@@ -74,7 +74,7 @@ fun OptimalCategoryGridItem(
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape)
-                .background(iconBackgroundColor.copy(0.1f)),
+                .background(iconBackgroundColor.copy(0.15f)),
             contentAlignment = Alignment.Center
         ) {
             val iconSize = 20.dp
@@ -82,7 +82,7 @@ fun OptimalCategoryGridItem(
                 Icon(
                     painter = painterResource(id = category.iconResId),
                     contentDescription = category.name,
-                    tint = Color.Unspecified,
+                    tint = customCategoryColor,
                     modifier = Modifier.size(iconSize)
                 )
             } else {

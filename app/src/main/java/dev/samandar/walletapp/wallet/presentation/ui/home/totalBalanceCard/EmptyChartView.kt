@@ -1,6 +1,7 @@
 package dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard
 
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -31,26 +32,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.samandar.walletapp.R
 import dev.samandar.walletapp.utils.Strings
 
 
 @Composable
 fun EmptyChartView(modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "EmptyChartAnim")
+    val color = MaterialTheme.colorScheme.primary
+
+    val waveOffset by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 100f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(4000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ), label = "waveOffset"
+    )
 
     val pulseAlpha by infiniteTransition.animateFloat(
-        initialValue = 0.4f,
-        targetValue = 0.9f,
+        initialValue = 0.1f,
+        targetValue = 0.5f,
         animationSpec = infiniteRepeatable(
             animation = tween(2000, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
@@ -61,60 +76,72 @@ fun EmptyChartView(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .height(160.dp)
-            .clip(RoundedCornerShape(24.dp))
+            .clip(RoundedCornerShape(20.dp))
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
-                        Color.Transparent
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 )
-            ),
+            )
+            .drawWithContent {
+                drawContent()
+                drawRoundRect(
+                    color = Color.White.copy(alpha = 0.1f),
+                    size = size,
+                    cornerRadius = CornerRadius(28.dp.toPx()),
+                    style = Stroke(width = 1.dp.toPx())
+                )
+            },
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.fillMaxSize().alpha(0.15f)) {
+        Canvas(modifier = Modifier.fillMaxSize().alpha(0.1f)) {
             val width = size.width
             val height = size.height
             val path = Path().apply {
-                moveTo(0f, height * 0.7f)
-                cubicTo(width * 0.2f, height * 0.8f, width * 0.4f, height * 0.4f, width * 0.6f, height * 0.6f)
-                cubicTo(width * 0.8f, height * 0.8f, width * 0.9f, height * 0.2f, width, height * 0.3f)
+                moveTo(0f, height * 0.5f)
+                cubicTo(
+                    width * 0.3f, height * (0.2f + (waveOffset/500f)),
+                    width * 0.6f, height * (0.8f - (waveOffset/500f)),
+                    width, height * 0.4f
+                )
             }
-
             drawPath(
                 path = path,
-                color = Color.Gray,
+                color = color,
                 style = Stroke(
-                    width = 2.dp.toPx(),
-                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(20f, 20f), 0f)
+                    width = 3.dp.toPx(),
+                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(30f, 30f), waveOffset)
                 )
             )
         }
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(horizontal = 24.dp)
+            modifier = Modifier.padding(horizontal = 32.dp)
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Surface(
                     modifier = Modifier
-                        .size(48.dp)
-                        .alpha(pulseAlpha * 0.3f),
+                        .size(64.dp)
+                        .alpha(pulseAlpha),
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
                 ) {}
 
                 Surface(
+                    modifier = Modifier.size(48.dp),
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)),
-                    shadowElevation = 4.dp
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shadowElevation = 2.dp
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.AutoGraph,
+                        painter = painterResource(R.drawable.grapth_ic),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
-                            .padding(12.dp)
+                            .padding(8.dp)
                             .size(24.dp)
                     )
                 }
@@ -124,19 +151,20 @@ fun EmptyChartView(modifier: Modifier = Modifier) {
 
             Text(
                 text = stringResource(Strings.empty_chart_view),
-                style = MaterialTheme.typography.titleSmall.copy(
-                    fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = 0.2.sp
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.5.sp
                 ),
-                color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.8f)
+                color = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+                textAlign = TextAlign.Center
             )
 
             Text(
                 text = stringResource(Strings.empty_chart_hint),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.6f),
+                color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.5f),
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = Modifier.padding(top = 6.dp)
             )
         }
     }

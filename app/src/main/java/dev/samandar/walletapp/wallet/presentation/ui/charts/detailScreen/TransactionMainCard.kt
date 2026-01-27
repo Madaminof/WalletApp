@@ -100,7 +100,8 @@ fun TransactionMainCard(
                 ) {
                     IconBox(
                         iconRes = transaction.category.iconResId,
-                        color = Color(transaction.category.colorArgb).copy(alpha = 0.15f)
+                        color = Color(transaction.category.colorArgb),
+
                     )
 
                     Spacer(modifier = Modifier.width(12.dp))

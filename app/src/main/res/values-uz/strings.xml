@@ -80,7 +80,6 @@
 
     // Expense Statistics Card
     <string name="title_expense_statistics">Xarajatlar Statistikasi</string>
-    <string name="total_expense">UMUMIY XARAJAT</string>
     <string name="others">Boshqalar</string>
     <string name="empty" translatable="false">Chiqimlar hali kiritilmagan.</string>
     <string name="title_dialog_expense_card" translatable="false">Vaqt oralig\'ini tanlash</string>
@@ -159,6 +158,7 @@
     <string name="date_picker_select_action">Tanlash</string>
     <string name="date_picker_choose_action">Tanlash</string>
     <string name="snackbar_success_budget_added">Byudjet muvaffaqiyatli qo\'shildi!</string>
+    <string name="preview_card_limit_label">Joriy limit</string>
 
 
     // Add transaction
@@ -227,6 +227,20 @@
     <string name="unknown_category">Noma\'lum</string>
     <string name="action_back">Orqaga</string>
     <string name="statistics">STATISTIKA</string>
+    <string name="total_income">Jami daromad</string>
+    <string name="total_expense">Jami xarajat</string>
+    <string name="max_expense">Eng katta xarajat</string>
+    <string name="max_income">Eng katta daromad</string>
+    <string name="transactions_count">Tranzaksiyalar</string>
+    <string name="average_value">O\'rtacha qiymat</string>
+    <string name="count_format">%1$d ta</string>
+
+    <string name="expense_dynamics">Chiqim dinamikasi</string>
+    <string name="income_dynamics">Kirim dinamikasi</string>
+    <string name="chart_hint">Tahlil uchun bosing va suring</string>
+
+    <string name="all_transactions">Barcha amallar</string>
+    <string name="no_data_found">Ma\'lumotlar topilmadi</string>
 
     <string name="transaction_details_title">Tranzaksiya ma\'lumotlari</string>
     <string name="total_amount_label">Umumiy Miqdor</string>

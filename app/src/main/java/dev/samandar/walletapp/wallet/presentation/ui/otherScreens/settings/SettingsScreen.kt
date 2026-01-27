@@ -126,6 +126,7 @@ fun SettingsScreen(navController: NavController) {
             }
 
             Spacer(Modifier.height(40.dp))
+
         }
 
 

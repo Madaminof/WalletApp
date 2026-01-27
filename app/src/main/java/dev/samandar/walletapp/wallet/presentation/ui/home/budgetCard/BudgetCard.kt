@@ -168,7 +168,7 @@ fun BudgetCard(
                         text = stringResource(Strings.title_add_budget),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = budgetPrimary,
+                        color = budjets.copy(0.8f),
                         modifier = Modifier
                             .clickable {
                                 navController.navigate(Screen.budjetAdd.route)

@@ -85,7 +85,6 @@
 
     // Expense Statistics Card
     <string name="title_expense_statistics" translatable="false">Expense Statistics</string>
-    <string name="total_expense" translatable="false">TOTAL EXPENSE</string>
     <string name="others" translatable="false">Others</string>
     <string name="empty" translatable="false">No expenses have been entered yet.</string>
     <string name="title_dialog_expense_card" translatable="false">Select Time Range</string>
@@ -165,7 +164,7 @@
     <string name="date_picker_select_action">Select</string>
     <string name="date_picker_choose_action">Choose</string>
     <string name="snackbar_success_budget_added">Budget added successfully!</string>
-
+    <string name="preview_card_limit_label">Current limit</string>
 
 
     // Add Transaction UI
@@ -234,6 +233,20 @@
     <string name="unknown_category">Unknown</string>
     <string name="action_back">Back</string>
     <string name="statistics">STATISTICS</string>
+    <string name="total_income">Total income</string>
+    <string name="total_expense">Total Expense</string>
+    <string name="max_expense">Max Expense</string>
+    <string name="max_income">Max Income</string>
+    <string name="transactions_count">Transactions</string>
+    <string name="average_value">Average Value</string>
+    <string name="count_format">%1$d units</string>
+
+    <string name="expense_dynamics">Expense Dynamics</string>
+    <string name="income_dynamics">Income Dynamics</string>
+    <string name="chart_hint">Touch and drag to analyze</string>
+
+    <string name="all_transactions">All Transactions</string>
+    <string name="no_data_found">No data found</string>
 
     <string name="transaction_details_title">Transaction Details</string>
     <string name="total_amount_label">Total Amount</string>

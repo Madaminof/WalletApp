@@ -70,6 +70,12 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    fun updateAccount(account: Account) {
+        viewModelScope.launch {
+            addAccountUseCase(account) // UseCase bazada ID borligini ko'rib, uni yangilaydi
+        }
+    }
+
     // Hisob qo'shish dialogini boshqarish uchun (Ixtiyoriy, lekin UI uchun kerak)
     private val _isAddAccountDialogOpen = MutableStateFlow(false)
     val isAddAccountDialogOpen: StateFlow<Boolean> = _isAddAccountDialogOpen.asStateFlow()

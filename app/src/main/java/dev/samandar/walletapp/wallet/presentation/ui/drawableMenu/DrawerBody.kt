@@ -1,7 +1,6 @@
 package dev.samandar.walletapp.wallet.presentation.ui.drawableMenu
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,21 +9,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBalance
-import androidx.compose.material.icons.filled.AccountBalanceWallet
-import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.CurrencyExchange
-import androidx.compose.material.icons.filled.Help
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MoneyOff
-import androidx.compose.material.icons.filled.Public
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.TrackChanges
-import androidx.compose.material.icons.filled.TrendingUp
-import androidx.compose.material.icons.rounded.Money
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -38,26 +22,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.ui.theme.CurrencyRates
-import dev.samandar.walletapp.ui.theme.Follow
-import dev.samandar.walletapp.ui.theme.Help
 import dev.samandar.walletapp.ui.theme.Home
-import dev.samandar.walletapp.ui.theme.Investments
 import dev.samandar.walletapp.ui.theme.Records
 import dev.samandar.walletapp.ui.theme.Settings
 import dev.samandar.walletapp.ui.theme.Statistics
 import dev.samandar.walletapp.ui.theme.budjets
 import dev.samandar.walletapp.ui.theme.debts
-import dev.samandar.walletapp.ui.theme.goals
 import dev.samandar.walletapp.ui.theme.shoppingList
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencySelectionDialog
@@ -85,8 +63,9 @@ fun DrawerBody(
             listOf(
                 NavItem(R.drawable.home_icon, Strings.drawer_menu_title_home, Home, Screen.Home.route),
                 NavItem(R.drawable.account_icon, Strings.title_account, Records, Screen.Wallet.route),
-                NavItem(R.drawable.statistic_icon, Strings.title_statistics, Statistics, Screen.Charts.route)
-            ),
+                NavItem(R.drawable.statistic_icon, Strings.title_statistics, Statistics, Screen.CategoryStatisticsScreen.route)
+
+        ),
             listOf(
                 NavItem(R.drawable.budget_ic, Strings.title_budgets, budjets, Screen.Budgets.route),
                 NavItem(R.drawable.shopp_list_ic, Strings.title_shopping_lists, shoppingList, Screen.ShoppingLists.route),

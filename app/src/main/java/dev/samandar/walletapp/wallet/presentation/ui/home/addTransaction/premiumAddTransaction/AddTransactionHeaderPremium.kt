@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dev.samandar.walletapp.R
+import dev.samandar.walletapp.ui.theme.defaultColor
 import dev.samandar.walletapp.utils.Strings
 
 @Composable

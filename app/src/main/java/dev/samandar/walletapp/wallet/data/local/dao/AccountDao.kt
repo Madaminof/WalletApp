@@ -5,17 +5,29 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import dev.samandar.walletapp.wallet.data.local.entity.AccountEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AccountDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAccount(account: AccountEntity)
 
     @Update
     suspend fun updateAccount(account: AccountEntity)
+
+    // Upsert mantiqi: Avval bazada bor-yo'qligini tekshiradi
+    @Transaction
+    suspend fun upsertAccount(account: AccountEntity) {
+        val existingAccount = getAccountEntityById(account.id)
+        if (existingAccount == null) {
+            insertAccount(account)
+        } else {
+            updateAccount(account)
+        }
+    }
 
     @Delete
     suspend fun deleteAccount(account: AccountEntity)

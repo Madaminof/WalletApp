@@ -55,7 +55,7 @@ fun WalletScreen(
                         .wrapContentHeight(),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
                     ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
                 ) {
@@ -138,7 +138,10 @@ fun WalletScreen(
             AccountDetailBottomSheet(
                 account = account,
                 onDismiss = { selectedAccount = null },
-                onUpdate = { selectedAccount = null },
+                onUpdate = { acc ->
+                    selectedAccount = null
+                    navController.navigate(Screen.editAccount.route + "/${acc.id}")
+                },
                 onDelete = { acc ->
                     accountViewModel.deleteAccount(acc)
                     selectedAccount = null

@@ -14,6 +14,5 @@ plugins {
     // Google Services (Firebase uchun)
     id("com.google.gms.google-services") version "4.4.2" apply false
 
-    // Firebase Crashlytics (Agar toml'da bo'lsa alias ishlating, bo'lmasa quyidagicha)
-    id("com.google.firebase.crashlytics") version "3.0.2" apply false
+    alias(libs.plugins.google.firebase.crashlytics) apply false
 }

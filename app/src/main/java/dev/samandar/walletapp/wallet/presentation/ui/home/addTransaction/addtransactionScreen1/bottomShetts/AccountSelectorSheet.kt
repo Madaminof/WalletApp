@@ -116,7 +116,7 @@ fun AccountCardItem(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    painter = painterResource(id = account.iconResId?:R.drawable.ic_naqd_pul),
+                    painter = painterResource(id = account.iconResId?:R.drawable.cash_icon2),
                     contentDescription = null,
                     tint = accountColor,
                     modifier = Modifier.size(24.dp)
