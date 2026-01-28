@@ -27,6 +27,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.samandar.walletapp.core.onBoarding.OnboardingManager
 import dev.samandar.walletapp.wallet.data.local.dao.smartScannDao.ReceiptDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -104,5 +105,12 @@ object DatabaseModule {
             getShoppingListByIdUseCase = GetShoppingListByIdUseCase(repo)
         )
     }
+
+
+    @Provides
+    @Singleton
+    fun provideOnboardingManager(
+        @ApplicationContext context: Context
+    ): OnboardingManager = OnboardingManager(context)
 
 }

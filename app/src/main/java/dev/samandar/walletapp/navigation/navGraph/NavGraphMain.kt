@@ -9,9 +9,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import dev.samandar.walletapp.core.onBoarding.onboardingScreen.OnboardingScreen
 import dev.samandar.walletapp.wallet.presentation.ui.home.NavBarActionButton.ModernBottomActions
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.AddTransactionBottomSheet
 import dev.samandar.walletapp.wallet.presentation.viewmodel.AccountViewModel
@@ -26,7 +28,8 @@ fun NavGraphMain(
     viewModel: HomeViewModel,
     addAccountViewModel: AccountViewModel,
     budgetViewModel: BudgetViewModel,
-    categoryViewModel: CategoryStatisticsViewModel
+    categoryViewModel: CategoryStatisticsViewModel,
+    startDestination: String
 ) {
     val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -39,12 +42,22 @@ fun NavGraphMain(
     Box(modifier = Modifier.fillMaxSize()) {
         AnimatedNavHost(
             navController = navController,
-            startDestination = Screen.Splash.route,
+            startDestination = startDestination, // Dinamik startDestination,
             enterTransition = { ZoomInForward },
             exitTransition = { ZoomOutForward },
             popEnterTransition = { ZoomInBackward },
             popExitTransition = { ZoomOutBackward }
         ) {
+            composable(Screen.Onboarding.route) {
+                OnboardingScreen(
+                    onFinish = {
+                        navController.navigate(Screen.Splash.route) {
+                            popUpTo(Screen.Onboarding.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
             homeAndBudgetGraph(navController, budgetViewModel)
             featuresGraph(navController, viewModel, addAccountViewModel, categoryViewModel)
             scannerGraph(navController)

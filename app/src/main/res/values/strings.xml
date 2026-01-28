@@ -535,7 +535,18 @@
 
 
 
+    // onBoarding
+    <string name="ob_title_1">Smart Budgets</string>
+    <string name="ob_desc_1">Set spending limits and gain full control over where your money is going.</string>
 
+    <string name="ob_title_2">Shopping List</string>
+    <string name="ob_desc_2">Plan your shopping ahead of time to avoid unnecessary expenses and stay organized.</string>
+
+    <string name="ob_title_3">Debt Tracking</string>
+    <string name="ob_desc_3">Keep track of what you owe or what is owed to you. All your debts managed in one place.</string>
+    <string name="btn_get_started">Get Started</string>
+    <string name="ob_title_4">Smart QR Scanner</string>
+    <string name="ob_desc_4">Scan receipts and add transactions in a second. No more manual data entry!</string>
 
 
 

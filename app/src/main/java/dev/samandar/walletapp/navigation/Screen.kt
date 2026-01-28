@@ -44,4 +44,6 @@ sealed class Screen(val route: String) {
     object SCANNER: Screen("scanner")
     object REVIEW :Screen("review")
 
+    object Onboarding:Screen("onBoarding")
+
 }

@@ -11,11 +11,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import dev.samandar.walletapp.core.onBoarding.OnboardingViewModel
 import dev.samandar.walletapp.navigation.NavGraphMain
+import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.ui.theme.WalletAppTheme
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.viewmodel.CategoryStatisticsViewModel
@@ -40,32 +43,39 @@ class MainActivity : AppCompatActivity() {
         CurrencyManager.initialize(applicationContext)
         NumberFormatManager.initialize(applicationContext)
 
-        setContent {
-            val settingsViewModel: SettingsViewModel = hiltViewModel()
-            val langCode by settingsViewModel.currentLanguageCode.collectAsStateWithLifecycle()
 
+        setContent {
             val context = LocalContext.current
+
+            val onboardingViewModel: OnboardingViewModel = hiltViewModel()
+            val settingsViewModel: SettingsViewModel = hiltViewModel()
+
+            val langCode by settingsViewModel.currentLanguageCode.collectAsStateWithLifecycle()
+            val isOnboardingRequired by onboardingViewModel.isOnboardingRequired.collectAsStateWithLifecycle()
+
             LaunchedEffect(langCode) {
                 updateLocale(context, langCode)
             }
 
             WalletAppTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    /*NavGraph(
-                        viewModel = hiltViewModel<HomeViewModel>(),
-                        addAccountViewModel = hiltViewModel<AccountViewModel>(),
-                        budgetViewModel = hiltViewModel<BudgetViewModel>(),
-                        categoryViewModel = hiltViewModel<CategoryStatisticsViewModel>(),
-                    )*/
-                    NavGraphMain(
-                        viewModel = hiltViewModel<HomeViewModel>(),
-                        addAccountViewModel = hiltViewModel<AccountViewModel>(),
-                        budgetViewModel = hiltViewModel<BudgetViewModel>(),
-                        categoryViewModel = hiltViewModel<CategoryStatisticsViewModel>(),
-                    )
+                    isOnboardingRequired?.let { required ->
+                        val startRoute = remember {
+                            if (required) Screen.Onboarding.route else Screen.Splash.route
+                        }
+
+                        NavGraphMain(
+                            viewModel = hiltViewModel(),
+                            addAccountViewModel = hiltViewModel(),
+                            budgetViewModel = hiltViewModel(),
+                            categoryViewModel = hiltViewModel(),
+                            startDestination = startRoute
+                        )
+                    }
                 }
             }
         }
+
     }
     override fun onDestroy() {
         super.onDestroy()

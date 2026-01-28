@@ -533,4 +533,18 @@
     <string name="please_wait">Iltimos, kuting</string>
 
 
+
+    // onBoarding
+    <string name="ob_title_1">Aqlli Budjetlar</string>
+    <string name="ob_desc_1">Xarajatlaringiz uchun limitlar belgilang va pulingiz qayerga ketayotganini to\'liq nazorat qiling.</string>
+
+    <string name="ob_title_2">Xaridlar Ro\'yxati</string>
+    <string name="ob_desc_2">Keraksiz xarajatlardan qochish uchun xaridlar ro\'yxatini oldindan rejalashtiring va amalga oshiring.</string>
+
+    <string name="ob_title_3">Qarzlar Nazorati</string>
+    <string name="ob_desc_3">Kimdan qancha qarzingiz bor yoki kim sizdan qarzdor ekanligini unutmang. Hammasi bir joyda.</string>
+    <string name="btn_get_started">Boshlash</string>
+    <string name="ob_title_4">Aqlli QR Skaner</string>
+    <string name="ob_desc_4">Cheklarni skaner qiling va tranzaksiyalarni bir soniyada qo\'shing. Raqamlarni qo\'lda yozib o\'tirmang!</string>
+
 </resources>
