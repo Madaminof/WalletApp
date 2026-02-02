@@ -15,6 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.samandar.walletapp.utils.Strings
+import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.domain.model.Category
 import dev.samandar.walletapp.wallet.smartScann.ReviewUiState
 import dev.samandar.walletapp.wallet.smartScann.ReviewViewModel
 
@@ -58,7 +60,7 @@ fun ScanReviewScreen(
                             },
                             onCategorySelected = { selectedCategory ->
                                 viewModel.updateCategory(selectedCategory)
-                            }
+                            },
                         )
                     }
 

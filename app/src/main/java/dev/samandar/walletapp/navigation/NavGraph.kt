@@ -5,7 +5,6 @@ import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.*
-import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,7 +35,6 @@ import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.budgetScreen.BudgetsScreen
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.addBudget.AddBudgetScreen
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.budgetDetail.BudgetDetailScreen
-import dev.samandar.walletapp.wallet.presentation.ui.charts.ExpensesListScreen
 import dev.samandar.walletapp.wallet.presentation.ui.charts.detailScreen.TransactionDetailScreen
 import dev.samandar.walletapp.wallet.presentation.ui.home.NavBarActionButton.ModernBottomActions
 import dev.samandar.walletapp.wallet.presentation.ui.home.SplashScreen
@@ -65,6 +63,7 @@ import dev.samandar.walletapp.wallet.presentation.ui.account.EditAccountScreen
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.CategoryDetail.CategoryDetailScreen
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.CategoryStatisticsScreen
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.viewmodel.CategoryStatisticsViewModel
+import dev.samandar.walletapp.wallet.presentation.ui.charts.historyTransactions.HistorytransactionScreen
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.AddTransactionBottomSheet
 import dev.samandar.walletapp.wallet.smartScann.PermissionRationaleUI
 
@@ -116,6 +115,7 @@ val ModalExitTransition = slideOutVertically(
 */
 
 
+/*
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -214,7 +214,7 @@ fun NavGraph(
                         Screen.Wallet.route -> WalletScreen(accounts = accounts, navController = navController, accountViewModel = addAccountViewModel)
                         Screen.ShoppingLists.route -> ShoppingListScreen(navController = navController)
                         Screen.Goals.route -> GoalsScreen(navController)
-                        Screen.ExpenseList.route -> ExpensesListScreen(navController = navController)
+                        Screen.ExpenseList.route -> HistorytransactionScreen(navController = navController)
                         else -> {}
                     }
                 }
@@ -571,4 +571,4 @@ fun NavGraph(
             }
         }
     }
-}
+}*/

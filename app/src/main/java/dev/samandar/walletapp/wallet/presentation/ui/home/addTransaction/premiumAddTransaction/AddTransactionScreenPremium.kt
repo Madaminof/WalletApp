@@ -1,10 +1,33 @@
 package dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -13,10 +36,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.domain.model.TransactionType
-import dev.samandar.walletapp.wallet.presentation.viewmodel.AddTransactionViewModel
-import dev.samandar.walletapp.wallet.presentation.viewmodel.TransactionEvent
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.account.AccountSelectionDialog
-import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.calculator.CalculatorPadPremium
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.calculator.CalculatorPadPremiumUI
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.CategoryListSectionPremium
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.dateTime.PremiumDateTimePickerDialog
@@ -25,12 +45,14 @@ import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premium
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.note.NoteSelectionButton
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.snackbar.ModernSnackbar
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.snackbar.MySnackbarVisuals
+import dev.samandar.walletapp.wallet.presentation.viewmodel.AddTransactionViewModel
+import dev.samandar.walletapp.wallet.presentation.viewmodel.TransactionEvent
 
 @Composable
 fun AddTransactionScreenPremium(
     viewModel: AddTransactionViewModel = hiltViewModel(),
     onSuccess: (String) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val state = viewModel.uiState
@@ -49,7 +71,7 @@ fun AddTransactionScreenPremium(
             when (event) {
                 is TransactionEvent.ShowSnackbar -> {
 
-                    val displayMessage = when(event.message) {
+                    val displayMessage = when (event.message) {
                         Strings.snackbar_error_select_category.toString() -> errorCategory
                         Strings.snackbar_error_max_amount_zero.toString() -> errorAmount
                         else -> event.message
@@ -63,6 +85,7 @@ fun AddTransactionScreenPremium(
                         )
                     )
                 }
+
                 is TransactionEvent.Success -> {
                     onSuccess(successMessageSave)
                 }
@@ -87,7 +110,9 @@ fun AddTransactionScreenPremium(
                     onSelect = viewModel::onTypeChange
                 )
 
-                Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                Box(modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()) {
                     CategoryListSectionPremium(
                         categories = if (state.selectedType == TransactionType.EXPENSE)
                             state.expenseCategories else state.incomeCategories,
@@ -153,6 +178,7 @@ fun AddTransactionScreenPremium(
             if (showDateTimePicker) {
                 PremiumDateTimePickerDialog(
                     initialDateTime = state.selectedDate,
+                    maxDate = System.currentTimeMillis(), // FAQAT SHU YERDA CHEKLOV QO'YDIK
                     onConfirm = { newDate ->
                         viewModel.onDateChange(newDate)
                         showDateTimePicker = false
@@ -185,7 +211,9 @@ fun AddTransactionScreenPremium(
                 AnimatedContent(
                     targetState = data,
                     transitionSpec = {
-                        (slideInVertically(initialOffsetY = { -it }) + fadeIn() + scaleIn(initialScale = 0.8f))
+                        (slideInVertically(initialOffsetY = { -it }) + fadeIn() + scaleIn(
+                            initialScale = 0.8f
+                        ))
                             .togetherWith(slideOutVertically(targetOffsetY = { -it }) + fadeOut())
                             .using(SizeTransform(clip = false))
                     },

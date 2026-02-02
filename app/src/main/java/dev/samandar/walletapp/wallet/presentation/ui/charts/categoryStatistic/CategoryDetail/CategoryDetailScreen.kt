@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,13 +30,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import dev.samandar.walletapp.R
 import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.domain.model.TransactionType
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.CategoryDetail.viewmodel.CategoryDetailViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.FilterActionButton
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.UniversalFilterMenu
-import dev.samandar.walletapp.wallet.presentation.ui.charts.expenseListComponents.ExpenseTransactionItem
+import dev.samandar.walletapp.wallet.presentation.ui.charts.historyTransactions.ExpenseTransactionItem
 import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.CustomTopBar
 import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.TimeFilter
 import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.categoryColors
@@ -76,10 +75,13 @@ fun CategoryDetailScreen(
                     Box(contentAlignment = Alignment.Center) {
                         FilterActionButton(
                             onClick = { isFilterMenuExpanded = true },
-                            icon = Icons.Default.FilterList,
+                            icon = R.drawable.filter_ic,
                             modifier = Modifier
                                 .padding(end = 12.dp)
-                                .size(28.dp),
+                                .size(32.dp),
+                            bgColor = Color.Transparent,
+                            icColor = MaterialTheme.colorScheme.onTertiary.copy(0.5f)
+
                         )
                         UniversalFilterMenu(
                             isExpanded = isFilterMenuExpanded,
@@ -155,11 +157,8 @@ fun CategoryDetailScreen(
                 ) {
                     ExpenseTransactionItem(
                         transaction = transaction,
-                        index = index,
-                        onItemClick = {
-                            navController.navigate("${Screen.detailTransaction.route}/${transaction.id}")
-                        },
-                        modifier = Modifier
+                        onItemClick = {navController.navigate("${Screen.detailTransaction.route}/${transaction.id}")},
+                        showDivider = index < categoryTransactions.size - 1
                     )
                 }
 

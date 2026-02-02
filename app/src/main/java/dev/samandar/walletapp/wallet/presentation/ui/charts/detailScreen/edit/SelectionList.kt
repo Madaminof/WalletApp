@@ -69,14 +69,14 @@ fun <T> SelectionList(
                             Surface(
                                 modifier = Modifier.size(44.dp),
                                 shape = CircleShape,
-                                color = if (isSelected) itemThemeColor else itemThemeColor.copy(alpha = 0.1f)
+                                color = if (isSelected) itemThemeColor.copy(alpha = 0.4f) else itemThemeColor.copy(alpha = 0.1f)
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Icon(
                                         painter = painterResource(id = iconRes),
                                         contentDescription = null,
                                         modifier = Modifier.size(24.dp),
-                                        tint = Color.Unspecified
+                                        tint = itemThemeColor
                                     )
                                 }
                             }

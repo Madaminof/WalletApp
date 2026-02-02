@@ -35,9 +35,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.samandar.walletapp.R
+import dev.samandar.walletapp.ui.theme.defaultColor
 import dev.samandar.walletapp.ui.theme.expenseColor
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
+import dev.samandar.walletapp.wallet.presentation.ui.home.cashFlowCard.CashFlowFilterMenu
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.CircularIconButton
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.primaryAccent
 import dev.samandar.walletapp.wallet.presentation.utils.formatAmountWithCurrency
@@ -62,36 +64,14 @@ fun ExpenseStatisticCardPremium(
     val expenseData by viewModel.expenseStatistics.collectAsStateWithLifecycle()
     val totalAmount by viewModel.totalExpense.collectAsStateWithLifecycle()
     val selectedPeriodLabelResId by viewModel.selectedPeriodLabelResId.collectAsStateWithLifecycle()
-    val selectedPeriod by viewModel.selectedPeriod.collectAsStateWithLifecycle()
+    val selectedPeriod by viewModel.selectedPeriod.collectAsState()
 
-    var showPeriodDialog by remember { mutableStateOf(false) }
-    var isPressed by remember { mutableStateOf(false) }
-
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.96f else 1f,
-        animationSpec = spring(dampingRatio = 0.7f, stiffness = Spring.StiffnessLow),
-        label = "CardScale"
-    )
-
-    if (showPeriodDialog) {
-        PeriodSelectionDialog(
-            selectedPeriodKey = selectedPeriod.key,
-            onDismiss = { showPeriodDialog = false },
-            onPeriodSelected = {
-                viewModel.changePeriodByKey(it)
-                showPeriodDialog = false
-            }
-        )
-    }
+    var showPeriodMenu by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .pointerInput(Unit) {
-                detectTapGestures(onPress = { isPressed = true; tryAwaitRelease(); isPressed = false })
-            },
+            .padding(vertical = 8.dp),
         shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer),
     ) {
@@ -122,7 +102,7 @@ fun ExpenseStatisticCardPremium(
                     )
                 }
                 Surface(
-                    onClick = { showPeriodDialog = true },
+                    onClick = { showPeriodMenu = true },
                     shape = RoundedCornerShape(8.dp),
                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.07f),
                 ) {
@@ -147,6 +127,14 @@ fun ExpenseStatisticCardPremium(
                         )
                     }
                 }
+                PeriodSelectionMenu(
+                    isExpanded = showPeriodMenu,
+                    onDismiss = { showPeriodMenu = false },
+                    selectedPeriodKey = selectedPeriod.key,
+                    onPeriodSelected = { key ->
+                        viewModel.changePeriodByKey(key)
+                    }
+                )
             }
             Spacer(Modifier.height(12.dp))
 
@@ -165,12 +153,28 @@ fun ExpenseStatisticCardPremium(
 
                 Spacer(Modifier.height(12.dp))
 
+                val chartData = remember(expenseData) {
+                    val top3 = expenseData.sortedByDescending { it.amount }.take(3)
+                    val topSum = top3.sumOf { it.amount }
+                    val remaining = (totalAmount - topSum).coerceAtLeast(0.0)
+
+                    if (remaining > 0.1) {
+                        top3 + CategoryData(
+                            categoryName = "Others",
+                            amount = remaining,
+                            color = defaultColor
+                        )
+                    } else {
+                        top3
+                    }
+                }
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     PremiumDoughnutChart(
-                        data = expenseData,
+                        data = chartData,
                         totalAmount = totalAmount,
                         modifier = Modifier.weight(1f).height(150.dp),
                         selectedFilter = stringResource(selectedPeriodLabelResId),
@@ -179,21 +183,35 @@ fun ExpenseStatisticCardPremium(
 
                     Spacer(Modifier.width(20.dp))
 
-                    Column(modifier = Modifier.weight(1.2f)) {
+                    Column(
+                        modifier = Modifier
+                            .weight(1.2f)
+                            .padding(start = 8.dp)
+                    ) {
                         val topCategories = remember(expenseData) {
                             expenseData.sortedByDescending { it.amount }.take(3)
                         }
-
                         topCategories.forEachIndexed { index, data ->
-                            PremiumCategoryProgressItem(data, totalAmount, index * 100)
+                            PremiumCategoryProgressItem(
+                                data = data,
+                                totalAmount = totalAmount,
+                                delay = index * 100
+                            )
                         }
 
-                        val remainingAmount = totalAmount - topCategories.sumOf { it.amount }
-                        if (remainingAmount > 0) {
+                        val remainingAmount = remember(expenseData, topCategories) {
+                            val topSum = topCategories.sumOf { it.amount }
+                            (totalAmount - topSum).coerceAtLeast(0.0)
+                        }
+                        if (remainingAmount > 0.1) {
                             PremiumCategoryProgressItem(
-                                CategoryData(stringResource(Strings.others), remainingAmount, Color.Gray.copy(0.4f)),
-                                totalAmount,
-                                300
+                                data = CategoryData(
+                                    categoryName = stringResource(Strings.others),
+                                    amount = remainingAmount,
+                                    color = defaultColor
+                                ),
+                                totalAmount = totalAmount,
+                                delay = 300
                             )
                         }
                     }

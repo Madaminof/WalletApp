@@ -15,7 +15,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,6 +27,7 @@ import dev.samandar.walletapp.wallet.domain.model.BudgetPeriod
 import dev.samandar.walletapp.wallet.domain.model.Category
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.snackbar.ModernSnackbar
+import kotlinx.coroutines.delay
 
 @Composable
 fun AddBudgetScreen(
@@ -44,8 +47,23 @@ fun AddBudgetScreen(
     var endDateMillis by remember { mutableStateOf<Long?>(null) }
 
     var showCategorySheet by remember { mutableStateOf(false) }
-
     val colorFalse = MaterialTheme.colorScheme.primaryContainer
+
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(Unit) {
+        delay(300)
+        showCategorySheet = true
+    }
+    LaunchedEffect(selectedCategory) {
+        if (selectedCategory != null) {
+            showCategorySheet = false
+            delay(300)
+            focusRequester.requestFocus()
+            keyboardController?.show()
+        }
+    }
 
     if (showCategorySheet) {
         CategorySelectionBottomSheet(
@@ -101,7 +119,8 @@ fun AddBudgetScreen(
                         maxAmountInput = newValue.filter { char ->
                             char.isDigit() || (char == '.' && !maxAmountInput.contains('.'))
                         }
-                    }
+                    },
+                    focusRequester = focusRequester
                 )
 
                 PeriodSelector(

@@ -52,6 +52,7 @@
     <string name="setting_language_title" translatable="false">Language</string>
     <string name="setting_help_title" translatable="false">Help Center</string>
     <string name="setting_share_title" translatable="false">Share</string>
+    <string name="export_title">Export Data</string>
 
 
     // tezkor cardlar
@@ -280,6 +281,20 @@
     <string name="no_data_available">No data available</string>
     <string name="total_label">Total</string>
     <string name="add_transactions_to_see_chart">Add transactions to see chart</string>
+
+    <string name="no_transactions_title">No transactions found</string>
+    <string name="no_transactions_desc">There is no data for the selected period. Add a new transaction!</string>
+
+    <string name="period_all">All</string>
+    <string name="period_monthly">Monthly</string>
+    <string name="period_yearly">Yearly</string>
+
+    <string name="summary_balance_all">Total Balance</string>
+    <string name="summary_balance_monthly">Monthly Balance</string>
+    <string name="summary_balance_yearly">Yearly Balance</string>
+    <string name="search_placeholder">Search…</string>
+
+
 
     // Reports Screen
     <string name="report_title_income">Income</string>
@@ -538,16 +553,16 @@
     // onBoarding
     <string name="ob_title_1">Smart Budgets</string>
     <string name="ob_desc_1">Set spending limits and gain full control over where your money is going.</string>
-
     <string name="ob_title_2">Shopping List</string>
     <string name="ob_desc_2">Plan your shopping ahead of time to avoid unnecessary expenses and stay organized.</string>
-
     <string name="ob_title_3">Debt Tracking</string>
     <string name="ob_desc_3">Keep track of what you owe or what is owed to you. All your debts managed in one place.</string>
     <string name="btn_get_started">Get Started</string>
     <string name="ob_title_4">Smart QR Scanner</string>
     <string name="ob_desc_4">Scan receipts and add transactions in a second. No more manual data entry!</string>
 
-
+    <string name="onboarding_currency_title">Base Currency</string>
+    <string name="onboarding_currency_description">Select the base currency\nfor all your calculations</string>
+    <string name="coming_soon">Coming soon</string>
 
 </resources>

@@ -27,6 +27,8 @@ val Records = Color(0xFFF5CD79)         // Qumli sariq (Sand Yellow)
 val Investments = Color(0xFF20BF6B)     // O'sish yashili (Jade Green)
 val Statistics = Color(0xFF546DE5)      // Professional ko'k (Royal Blue)
 val CurrencyRates = Color(0xFF574B90)   // To'q binafsha konturga mos (Deep Purple)
+val Export = Color(0xFF596275)   // To'q binafsha konturga mos (Deep Purple)
+
 
 // --- YORDAMCHI VA IJTIMOIY (Others) ---
 val InviteFrient = Color(0xFF6379EE)    // Indigo (Vibrant Blue)

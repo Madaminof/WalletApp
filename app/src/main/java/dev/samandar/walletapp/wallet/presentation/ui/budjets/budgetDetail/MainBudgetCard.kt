@@ -38,7 +38,7 @@ import dev.samandar.walletapp.wallet.presentation.utils.FormatAmount
 fun MainBudgetCard(status: BudgetStatus) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
     ) {
         Column(

@@ -48,6 +48,7 @@
     <string name="setting_language_title">Язык</string>
     <string name="setting_help_title">Справочный центр</string>
     <string name="setting_share_title">Поделиться</string>
+    <string name="export_title">Экспорт данных</string>
 
     // tezkor cardlar
     <string name="quick_budjets" translatable="false">Бюджеты</string>
@@ -272,6 +273,18 @@
     <string name="no_data_available">Нет доступных данных</string>
     <string name="total_label">Итого</string>
     <string name="add_transactions_to_see_chart">Добавьте транзакции, чтобы увидеть график</string>
+
+    <string name="no_transactions_title">Транзакции не найдены</string>
+    <string name="no_transactions_desc">За выбранный период данных нет. Добавьте новую транзакцию!</string>
+
+    <string name="period_all">Все</string>
+    <string name="period_monthly">Ежемесячно</string>
+    <string name="period_yearly">Ежегодно</string>
+
+    <string name="summary_balance_all">Общий баланс</string>
+    <string name="summary_balance_monthly">Баланс за месяц</string>
+    <string name="summary_balance_yearly">Баланс за год</string>
+    <string name="search_placeholder">Поиск…</string>
 
     //Reports Screen
     <string name="report_title_income">Доход</string>
@@ -527,14 +540,19 @@
     // onBoarding
     <string name="ob_title_1">Умные бюджеты</string>
     <string name="ob_desc_1">Устанавливайте лимиты на расходы и полностью контролируйте, куда уходят ваши деньги.</string>
-
     <string name="ob_title_2">Список покупок</string>
     <string name="ob_desc_2">Планируйте свои покупки заранее, чтобы избежать лишних трат и импульсивных покупок.</string>
-
     <string name="ob_title_3">Контроль долгов</string>
     <string name="ob_desc_3">Не забывайте, сколько вы должны или кто должен вам. Все ваши задолженности в одном месте.</string>
     <string name="btn_get_started">Начать</string>
     <string name="ob_title_4">Умный QR Сканер</string>
     <string name="ob_desc_4">Сканируйте чеки и добавляйте транзакции за секунду. Больше не нужно вводить цифры вручную!</string>
+
+    <string name="onboarding_currency_title">Основная валюта</string>
+    <string name="onboarding_currency_description">Выберите основную валюту\nдля всех ваших расчетов</string>
+
+    <string name="coming_soon">Скоро</string>
+
+
 
 </resources>

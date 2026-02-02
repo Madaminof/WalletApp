@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.ui.theme.CurrencyRates
+import dev.samandar.walletapp.ui.theme.Export
 import dev.samandar.walletapp.ui.theme.followUs
 import dev.samandar.walletapp.ui.theme.language
 import dev.samandar.walletapp.ui.theme.numberFormat
@@ -44,6 +45,7 @@ data class SettingItem(
     val title: String,
     val icon: Int,
     val iconTint: Color,
+    val isLocked: Boolean = false,
     val route: String? = null,
     val action: (() -> Unit)? = null
 )
@@ -88,12 +90,6 @@ fun SettingsScreen(navController: NavController) {
                             action = { showThemeDialog = true }
                         ),
                         SettingItem(
-                            stringResource(Strings.setting_currency_title),
-                            R.drawable.currency_rates_icon,
-                            CurrencyRates,
-                            action = { showCurrencyDialog = true }
-                        ),
-                        SettingItem(
                             stringResource(Strings.setting_numFormat_title),
                             R.drawable.setting_nubers,
                             numberFormat,
@@ -104,6 +100,20 @@ fun SettingsScreen(navController: NavController) {
                             R.drawable.setting_language,
                             language,
                             action = {showLanguageDialog = true}
+                        ),
+                        SettingItem(
+                            stringResource(Strings.setting_currency_title),
+                            R.drawable.currency_rates_icon,
+                            CurrencyRates,
+                            isLocked = true,
+                            action = { }
+                        ),
+                        SettingItem(
+                            stringResource(Strings.export_title),
+                            R.drawable.export_ic,
+                            Export,
+                            isLocked = true,
+                            action = { }
                         ),
                     ),
                     navController = navController
@@ -203,44 +213,65 @@ fun SettingCard(items: List<SettingItem>, navController: NavController) {
 
 @Composable
 fun SettingRow(item: SettingItem, onClick: () -> Unit) {
-    val contentColor = MaterialTheme.colorScheme.onTertiary.copy(0.7f)
+    val contentColor = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(enabled = !item.isLocked, onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .size(38.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(item.iconTint.copy(alpha = 0.12f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(item.icon),
-                    contentDescription = item.title,
-                    tint = item.iconTint,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-
-            Spacer(Modifier.width(16.dp))
-            Text(
-                text = item.title,
-                fontSize = 15.sp,
-                color = contentColor,
-                fontWeight = FontWeight.Medium,
+        // Icon Box
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(item.iconTint.copy(alpha = if (item.isLocked) 0.05f else 0.1f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(item.icon),
+                contentDescription = null,
+                tint = if (item.isLocked) item.iconTint.copy(0.4f) else item.iconTint,
+                modifier = Modifier.size(22.dp)
             )
         }
-        Icon(
-            Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = "Go to ${item.title}",
-            tint = MaterialTheme.colorScheme.outline
+
+        Spacer(Modifier.width(16.dp))
+
+        // Title
+        Text(
+            text = item.title,
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontWeight = FontWeight.Medium,
+                color = if (item.isLocked) contentColor.copy(0.4f) else contentColor
+            ),
+            modifier = Modifier.weight(1f)
         )
 
+        // Right Action (Arrow yoki Coming Soon Badge)
+        if (item.isLocked) {
+            Surface(
+                color = MaterialTheme.colorScheme.primary.copy(0.1f),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text(
+                    text = stringResource(Strings.coming_soon),
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
+        } else {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.outline.copy(0.5f),
+                modifier = Modifier.size(20.dp)
+            )
+        }
     }
 }

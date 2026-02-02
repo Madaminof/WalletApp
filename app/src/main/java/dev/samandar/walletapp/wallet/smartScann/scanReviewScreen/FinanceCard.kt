@@ -30,6 +30,7 @@ fun FinanceCard(
     icon: Int,
     label: String,
     value: String,
+    color: Color,
     onClick: () -> Unit
 ) {
     Surface(
@@ -47,7 +48,7 @@ fun FinanceCard(
                     .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ){
-                Icon(painter = painterResource(icon), null, tint = Color.Unspecified, modifier = Modifier.size(20.dp))
+                Icon(painter = painterResource(icon), null, tint = color, modifier = Modifier.size(20.dp))
             }
             Spacer(modifier = Modifier.height(12.dp))
             Text(label, style = MaterialTheme.typography.labelMedium, color = Color.Gray)

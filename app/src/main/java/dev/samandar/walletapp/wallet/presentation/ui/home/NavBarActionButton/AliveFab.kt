@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AliveFab(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
+    color: Color = MaterialTheme.colorScheme.primary,
     onClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -63,13 +64,13 @@ fun AliveFab(
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer { scaleX = auraScale; scaleY = auraScale; alpha = 0.15f }
-                .background(MaterialTheme.colorScheme.primary, CircleShape)
+                .background(color, CircleShape)
         )
 
         Surface(
             modifier = Modifier.fillMaxSize().clickable(interactionSource, null) { onClick() },
             shape = CircleShape,
-            color = MaterialTheme.colorScheme.primary,
+            color = color,
             shadowElevation = 8.dp,
             border = BorderStroke(1.dp, Color.White.copy(0.2f))
         ) {

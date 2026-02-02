@@ -12,14 +12,25 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,11 +40,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.samandar.walletapp.R
-import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.utils.Strings
-import dev.samandar.walletapp.wallet.domain.model.Budget
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
-import dev.samandar.walletapp.wallet.presentation.ui.budjets.editBudget.EditBudgetSheet
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.snackbar.ModernSnackbar
 import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.CustomTopBar
 import kotlinx.coroutines.delay
@@ -43,7 +51,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun BudgetsScreen(
     viewModel: BudgetViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
 ) {
     val budgetStatuses by viewModel.activeBudgetStatuses.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -107,7 +115,7 @@ fun BudgetsScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
-                    contentPadding = PaddingValues(top = 4.dp, bottom = 80.dp),
+                    contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     itemsIndexed(

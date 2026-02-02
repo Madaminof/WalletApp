@@ -4,8 +4,6 @@ import CommonTabRow
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,17 +21,14 @@ import dev.samandar.walletapp.ui.theme.expenseColor
 import dev.samandar.walletapp.ui.theme.incomeColor
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.domain.model.TransactionType
-import dev.samandar.walletapp.wallet.presentation.ui.charts.ChartTab
 import dev.samandar.walletapp.wallet.presentation.ui.charts.EmptyChartState
-import dev.samandar.walletapp.wallet.presentation.ui.charts.TabItem
+import dev.samandar.walletapp.wallet.presentation.ui.charts.historyTransactions.TabItem
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.viewmodel.CategoryStatisticsViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.home.diogramCharts.PremiumPieChart
 import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.CustomTopBar
 import dev.samandar.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import java.net.URLEncoder
 import androidx.compose.ui.unit.sp
-import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.CircularIconButton
-import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.primaryAccent
 import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.TimeFilter
 
 @Composable
@@ -59,8 +54,11 @@ fun CategoryStatisticsScreen(
                     Box(contentAlignment = Alignment.Center) {
                         FilterActionButton(
                             onClick = {isFilterMenuExpanded = true},
-                            icon = Icons.Default.FilterList,
-                            modifier = Modifier.padding(end = 12.dp).size(28.dp),
+                            icon = R.drawable.filter_ic,
+                            modifier = Modifier.padding(end = 12.dp).size(32.dp),
+                            bgColor = Color.Transparent,
+                            icColor = MaterialTheme.colorScheme.onTertiary.copy(0.5f)
+
                         )
 
                         UniversalFilterMenu(
@@ -93,10 +91,7 @@ fun CategoryStatisticsScreen(
                 }
             } else if (uiState.categoryData.isEmpty()) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    EmptyChartState(
-                        currentTab = if (selectedTabType == TransactionType.EXPENSE)
-                            ChartTab.EXPENSE else ChartTab.INCOME
-                    )
+                    EmptyChartState()
                 }
             } else {
                 LazyColumn(

@@ -19,6 +19,7 @@ fun Budget.toEntity(): BudgetEntity {
         createdAt = this.createdAt,
     )
 }
+
 fun BudgetWithCategory.toDomain(): Budget? {
     return this.category?.let {
         Budget(

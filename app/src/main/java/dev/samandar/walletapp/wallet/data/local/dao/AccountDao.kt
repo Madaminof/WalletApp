@@ -18,7 +18,6 @@ interface AccountDao {
     @Update
     suspend fun updateAccount(account: AccountEntity)
 
-    // Upsert mantiqi: Avval bazada bor-yo'qligini tekshiradi
     @Transaction
     suspend fun upsertAccount(account: AccountEntity) {
         val existingAccount = getAccountEntityById(account.id)

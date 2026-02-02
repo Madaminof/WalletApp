@@ -184,13 +184,27 @@ class StatisticsViewModel @Inject constructor(
             initialValue = TimePeriod.Monthly.labelResId
         )
 
-    fun changePeriod(period: TimePeriod) {
-        _selectedPeriod.value = period
-    }
-
     fun changePeriodByKey(key: String) {
         TimePeriod.fromKey(key)?.let { period ->
             _selectedPeriod.value = period
         }
     }
+
+
+
+    // ViewModel ichida
+    @RequiresApi(Build.VERSION_CODES.O)
+    val topExpenseStatistics: StateFlow<List<CategoryData>> = combine(
+        filteredTransactions,
+        expenseCategories
+    ) { transactions, categories ->
+        val allStats = calculateExpenseStatistics(transactions, categories)
+        // 1. Amount bo'yicha kamayish tartibida saralaymiz
+        // 2. Birinchi 4 tasini olamiz (take(4))
+        allStats.sortedByDescending { it.amount }.take(4)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
 }

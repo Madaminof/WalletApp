@@ -13,7 +13,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class CategoryRepositoryImpl @Inject constructor(
-    private val categoryDao: CategoryDao
+    private val categoryDao: CategoryDao,
 ) : CategoryRepository {
 
     override fun getCategories(type: TransactionType): Flow<List<Category>> {

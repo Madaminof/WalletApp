@@ -155,8 +155,8 @@ fun LanguageCard(
             Icon(
                 painter = painterResource(id = R.drawable.arrow_right),
                 contentDescription = null,
-                modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
             )
         }
     }

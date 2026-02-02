@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -115,7 +113,7 @@ fun TotalBalanceCard(
                 Box(contentAlignment = Alignment.TopEnd) {
                     FilterActionButton(
                         onClick = { isMenuExpanded = true },
-                        icon = Icons.Default.FilterList,
+                        icon = R.drawable.filter_ic,
                         size = 30.dp
                     )
 
@@ -212,7 +210,7 @@ fun CircularIconButton(
 }
 
 @Composable
-private fun PeriodNavigationButton(
+fun PeriodNavigationButton(
     icon: Int,
     onClick: () -> Unit,
     size: Dp = 30.dp

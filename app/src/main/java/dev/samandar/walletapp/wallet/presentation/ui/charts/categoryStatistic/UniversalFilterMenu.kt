@@ -16,7 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -25,22 +26,24 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun FilterActionButton(
     onClick: () -> Unit,
-    icon: ImageVector,
+    icon: Int,
     modifier: Modifier = Modifier,
     size: Dp = 32.dp,
+    bgColor: Color = MaterialTheme.colorScheme.primary.copy(0.2f),
+    icColor:Color = MaterialTheme.colorScheme.primary.copy(0.7f)
 ) {
     Box(
         modifier = modifier
             .size(size)
             .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
+            .background(bgColor)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            icon,
+            painter = painterResource(icon),
             contentDescription = "Filter",
-            tint = MaterialTheme.colorScheme.primary,
+            tint = icColor,
             modifier = Modifier.size(size * 0.65f)
         )
     }

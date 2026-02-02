@@ -8,7 +8,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.samandar.walletapp.wallet.presentation.ui.charts.TabItem
+import dev.samandar.walletapp.wallet.presentation.ui.charts.historyTransactions.TabItem
 
 @Composable
 fun CommonTabRow(
@@ -16,7 +16,7 @@ fun CommonTabRow(
     tabs: List<TabItem>,
     onTabSelected: (Int) -> Unit,
     containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    contentColor: Color = MaterialTheme.colorScheme.primary
+    contentColor: Color = MaterialTheme.colorScheme.onTertiary.copy(0.5f)
 ) {
     TabRow(
         selectedTabIndex = selectedTabIndex,
@@ -48,7 +48,7 @@ fun CommonTabRow(
                         text = stringResource(tab.titleResId),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                        color = if (isSelected) contentColor else contentColor.copy(alpha = 0.4f),
+                        color = if (isSelected) contentColor else contentColor.copy(alpha = 0.3f),
                         letterSpacing = (-0.2).sp,
                         modifier = Modifier.padding(vertical = 8.dp)
                     )

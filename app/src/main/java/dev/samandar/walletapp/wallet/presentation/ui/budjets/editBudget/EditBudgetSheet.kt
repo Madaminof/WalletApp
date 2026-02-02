@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,6 +65,9 @@ fun EditBudgetSheet(
         var startDateMillis by remember(budgetToEdit.startDate) { mutableStateOf(budgetToEdit.startDate) }
         var endDateMillis by remember(budgetToEdit.endDate) { mutableStateOf(budgetToEdit.endDate) }
         var showCategorySheet by remember { mutableStateOf(false) }
+
+        val focusRequester = remember { FocusRequester() }
+
 
         if (showCategorySheet) {
             CategorySelectionBottomSheet(
@@ -127,9 +131,12 @@ fun EditBudgetSheet(
                 maxAmountInput = maxAmountInput,
                 onAmountChange = { newValue ->
                     if (newValue.length <= 12) {
-                        maxAmountInput = newValue.filter { char -> char.isDigit() || (char == '.' && !maxAmountInput.contains('.')) }
+                        maxAmountInput = newValue.filter { char ->
+                            char.isDigit() || (char == '.' && !maxAmountInput.contains('.'))
+                        }
                     }
-                }
+                },
+                focusRequester = focusRequester
             )
 
             PeriodSelector(

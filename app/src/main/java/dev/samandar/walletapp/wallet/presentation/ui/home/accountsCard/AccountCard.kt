@@ -170,11 +170,6 @@ fun AccountCard(
 ) {
     val state by viewModel.cardState.collectAsState()
     var selectedAccount by remember { mutableStateOf<Account?>(null) }
-    var isPressed by remember { mutableStateOf(false) }
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow), label = "CardScale"
-    )
 
     if (state.isLoading) {
         AccountCardSkeleton()
@@ -186,11 +181,7 @@ fun AccountCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 0.dp, vertical = 4.dp)
-            .graphicsLayer { scaleX = scale; scaleY = scale }
-            .pointerInput(Unit) {
-                detectTapGestures(onPress = { isPressed = true; tryAwaitRelease(); isPressed = false })
-            },
+            .padding(horizontal = 0.dp, vertical = 4.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer),
     ) {

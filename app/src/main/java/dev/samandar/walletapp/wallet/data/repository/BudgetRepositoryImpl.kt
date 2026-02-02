@@ -1,6 +1,5 @@
 package dev.samandar.walletapp.wallet.data.repository
 
-import dev.samandar.walletapp.utils.EMPTY
 import dev.samandar.walletapp.utils.orZero
 import dev.samandar.walletapp.wallet.data.local.dao.budjetDao.BudgetDao
 import dev.samandar.walletapp.wallet.data.local.dao.budjetDao.BudjetTransactionDao

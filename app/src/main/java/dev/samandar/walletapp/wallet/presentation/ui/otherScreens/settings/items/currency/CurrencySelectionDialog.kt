@@ -22,8 +22,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.presentation.utils.getCurrencySymbol
-import java.util.Currency
-import java.util.Locale
 
 @Composable
 fun CurrencySelectionDialog(

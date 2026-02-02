@@ -39,14 +39,6 @@ class HomeViewModel @Inject constructor(
     val expenseCategories: StateFlow<List<Category>> = getCategoriesByType(TransactionType.EXPENSE)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    val allCategories: StateFlow<List<Category>> = combine(
-        incomeCategories,
-        expenseCategories
-    ) { income, expense ->
-        income + expense
-    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-
-
     val transactions: StateFlow<List<Transaction>> = transactionsFlow
         .stateIn(
             scope = viewModelScope,

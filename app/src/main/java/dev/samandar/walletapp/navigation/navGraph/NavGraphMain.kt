@@ -84,8 +84,14 @@ fun NavGraphMain(
                         }
                     },
                     onFabClick = {
-                        if (currentRoute == Screen.Home.route) showAddSheet = true
-                        else if (currentRoute == Screen.Budgets.route) navController.navigate(Screen.budjetAdd.route)
+                        when (currentRoute) {
+                            Screen.Home.route, Screen.ExpenseList.route -> {
+                                showAddSheet = true
+                            }
+                            Screen.Budgets.route -> {
+                                navController.navigate(Screen.budjetAdd.route)
+                            }
+                        }
                     }
                 )
             }

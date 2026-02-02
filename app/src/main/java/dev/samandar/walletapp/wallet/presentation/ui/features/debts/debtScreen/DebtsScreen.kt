@@ -28,6 +28,7 @@ import dev.samandar.walletapp.wallet.presentation.ui.features.debts.DebtArgs
 import dev.samandar.walletapp.wallet.presentation.ui.features.debts.addDebt.AddPaymentDialog
 import dev.samandar.walletapp.wallet.presentation.ui.features.debts.DebtEvent
 import dev.samandar.walletapp.wallet.presentation.ui.features.debts.DebtsViewModel
+import dev.samandar.walletapp.wallet.presentation.ui.home.NavBarActionButton.AliveFab
 import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.CustomTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,6 +98,14 @@ fun DebtsScreen(
                 ) {
                     Icon(Icons.Default.Add, contentDescription = null)
                 }
+                AliveFab(
+                    icon = Icons.Default.Add,
+                    onClick = {
+                        val type = if (selectedTab == 0) DebtType.LENT else DebtType.BORROWED
+                        navController.navigate("add_edit_debt?${DebtArgs.DEBT_TYPE}=${type.name}")
+                    },
+                    color = fabColor
+                )
             },
             containerColor = MaterialTheme.colorScheme.background
         ) { paddingValues ->

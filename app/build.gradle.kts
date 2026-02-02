@@ -16,8 +16,8 @@ android {
         applicationId = "dev.samandar.walletapp"
         minSdk = 24
         targetSdk = 35 // Android 15 qo'llab-quvvatlash
-        versionCode = 12 // Google Console uchun doim oshirib boring
-        versionName = "1.8"
+        versionCode = 17 // Google Console uchun doim oshirib boring
+        versionName = "1.13"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

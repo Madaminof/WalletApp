@@ -49,7 +49,6 @@ fun ModernBottomActions(
 
 
     val context = LocalContext.current
-    val isHistoryScreen = currentRoute == Screen.ExpenseList.route
 
     val vibrator = remember {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -196,8 +195,12 @@ fun ModernBottomActions(
             contentAlignment = Alignment.Center
         ) {
             val fabScale by animateFloatAsState(
-                targetValue = if (isHistoryScreen) 0f else 1f,
-                animationSpec = spring(stiffness = Spring.StiffnessMedium, dampingRatio = Spring.DampingRatioLowBouncy)
+                targetValue = 1f, // Doim ko'rinib turadi
+                animationSpec = spring(
+                    stiffness = Spring.StiffnessMedium,
+                    dampingRatio = Spring.DampingRatioLowBouncy
+                ),
+                label = "FabScale"
             )
 
             Box(
@@ -208,8 +211,12 @@ fun ModernBottomActions(
                 }
             ) {
                 AliveFab(
+
                     icon = Icons.Default.Add,
-                    onClick = onFabClick
+                    onClick = {
+                        triggerVibration()
+                        onFabClick()
+                    }
                 )
             }
         }

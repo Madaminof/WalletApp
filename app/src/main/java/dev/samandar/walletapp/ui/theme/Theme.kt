@@ -32,11 +32,11 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF4759C1),
-    primaryContainer = Color(0xFFF0F2F3),// topbarContainer va background color 0xFFECF3F6, 0xFFE3EDF1
+    primaryContainer = Color(0xFFF2F2F5),// topbarContainer va background color 0xFFECF3F6, 0xFFE3EDF1
     onPrimaryContainer = Color(0xFFFCFCFC),// cardContainer
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    background = Color(0xFFF0F2F3),
+    background = Color(0xFFF2F2F5),
     onBackground = Color(0xFFDBE1E2),
     surface = Color(0xFFFFFFFF),
     onPrimary = Color.White,

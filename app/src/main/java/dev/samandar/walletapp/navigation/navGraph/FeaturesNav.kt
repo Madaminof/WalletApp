@@ -13,11 +13,11 @@ import dev.samandar.walletapp.wallet.domain.model.debt.DebtType
 import dev.samandar.walletapp.wallet.presentation.ui.account.EditAccountScreen
 import dev.samandar.walletapp.wallet.presentation.ui.account.accountScreen.WalletScreen
 import dev.samandar.walletapp.wallet.presentation.ui.account.addAccount.AddAccountScreen
-import dev.samandar.walletapp.wallet.presentation.ui.charts.ExpensesListScreen
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.CategoryDetail.CategoryDetailScreen
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.CategoryStatisticsScreen
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.viewmodel.CategoryStatisticsViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.charts.detailScreen.TransactionDetailScreen
+import dev.samandar.walletapp.wallet.presentation.ui.charts.historyTransactions.HistorytransactionScreen
 import dev.samandar.walletapp.wallet.presentation.ui.features.debts.DebtsViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.features.debts.addDebt.AddEditDebtScreen
 import dev.samandar.walletapp.wallet.presentation.ui.features.debts.debtScreen.DebtsScreen
@@ -57,7 +57,7 @@ fun NavGraphBuilder.featuresGraph(
                 )
                 Screen.ShoppingLists.route -> ShoppingListScreen(navController = navController)
                 Screen.Goals.route -> GoalsScreen(navController)
-                Screen.ExpenseList.route -> ExpensesListScreen(navController = navController)
+                Screen.ExpenseList.route -> HistorytransactionScreen(navController = navController)
                 else -> {}
             }
         }

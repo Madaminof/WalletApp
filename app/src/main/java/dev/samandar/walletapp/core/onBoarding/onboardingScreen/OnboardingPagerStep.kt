@@ -1,35 +1,42 @@
 package dev.samandar.walletapp.core.onBoarding.onboardingScreen
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.samandar.walletapp.R
 import dev.samandar.walletapp.core.onBoarding.onboardingPages
 import dev.samandar.walletapp.utils.Strings
 import kotlinx.coroutines.launch
 
+
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun OnboardingPagerStep(onFinish: () -> Unit) {
+fun OnboardingPagerStep(
+    onFinish: () -> Unit,
+    onBack: () -> Unit
+) {
     val pagerState = rememberPagerState(pageCount = { onboardingPages.size })
     val scope = rememberCoroutineScope()
     val isLastPage = pagerState.currentPage == onboardingPages.size - 1
@@ -37,9 +44,29 @@ fun OnboardingPagerStep(onFinish: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .statusBarsPadding()
     ) {
-        // Asosiy kontent (Slidelar)
+        IconButton(
+            onClick = {
+                if (pagerState.currentPage > 0) {
+                    scope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                    }
+                } else {
+                    onBack()
+                }
+            },
+            modifier = Modifier.padding(start = 8.dp, top = 8.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.back_ic),
+                contentDescription = "Back",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(32.dp)
+            )
+        }
+
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
@@ -50,69 +77,75 @@ fun OnboardingPagerStep(onFinish: () -> Unit) {
             OnboardingContent(onboardingPages[index])
         }
 
-        // Pastki boshqaruv paneli
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.Transparent
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+                .padding(bottom = 48.dp, top = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            // Indicator
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp, vertical = 40.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // 1. Indicator (Nuqtalar)
-                PageIndicator(
-                    currentPage = pagerState.currentPage,
-                    pageSize = onboardingPages.size
-                )
+                repeat(onboardingPages.size) { index ->
+                    val isSelected = pagerState.currentPage == index
+                    val width by animateDpAsState(
+                        targetValue = if (isSelected) 32.dp else 8.dp,
+                        animationSpec = tween(300), label = "indicator_width"
+                    )
+                    Box(
+                        modifier = Modifier
+                            .height(8.dp)
+                            .width(width)
+                            .clip(CircleShape)
+                            .background(
+                                if (isSelected) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.primary.copy(0.2f)
+                            )
+                    )
+                }
+            }
 
-                // 2. Action Button (Keyingisi / Boshlash)
-                Button(
-                    onClick = {
-                        if (!isLastPage) {
-                            scope.launch {
-                                pagerState.animateScrollToPage(
-                                    page = pagerState.currentPage + 1,
-                                    animationSpec = tween(600)
-                                )
-                            }
-                        } else {
-                            onFinish()
+            Button(
+                onClick = {
+                    if (!isLastPage) {
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
                         }
-                    },
-                    modifier = Modifier
-                        .height(56.dp)
-                        .width(if (isLastPage) 160.dp else 64.dp), // Oxirida kengayadi
-                    shape = RoundedCornerShape(20.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = Color.White
-                    ),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    AnimatedContent(
-                        targetState = isLastPage,
-                        transitionSpec = {
-                            fadeIn(animationSpec = tween(300)) with fadeOut(animationSpec = tween(300))
-                        },
-                        label = "button_content"
-                    ) { lastPage ->
-                        if (lastPage) {
-                            Text(
-                                text = stringResource(Strings.btn_get_started),
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(horizontal = 16.dp)
-                            )
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.ArrowForward,
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
+                    } else {
+                        onFinish()
+                    }
+                },
+                modifier = Modifier
+                    .height(64.dp)
+                    .animateContentSize(),
+                shape = RoundedCornerShape(22.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                AnimatedContent(
+                    targetState = isLastPage,
+                    transitionSpec = {
+                        fadeIn(tween(200)) with fadeOut(tween(200))
+                    }, label = "btn_anim"
+                ) { lastPage ->
+                    if (lastPage) {
+                        Text(
+                            text = stringResource(Strings.btn_get_started),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 12.dp)
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.ArrowForward,
+                            contentDescription = null,
+                            modifier = Modifier.size(28.dp)
+                        )
                     }
                 }
             }

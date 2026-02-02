@@ -34,7 +34,7 @@ import dev.samandar.walletapp.wallet.data.local.entity.smartScannEntity.ReceiptI
         ShoppingItemEntity::class,
         DebtEntity::class,
         DebtTransactionEntity::class,
-        ReceiptEntity::class,      // Shular borligini tekshiring
+        ReceiptEntity::class,
         ReceiptItemEntity::class
     ],
     version = 1,
@@ -53,7 +53,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun receiptDao(): ReceiptDao
 
     companion object {
-        const val DATABASE_NAME = "database_expense_tracker_v1.0.0"
+        const val DATABASE_NAME = "wallet_app_db"
 
 
     }

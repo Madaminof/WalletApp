@@ -26,6 +26,7 @@ import kotlinx.coroutines.delay
 fun SplashScreen(navController: NavHostController) {
     var startAnimation by remember { mutableStateOf(false) }
 
+
     val scaleAnim by animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0.7f,
         animationSpec = spring(
@@ -58,6 +59,8 @@ fun SplashContent(scale: Float, alpha: Float) {
             MaterialTheme.colorScheme.surface
         )
     )
+    val appVersion = "1.10"
+
 
     Box(
         modifier = Modifier
@@ -97,7 +100,7 @@ fun SplashContent(scale: Float, alpha: Float) {
             contentAlignment = Alignment.BottomCenter
         ) {
             Text(
-                text = "Version 1.1.0",
+                text = "Version $appVersion",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.5f),
                 letterSpacing = 1.sp

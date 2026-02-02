@@ -19,7 +19,7 @@ import javax.inject.Inject
 class TransactionRepositoryImpl @Inject constructor(
     private val transactionDao: TransactionDao,
     private val categoryRepository: CategoryRepository,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
 ) : TransactionRepository {
 
     override suspend fun saveTransaction(transaction: Transaction): Result<Unit> = runCatching {
@@ -41,10 +41,8 @@ class TransactionRepositoryImpl @Inject constructor(
             transactionDao.getTransactionsByType(typeString)
         }
         return entityFlow.map { entities ->
-            // Mapping from Entity list to Domain model list
             entities.map { entity ->
 
-                // Fetching Category and Account (Slow, blocking database operations)
                 val categoryResult = categoryRepository.getCategoryById(entity.categoryId)
                 val accountResult = accountRepository.getAccountById(entity.accountId)
 
@@ -54,11 +52,8 @@ class TransactionRepositoryImpl @Inject constructor(
                 entity.toDomain(category, account)
             }
         }
-            // This moves the slow mapping work off the Main thread,
-            // ensuring the UI remains responsive after an update.
             .flowOn(Dispatchers.IO)
     }
-    // ===================================================================
 
     override suspend fun deleteTransaction(id: String): Result<Unit> = runCatching {
         val transaction = getTransactionById(id).getOrThrow()
@@ -69,37 +64,32 @@ class TransactionRepositoryImpl @Inject constructor(
             transaction.amount
         }
 
-        accountRepository.updateAccountBalance(transaction.account.id, amountReverseChange).getOrThrow()
+        accountRepository.updateAccountBalance(transaction.account.id, amountReverseChange)
+            .getOrThrow()
 
         transactionDao.deleteTransactionById(id)
     }
 
-
     override suspend fun updateTransaction(transaction: Transaction): Result<Unit> = runCatching {
-        // 1. Get the old transaction record
         val oldTransaction = getTransactionById(transaction.id).getOrThrow()
 
-        // 2. Reverse the effect of the old transaction on its account balance
         val oldAmountReverse = if (oldTransaction.type == TransactionType.INCOME) {
             -oldTransaction.amount
         } else {
             oldTransaction.amount
         }
-        accountRepository.updateAccountBalance(oldTransaction.account.id, oldAmountReverse).getOrThrow()
+        accountRepository.updateAccountBalance(oldTransaction.account.id, oldAmountReverse)
+            .getOrThrow()
 
-        // 3. Apply the effect of the new transaction to its account balance
         val newAmountChange = if (transaction.type == TransactionType.INCOME) {
             transaction.amount
         } else {
             -transaction.amount
         }
         accountRepository.updateAccountBalance(transaction.account.id, newAmountChange).getOrThrow()
-
-        // 4. Update the transaction record itself
         val entity = transaction.toEntity()
         transactionDao.updateTransaction(entity)
     }
-
 
     override fun getTransactionsByDateRange(
         startDate: Long,
@@ -110,11 +100,10 @@ class TransactionRepositoryImpl @Inject constructor(
 
     override suspend fun countTransactionsByDateRange(
         startDateMillis: Long,
-        endDateMillis: Long
+        endDateMillis: Long,
     ): Int {
         return transactionDao.countTransactionsByDateRange(startDateMillis, endDateMillis)
     }
-
 
     override suspend fun getTransactionById(id: String): Result<Transaction> = runCatching {
         val entity = transactionDao.getTransactionEntityById(id)

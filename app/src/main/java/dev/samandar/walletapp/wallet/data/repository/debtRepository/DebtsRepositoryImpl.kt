@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DebtsRepositoryImpl @Inject constructor(
-    private val dao: DebtDao
+    private val dao: DebtDao,
 ) : DebtsRepository {
 
     override fun getAllDebts(): Flow<List<Debt>> =
@@ -23,14 +23,10 @@ class DebtsRepositoryImpl @Inject constructor(
     override fun getActiveDebts(): Flow<List<Debt>> =
         dao.getActiveDebts().map { entities -> entities.map { it.toDomain() } }
 
-
-    // DebtsRepositoryImpl.kt ichida
     override fun getDebtWithTransactions(debtId: String): Flow<DebtWithTransactions?> =
         dao.getDebtWithTransactions(debtId).map { relation ->
-            // RELATION NULL BO'LSA XATO BERMASDAN NULL QAYTARISH
             if (relation == null) return@map null
 
-            // Faqat relation mavjud bo'lganda mapping qilish
             DebtWithTransactions(
                 debt = relation.debt.toDomain(),
                 transactions = relation.transactions.map { it.toDomain() }

@@ -13,6 +13,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import android.content.Context
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+
+enum class OnboardingStep { LANGUAGE, CURRENCY, PAGER }
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
@@ -20,34 +24,46 @@ class OnboardingViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
-    // MainActivity uchun: Onboarding kerakmi yoki yo'qligini kuzatuvchi Flow
     val isOnboardingRequired = onboardingManager.isOnboardingRequired
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = null // Ma'lumot o'qilguncha null bo'lib turadi
+            initialValue = null
         )
 
-    var showLanguageStep by mutableStateOf(true)
+    var currentStep by mutableStateOf(OnboardingStep.LANGUAGE)
         private set
 
     fun onLanguageSelected(langCode: String) {
         viewModelScope.launch {
-            // Tilni saqlash
             settingsRepository.saveLanguage(langCode)
-
-            // Tizim tilini o'zgartirish
             val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(langCode)
             AppCompatDelegate.setApplicationLocales(appLocale)
 
-            showLanguageStep = false
+            currentStep = OnboardingStep.CURRENCY
         }
+    }
+
+    fun onCurrencySelected(context: Context, currencyCode: String) {
+        CurrencyManager.saveCurrency(context, currencyCode)
+
+        currentStep = OnboardingStep.PAGER
     }
 
     fun completeOnboarding(onFinish: () -> Unit) {
         viewModelScope.launch {
             onboardingManager.saveOnboardingCompleted()
             onFinish()
+        }
+    }
+
+
+    // OnboardingViewModel ichida
+    fun navigateBack() {
+        currentStep = when (currentStep) {
+            OnboardingStep.CURRENCY -> OnboardingStep.LANGUAGE
+            OnboardingStep.PAGER -> OnboardingStep.CURRENCY
+            else -> OnboardingStep.LANGUAGE
         }
     }
 }

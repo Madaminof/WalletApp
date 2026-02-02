@@ -87,12 +87,6 @@ fun EmptyChartView(modifier: Modifier = Modifier) {
             )
             .drawWithContent {
                 drawContent()
-                drawRoundRect(
-                    color = Color.White.copy(alpha = 0.1f),
-                    size = size,
-                    cornerRadius = CornerRadius(28.dp.toPx()),
-                    style = Stroke(width = 1.dp.toPx())
-                )
             },
         contentAlignment = Alignment.Center
     ) {

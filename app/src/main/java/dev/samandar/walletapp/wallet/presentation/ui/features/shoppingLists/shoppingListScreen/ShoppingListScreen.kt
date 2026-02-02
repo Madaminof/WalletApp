@@ -20,12 +20,15 @@ import androidx.navigation.NavController
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.wallet.domain.model.ShoppingList
+import dev.samandar.walletapp.wallet.domain.model.debt.DebtType
+import dev.samandar.walletapp.wallet.presentation.ui.features.debts.DebtArgs
 import dev.samandar.walletapp.wallet.presentation.ui.features.shoppingLists.dialogs.AddListDialog
 import dev.samandar.walletapp.wallet.presentation.ui.features.shoppingLists.dialogs.EditListDialog
 import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.CustomTopBar
 import dev.samandar.walletapp.wallet.presentation.viewmodel.ShoppingViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 import dev.samandar.walletapp.wallet.presentation.ui.features.shoppingLists.EmptyListState
+import dev.samandar.walletapp.wallet.presentation.ui.home.NavBarActionButton.AliveFab
 
 
 val activeCurrency by CurrencyManager.currentCurrency
@@ -63,6 +66,10 @@ fun ShoppingListScreen(
             ) {
                 Icon(Icons.Default.Add, null)
             }
+            AliveFab(
+                icon = Icons.Default.Add,
+                onClick =  { showAddListDialog = true },
+            )
         }
     ) { paddingValues ->
         Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {

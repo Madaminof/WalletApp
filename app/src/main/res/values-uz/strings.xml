@@ -48,6 +48,7 @@
 
     <string name="setting_help_title">Yordam Markazi</string>
     <string name="setting_share_title">Ulashish</string>
+    <string name="export_title">Eksport qilish</string>
 
     // tezkor cardlar
     <string name="quick_budjets" translatable="false">Budjetlar</string>
@@ -276,6 +277,18 @@
     <string name="no_data_available">Ma\'lumotlar mavjud emas</string>
     <string name="total_label">Jami</string>
     <string name="add_transactions_to_see_chart">Grafikni ko\'rish uchun tranzaksiyalar qo\'shing</string>
+
+    <string name="no_transactions_title">Tranzaksiyalar mavjud emas</string>
+    <string name="no_transactions_desc">Tanlangan davr uchun hech qanday ma\'lumot topilmadi. Yangi tranzaksiya qo\'shing!</string>
+
+    <string name="period_all">Barchasi</string>
+    <string name="period_monthly">Oylik</string>
+    <string name="period_yearly">Yillik</string>
+
+    <string name="summary_balance_all">Umumiy balans</string>
+    <string name="summary_balance_monthly">Oylik balans</string>
+    <string name="summary_balance_yearly">Yillik balans</string>
+    <string name="search_placeholder">Qidirish…</string>
 
     //Reports Screen
     <string name="report_title_income">Daromad</string>
@@ -537,14 +550,16 @@
     // onBoarding
     <string name="ob_title_1">Aqlli Budjetlar</string>
     <string name="ob_desc_1">Xarajatlaringiz uchun limitlar belgilang va pulingiz qayerga ketayotganini to\'liq nazorat qiling.</string>
-
     <string name="ob_title_2">Xaridlar Ro\'yxati</string>
     <string name="ob_desc_2">Keraksiz xarajatlardan qochish uchun xaridlar ro\'yxatini oldindan rejalashtiring va amalga oshiring.</string>
-
     <string name="ob_title_3">Qarzlar Nazorati</string>
     <string name="ob_desc_3">Kimdan qancha qarzingiz bor yoki kim sizdan qarzdor ekanligini unutmang. Hammasi bir joyda.</string>
     <string name="btn_get_started">Boshlash</string>
     <string name="ob_title_4">Aqlli QR Skaner</string>
     <string name="ob_desc_4">Cheklarni skaner qiling va tranzaksiyalarni bir soniyada qo\'shing. Raqamlarni qo\'lda yozib o\'tirmang!</string>
 
+    <string name="onboarding_currency_title">Asosiy valyuta</string>
+    <string name="onboarding_currency_description">Barcha hisob-kitoblaringiz uchun\nasosiy valyutani tanlang</string>
+
+    <string name="coming_soon">Tez kunda</string>
 </resources>

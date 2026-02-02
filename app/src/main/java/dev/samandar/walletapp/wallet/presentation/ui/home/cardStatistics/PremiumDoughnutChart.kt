@@ -79,28 +79,37 @@ fun PremiumDoughnutChart(
             )
 
             var startAngle = -90f
+            // Chart ichidagi Canvas qismida:
             data.forEach { item ->
-                val sweepAngle = (item.amount / totalAmount).toFloat() * 360f
+                // Total 0 bo'lsa sweep 0 bo'ladi
+                val sweepAngle = if (totalAmount > 0) {
+                    (item.amount / totalAmount).toFloat() * 360f
+                } else 0f
 
-                drawArc(
-                    color = item.color.copy(alpha = 0.15f),
-                    startAngle = startAngle,
-                    sweepAngle = sweepAngle * animatedProgress.value,
-                    useCenter = false,
-                    topLeft = topLeft,
-                    size = rectSize,
-                    style = Stroke(width = thicknessPx + 4.dp.toPx(), cap = StrokeCap.Round)
-                )
+                // Faqat sweepAngle 0 dan katta bo'lsa chizamiz
+                if (sweepAngle > 0.1f) {
+                    // Shadow/Glow qismi
+                    drawArc(
+                        color = item.color.copy(alpha = 0.15f),
+                        startAngle = startAngle,
+                        sweepAngle = sweepAngle * animatedProgress.value,
+                        useCenter = false,
+                        topLeft = topLeft,
+                        size = rectSize,
+                        style = Stroke(width = thicknessPx + 4.dp.toPx(), cap = StrokeCap.Round)
+                    )
 
-                drawArc(
-                    color = item.color,
-                    startAngle = startAngle,
-                    sweepAngle = sweepAngle * animatedProgress.value,
-                    useCenter = false,
-                    topLeft = topLeft,
-                    size = rectSize,
-                    style = Stroke(width = thicknessPx, cap = StrokeCap.Round)
-                )
+                    // Asosiy chiziq
+                    drawArc(
+                        color = item.color,
+                        startAngle = startAngle,
+                        sweepAngle = sweepAngle * animatedProgress.value,
+                        useCenter = false,
+                        topLeft = topLeft,
+                        size = rectSize,
+                        style = Stroke(width = thicknessPx, cap = StrokeCap.Round)
+                    )
+                }
                 startAngle += sweepAngle
             }
         }

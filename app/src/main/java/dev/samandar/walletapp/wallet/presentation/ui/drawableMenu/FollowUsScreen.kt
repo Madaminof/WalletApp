@@ -43,7 +43,7 @@ fun FollowUsDialog(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    val telegramUrl = "https://t.me/wallet_analyst_app"
+    val telegramUrl = "https://t.me/android_notes_developer"
 
     val infiniteTransition = rememberInfiniteTransition(label = "tg_pulse")
     val pulseScale by infiniteTransition.animateFloat(

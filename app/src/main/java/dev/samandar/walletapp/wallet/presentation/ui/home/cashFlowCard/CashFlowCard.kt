@@ -2,22 +2,15 @@ package dev.samandar.walletapp.wallet.presentation.ui.home
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material.icons.filled.Balance
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -31,8 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,18 +36,10 @@ import dev.samandar.walletapp.ui.theme.incomeColor
 import dev.samandar.walletapp.utils.FilterKeys
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.FilterActionButton
-import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.UniversalFilterMenu
 import dev.samandar.walletapp.wallet.presentation.ui.home.cashFlowCard.CashFlowFilterMenu
-import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.CircularIconButton
-import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.primaryAccent
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 import dev.samandar.walletapp.wallet.presentation.utils.FormatAmount
-import dev.samandar.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import dev.samandar.walletapp.wallet.presentation.viewmodel.CashFlowViewModel
-import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.TimeFilter
-import java.text.NumberFormat
-import java.util.Locale
-import kotlin.math.absoluteValue
 
 val activeCurrency by CurrencyManager.currentCurrency
 
@@ -111,22 +94,14 @@ fun CashFlowCard(
 ) {
     var isFilterMenuExpanded by remember { mutableStateOf(false) }
     val state by viewModel.cardState.collectAsState()
-    var isPressed by remember { mutableStateOf(false) }
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow), label = "CardScale"
-    )
+
     if (state.isLoading) {
         CashFlowLoadingState()
     } else {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 4.dp)
-                .graphicsLayer { scaleX = scale; scaleY = scale }
-                .pointerInput(Unit) {
-                    detectTapGestures(onPress = { isPressed = true; tryAwaitRelease(); isPressed = false })
-                },
+                .padding(vertical = 4.dp),
             shape = RoundedCornerShape(22.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer),
         ) {
@@ -148,8 +123,8 @@ fun CashFlowCard(
                     Box(contentAlignment = Alignment.TopEnd) {
                         FilterActionButton(
                             onClick = { isFilterMenuExpanded = true },
-                            icon = Icons.Default.FilterList,
-                            size = 30.dp
+                            icon = R.drawable.filter_ic,
+                            size = 28.dp
                         )
 
                         CashFlowFilterMenu(
@@ -170,8 +145,8 @@ fun CashFlowCard(
                 Text(text = label, fontSize = 10.sp, color = MaterialTheme.colorScheme.onTertiary.copy(0.7f))
                 Spacer(Modifier.height(4.dp))
 
-                CashFlowItem(R.drawable.arrow_top, stringResource(Strings.title_income), state.income, incomeColor)
-                CashFlowItem(R.drawable.arrow_down,stringResource(Strings.title_expense), state.expenses, expenseColor)
+                CashFlowItem(R.drawable.up_down_income, stringResource(Strings.title_income), state.income, incomeColor)
+                CashFlowItem(R.drawable.up_right_expense,stringResource(Strings.title_expense), state.expenses, expenseColor)
 
                 Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f))
 

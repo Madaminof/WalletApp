@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ShoppingRepositoryImpl @Inject constructor(
-    private val dao: ShoppingDao
+    private val dao: ShoppingDao,
 ) : ShoppingRepository {
 
     override fun getAllLists(): Flow<List<ShoppingList>> {

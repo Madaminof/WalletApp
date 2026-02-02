@@ -12,7 +12,6 @@ class ReceiptRepositoryImpl @Inject constructor(
 ) : ReceiptRepository {
 
     override suspend fun saveReceipt(receipt: Receipt) {
-        // Bitta tranzaksiya ichida saqlash muhim
         dao.insertReceipt(receipt.toEntity())
         dao.insertReceiptItems(receipt.items.map { it.toEntity(receipt.id) })
     }

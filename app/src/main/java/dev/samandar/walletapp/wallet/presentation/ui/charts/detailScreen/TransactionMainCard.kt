@@ -80,7 +80,7 @@ fun TransactionMainCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
     ) {
         Column(
@@ -175,6 +175,7 @@ fun TransactionMainCard(
             if (activeEditType == EditType.DATE) {
                 PremiumDateTimePickerDialog(
                     initialDateTime = transaction.date,
+                    maxDate = System.currentTimeMillis(),
                     onConfirm = { newTimestamp ->
                         onEdit(transaction.copy(date = newTimestamp))
                         activeEditType = EditType.NONE

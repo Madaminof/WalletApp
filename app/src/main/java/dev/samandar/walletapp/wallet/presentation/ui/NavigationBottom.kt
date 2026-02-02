@@ -105,8 +105,6 @@ fun Navigation(
                 drawerTonalElevation = 0.dp,
                 drawerShape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp)
             ) {
-                DrawerHeader()
-
                 DrawerBody(
                     currentRoute = currentRoute,
                     onDrawerClose = { scope.launch { drawerState.close() } },

@@ -28,6 +28,7 @@ import dev.samandar.walletapp.wallet.presentation.ui.home.cardStatistics.Expense
 import dev.samandar.walletapp.wallet.presentation.ui.home.quickCards.QuickInCards
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.TotalBalanceCard
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.TotalBalanceCardViewModel
+import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCardPremium.TotalBalanceCardPremium
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("SuspiciousIndentation")
@@ -42,7 +43,7 @@ fun HomeScreen(
     val budgetState by budgetViewModel.budgetCardState.collectAsState()
     val homeItems = remember(budgetState) {
         listOf<@Composable () -> Unit>(
-            { TotalBalanceCard(onFilterClick = totalBalanceCardViewModel::onFilterClick) },
+            { TotalBalanceCardPremium() },
             { QuickActionsRow(onActionClick) },
             { CashFlowCard() },
             { ExpenseStatisticCardPremium { navController.navigate(Screen.CategoryStatisticsScreen.route) } },

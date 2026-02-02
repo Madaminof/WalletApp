@@ -11,7 +11,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class AccountRepositoryImpl @Inject constructor(
-    private val accountDao: AccountDao
+    private val accountDao: AccountDao,
 ) : AccountRepository {
 
     override fun getAllAccounts(): Flow<List<Account>> {
@@ -31,7 +31,11 @@ class AccountRepositoryImpl @Inject constructor(
 
         entity.toAccount()
     }
-    override suspend fun updateAccountBalance(accountId: String, amountChange: Double): Result<Unit> = runCatching {
+
+    override suspend fun updateAccountBalance(
+        accountId: String,
+        amountChange: Double,
+    ): Result<Unit> = runCatching {
         val currentAccountEntity = accountDao.getAccountEntityById(accountId)
             ?: throw IOException("Balansni yangilash uchun hisob topilmadi: ID = $accountId")
         val newBalance = currentAccountEntity.balance + amountChange

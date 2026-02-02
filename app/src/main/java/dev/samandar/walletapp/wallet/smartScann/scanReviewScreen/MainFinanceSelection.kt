@@ -28,6 +28,7 @@ import androidx.compose.material3.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.core.graphics.toColorInt
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
@@ -57,7 +58,11 @@ fun MainFinanceSelection(
                     icon = it,
                     label = stringResource(Strings.icon_content_description_account),
                     value = getTranslatedName(state.selectedAccount.name).toString(),
-                    onClick = { showAccountDialog = true }
+                    onClick = { showAccountDialog = true },
+                    color = remember(state.selectedAccount.colorHex) {
+                        try { Color(state.selectedAccount.colorHex?.toColorInt() ?: 0xFF6200EE.toInt()) }
+                        catch (e: Exception) { Color(0xFF6200EE.toInt()) }
+                    }
                 )
             }
         }
@@ -69,7 +74,8 @@ fun MainFinanceSelection(
                 icon = it,
                 label = stringResource(Strings.category_label_title),
                 value = getTranslatedName(state.selectedCategory.name).toString(),
-                onClick = { showCategoryDialog = true }
+                onClick = { showCategoryDialog = true },
+                color = Color(state.selectedCategory.colorArgb)
             )
         }
     }
@@ -88,6 +94,10 @@ fun MainFinanceSelection(
                         name = getTranslatedName(account.name).toString(),
                         isSelected = isSelected,
                         icon = it,
+                        color =  remember(account.colorHex) {
+                            try { Color(account.colorHex?.toColorInt() ?: 0xFF6200EE.toInt()) }
+                            catch (e: Exception) { Color(0xFF6200EE.toInt()) }
+                        }
                     )
                 }
             }
@@ -108,6 +118,7 @@ fun MainFinanceSelection(
                         name = getTranslatedName(category.name).toString(),
                         isSelected = isSelected,
                         icon = it,
+                        color = Color(category.colorArgb),
                     )
                 }
             }
@@ -120,6 +131,7 @@ fun SelectionItemContent(
     name: String,
     isSelected: Boolean,
     icon: Int,
+    color: Color
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -136,7 +148,7 @@ fun SelectionItemContent(
             Icon(
                 painter = painterResource(icon),
                 contentDescription = null,
-                tint = Color.Unspecified,
+                tint = color,
                 modifier = Modifier.size(20.dp)
             )
         }

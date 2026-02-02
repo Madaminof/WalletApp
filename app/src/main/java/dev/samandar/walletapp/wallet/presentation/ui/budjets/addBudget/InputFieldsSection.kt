@@ -11,6 +11,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
@@ -32,6 +34,7 @@ fun InputFieldsSection(
     selectedCategory: Category?,
     onCategoryClick: () -> Unit,
     maxAmountInput: String,
+    focusRequester: FocusRequester,
     onAmountChange: (String) -> Unit
 ) {
     val isCategorySelected = selectedCategory != null
@@ -134,7 +137,7 @@ fun InputFieldsSection(
                                 textFieldValueState = newValue
                             }
                         },
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f).focusRequester(focusRequester),
                         textStyle = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
