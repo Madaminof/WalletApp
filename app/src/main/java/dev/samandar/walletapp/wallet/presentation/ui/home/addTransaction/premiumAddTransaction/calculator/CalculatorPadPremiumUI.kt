@@ -42,7 +42,8 @@ fun CalculatorPadPremiumUI(
     onDateClick: () -> Unit,
     selectedDate: Long,
     currentValue: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onAmountClick: () -> Unit
 ) {
     var state by remember { mutableStateOf(CalculatorState(display = currentValue)) }
     val haptic = LocalHapticFeedback.current
@@ -75,6 +76,12 @@ fun CalculatorPadPremiumUI(
         }
     }
 
+    LaunchedEffect(currentValue) {
+        if (state.display != currentValue) {
+            state = state.copy(display = currentValue)
+        }
+    }
+
     LaunchedEffect(state.display) { onDisplayChange(state.display) }
 
     val processAction: (CalculatorAction) -> Unit = { action ->
@@ -98,36 +105,72 @@ fun CalculatorPadPremiumUI(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(24.dp))
                     .background(defaultColor.copy(0.05f))
-                    .padding(horizontal = 12.dp),
+                    .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                PremiumAccountSelectionBox(
-                    selectedAccount = selectedAccount,
-                    onClick = onClick,
-                    modifier = Modifier.weight(1f)
-                )
+                Box(
+                    modifier = Modifier
+                        .weight(0.45f)
+                        .fillMaxHeight(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    PremiumAccountSelectionBox(
+                        selectedAccount = selectedAccount,
+                        onClick = onClick,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .weight(0.55f)
+                        .fillMaxHeight()
+                        .padding(start = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        val amountDouble = state.display.toDoubleOrNull() ?: 0.0
+                        Text(
+                            text = AmountFormat(amountDouble, state.display.contains(".")),
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = MaterialTheme.colorScheme.primary,
+                            maxLines = 1,
+                            letterSpacing = (-0.5).sp,
+                            lineHeight = 22.sp
+                        )
 
-                VerticalDivider(
-                    modifier = Modifier.height(24.dp).padding(horizontal = 8.dp),
-                    color = Color.LightGray.copy(0.5f)
-                )
+                        // Kichik Valyuta ostida
+                        Text(
+                            text = activeCurrency.uppercase(),
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.primary.copy(0.5f),
+                            letterSpacing = 1.sp,
+                            lineHeight = 11.sp
+                        )
+                    }
 
-                val amountDouble = state.display.toDoubleOrNull() ?: 0.0
-                Text(
-                    text = AmountFormat(amountDouble, state.display.contains(".")),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-                Text(
-                    activeCurrency,
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary.copy(0.4f)
-                )
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.calculator_ic),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .size(38.dp)
+                            .clickable {
+                            SoundManager.playClick()
+                            onAmountClick()
+                        }
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))

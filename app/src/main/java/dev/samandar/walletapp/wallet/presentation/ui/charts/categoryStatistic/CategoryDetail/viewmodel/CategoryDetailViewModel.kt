@@ -1,6 +1,8 @@
 package dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.CategoryDetail.viewmodel
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,38 +30,55 @@ class CategoryDetailViewModel @Inject constructor(
 
     private val _categoryParams = MutableStateFlow<Pair<String, TransactionType>?>(null)
 
-
     fun setCategoryParams(name: String, type: TransactionType) {
-        val decodedName = java.net.URLDecoder.decode(name, "UTF-8")
+        val decodedName = try {
+            java.net.URLDecoder.decode(name, "UTF-8")
+        } catch (e: Exception) { name }
 
-        if (_categoryParams.value?.first != decodedName) {
+        if (_categoryParams.value?.first != decodedName || _categoryParams.value?.second != type) {
             _categoryParams.value = decodedName to type
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     val detailUiState: StateFlow<CategoryDetailUiState> = combine(
         getAllTransactions(type = null),
         _selectedFilter,
         _categoryParams
-    ) { transactions, filter, params ->
+    ) { allTransactions, filter, params ->
         if (params == null) return@combine CategoryDetailUiState(isLoading = true)
 
         val (name, type) = params
-        val timeFiltered = DateFilterUtils.filterByTime(transactions, filter)
 
+        // 1. Tanlangan vaqt bo'yicha filtr (Joriy davr)
+        val timeFiltered = DateFilterUtils.filterByTime(allTransactions, filter)
         val filteredList = timeFiltered.filter {
             it.category?.name == name && it.type == type
-        }.sortedByDescending { it.date }
+        }
 
+        // 2. Umumiy summa
         val total = filteredList.sumOf { it.amount }
-        val avg = if (filteredList.isNotEmpty()) total / filteredList.size else 0.0
-        val max = filteredList.maxOfOrNull { it.amount } ?: 0.0
+
+        // 3. Eng ko'p xarajat/daromad bo'lgan kunni aniqlash (Peak Insight)
+        val transactionsByDate = filteredList.groupBy {
+            java.time.Instant.ofEpochMilli(it.date)
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDate()
+        }
+
+        // Har bir kunning umumiy summasini hisoblab, eng kattasini topamiz
+        val maxDayEntry = transactionsByDate.maxByOrNull { entry ->
+            entry.value.sumOf { it.amount }
+        }
+
+        val peakDate = maxDayEntry?.key
+        val peakAmount = maxDayEntry?.value?.sumOf { it.amount } ?: 0.0
 
         CategoryDetailUiState(
-            transactions = filteredList,
+            transactions = filteredList.sortedByDescending { it.date },
             totalAmount = total,
-            avgAmount = avg,
-            maxAmount = max,
+            peakDate = peakDate,
+            peakAmount = peakAmount,
             isLoading = false
         )
     }.stateIn(
@@ -73,11 +92,13 @@ class CategoryDetailViewModel @Inject constructor(
     }
 }
 
-// Detail uchun maxsus State
+/**
+ * UI State: Endi foiz o'rniga eng yuqori kun ma'lumotlari
+ */
 data class CategoryDetailUiState(
     val transactions: List<Transaction> = emptyList(),
     val totalAmount: Double = 0.0,
-    val avgAmount: Double = 0.0,
-    val maxAmount: Double = 0.0,
+    val peakAmount: Double = 0.0,
+    val peakDate: java.time.LocalDate? = null,
     val isLoading: Boolean = false,
 )

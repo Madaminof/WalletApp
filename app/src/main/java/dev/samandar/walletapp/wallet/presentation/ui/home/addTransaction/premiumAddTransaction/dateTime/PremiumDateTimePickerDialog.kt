@@ -13,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,59 +27,29 @@ import kotlin.math.abs
 @Composable
 fun PremiumDateTimePickerDialog(
     initialDateTime: Long,
-    maxDate: Long? = null,
     onConfirm: (Long) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val context = LocalContext.current
     val calendar = remember { Calendar.getInstance().apply { timeInMillis = initialDateTime } }
-    val maxCal = remember(maxDate) {
-        maxDate?.let { Calendar.getInstance().apply { timeInMillis = it } }
-    }
 
-    // --- State ---
     var selectedYear by remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
     var selectedMonth by remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
     var selectedDay by remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }
     var selectedHour by remember { mutableStateOf(calendar.get(Calendar.HOUR_OF_DAY)) }
     var selectedMinute by remember { mutableStateOf(calendar.get(Calendar.MINUTE)) }
 
-    // --- Dinamik Cheklovlar (Logic) ---
-    val years = remember(maxCal) {
-        val endYear = maxCal?.get(Calendar.YEAR) ?: (Calendar.getInstance().get(Calendar.YEAR) + 5)
-        (2020..endYear).toList()
-    }
-
-    val availableMonths = remember(selectedYear, maxCal) {
-        if (maxCal != null && selectedYear == maxCal.get(Calendar.YEAR)) {
-            (0..maxCal.get(Calendar.MONTH)).toList()
-        } else (0..11).toList()
-    }
-
-    val availableDays = remember(selectedYear, selectedMonth, maxCal) {
-        val tempCal = Calendar.getInstance().apply { set(selectedYear, selectedMonth, 1) }
-        val lastDay = tempCal.getActualMaximum(Calendar.DAY_OF_MONTH)
-
-        if (maxCal != null && selectedYear == maxCal.get(Calendar.YEAR) && selectedMonth == maxCal.get(Calendar.MONTH)) {
-            (1..maxCal.get(Calendar.DAY_OF_MONTH)).toList()
-        } else (1..lastDay).toList()
-    }
-
-    // --- Kelajak vaqtni tekshirish va tuzatish ---
-    LaunchedEffect(selectedYear, selectedMonth, selectedDay) {
-        // Agar yil o'zgarganda tanlangan oy mavjud bo'lmasa (masalan yil 2026, oy Dekabr bo'lsa-yu, biz 2024 ga o'tsak va u yerda cheklov bo'lsa)
-        if (selectedMonth !in availableMonths) {
-            selectedMonth = availableMonths.last()
-        }
-        if (selectedDay !in availableDays) {
-            selectedDay = availableDays.last()
-        }
+    val years = remember { (2020..2030).toList() }
+    val months = remember { (0..11).toList() }
+    val daysInMonth = remember(selectedMonth, selectedYear) {
+        Calendar.getInstance().apply { set(selectedYear, selectedMonth, 1) }.getActualMaximum(Calendar.DAY_OF_MONTH)
     }
 
     ZoomDialog(onDismiss = onDismiss) {
         Surface(
-            modifier = Modifier.width(320.dp).wrapContentHeight(),
-            shape = RoundedCornerShape(32.dp),
+            modifier = Modifier
+                .width(320.dp)
+                .wrapContentHeight(),
+            shape = RoundedCornerShape(20.dp),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             tonalElevation = 12.dp
         ) {
@@ -88,21 +57,23 @@ fun PremiumDateTimePickerDialog(
                 modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // --- Header (Sana va Vaqt ko'rinishi) ---
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column {
-                        val displayDate = Calendar.getInstance().apply { set(selectedYear, selectedMonth, selectedDay) }.time
                         Text(
-                            text = SimpleDateFormat("EEEE", Locale.getDefault()).format(displayDate),
+                            text = SimpleDateFormat("EEEE", Locale.getDefault()).format(
+                                Calendar.getInstance().apply { set(selectedYear, selectedMonth, selectedDay) }.time
+                            ),
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
                             color = MaterialTheme.colorScheme.primary
                         )
                         Text(
-                            text = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(displayDate),
+                            text = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(
+                                Calendar.getInstance().apply { set(selectedYear, selectedMonth, selectedDay) }.time
+                            ),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onTertiary.copy(0.5f)
                         )
@@ -122,16 +93,19 @@ fun PremiumDateTimePickerDialog(
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                // --- Picker Section ---
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(200.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    // Markazdagi tanlov chizig'i
                     Surface(
-                        modifier = Modifier.fillMaxWidth().height(52.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
                         color = MaterialTheme.colorScheme.primary.copy(0.1f),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.onTertiary.copy(0.05f))
                     ) {}
 
                     Row(
@@ -140,17 +114,15 @@ fun PremiumDateTimePickerDialog(
                     ) {
                         // KUN
                         WheelPicker(
-                            items = availableDays.map { String.format("%02d", it) },
-                            initialIndex = (availableDays.indexOf(selectedDay)).coerceAtLeast(0),
-                            onValueChange = { selectedDay = availableDays[it] }
+                            items = (1..daysInMonth).map { String.format("%02d", it) },
+                            initialIndex = selectedDay - 1,
+                            onValueChange = { selectedDay = it + 1 }
                         )
                         // OY
                         WheelPicker(
-                            items = availableMonths.map {
-                                SimpleDateFormat("MMM", Locale.getDefault()).format(Calendar.getInstance().apply { set(Calendar.MONTH, it) }.time)
-                            },
-                            initialIndex = (availableMonths.indexOf(selectedMonth)).coerceAtLeast(0),
-                            onValueChange = { selectedMonth = availableMonths[it] }
+                            items = months.map { SimpleDateFormat("MMM", Locale.getDefault()).format(Calendar.getInstance().apply { set(Calendar.MONTH, it) }.time) },
+                            initialIndex = selectedMonth,
+                            onValueChange = { selectedMonth = it }
                         )
                         // YIL
                         WheelPicker(
@@ -159,6 +131,7 @@ fun PremiumDateTimePickerDialog(
                             onValueChange = { selectedYear = years[it] }
                         )
 
+                        // Ajratuvchi chiziq (O'ta mayin)
                         Box(modifier = Modifier.width(1.dp).fillMaxHeight(0.5f).align(Alignment.CenterVertically).background(MaterialTheme.colorScheme.onTertiary.copy(0.2f)))
 
                         // SOAT
@@ -178,36 +151,33 @@ fun PremiumDateTimePickerDialog(
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                // --- Footer Buttons ---
+                // --- FOOTER BUTTONS ---
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     TextButton(
                         onClick = onDismiss,
-                        modifier = Modifier.weight(1f).height(54.dp)
+                        modifier = Modifier.weight(1f).height(54.dp),
+                        shape = RoundedCornerShape(16.dp)
                     ) {
-                        Text(stringResource(Strings.dialog_button_cancel), color = MaterialTheme.colorScheme.onTertiary.copy(0.4f))
+                        Text(stringResource(Strings.dialog_button_cancel), color = MaterialTheme.colorScheme.onTertiary.copy(0.4f), fontWeight = FontWeight.SemiBold)
                     }
 
                     Button(
                         onClick = {
                             val result = Calendar.getInstance().apply {
                                 set(selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute)
-                                set(Calendar.SECOND, 0)
-                                set(Calendar.MILLISECOND, 0)
                             }
-
-                            // Yakuniy beton tekshiruv
-                            val finalTime = if (maxDate != null && result.timeInMillis > maxDate) maxDate else result.timeInMillis
-
-                            onConfirm(finalTime)
+                            onConfirm(result.timeInMillis)
                             onDismiss()
                         },
                         modifier = Modifier.weight(1.5f).height(54.dp),
-                        shape = RoundedCornerShape(16.dp)
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
                     ) {
-                        Text(stringResource(Strings.dialog_button_save), fontWeight = FontWeight.Bold)
+                        Text(stringResource(Strings.dialog_button_save), fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     }
                 }
             }

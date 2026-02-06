@@ -285,6 +285,10 @@
     <string name="summary_balance_monthly">Баланс за месяц</string>
     <string name="summary_balance_yearly">Баланс за год</string>
     <string name="search_placeholder">Поиск…</string>
+    <string name="today">Сегодня</string>
+    <string name="yesterday">Вчера</string>
+    <string name="period_weekly">Еженедельно</string>
+
 
     //Reports Screen
     <string name="report_title_income">Доход</string>
@@ -534,6 +538,18 @@
     <string name="tax_receipt_required">Должен быть фискальный чек</string>
     <string name="fetching_data">Получение данных...</string>
     <string name="please_wait">Пожалуйста, подождите</string>
+    <string name="scan_receipt_ocr">Сканировать чек (OCR)</string>
+    <string name="select_source">Выберите источник изображения</string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="choose_gallery">Выбрать из галереи</string>
+    <string name="processing_image">Анализ изображения...</string>
+    <string name="unknown_merchant">Неизвестный магазин</string>
+    <string name="general_purchase">Общая покупка</string>
+    <string name="scanned_from_image">Отсканировано с изображения</string>
+    <string name="label_total_purchase">Общая покупка</string>
+    <string name="label_address">Адрес</string>
+    <string name="msg_saving">Сохранение...</string>
+    <string name="unknown_address">Адрес не определен</string>
 
 
 

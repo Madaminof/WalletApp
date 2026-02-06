@@ -293,6 +293,9 @@
     <string name="summary_balance_monthly">Monthly Balance</string>
     <string name="summary_balance_yearly">Yearly Balance</string>
     <string name="search_placeholder">Search…</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="period_weekly">Weekly</string>
 
 
 
@@ -545,6 +548,18 @@
     <string name="tax_receipt_required">Must be a tax receipt</string>
     <string name="fetching_data">Fetching data...</string>
     <string name="please_wait">Please wait</string>
+    <string name="scan_receipt_ocr">Scan Receipt (OCR)</string>
+    <string name="select_source">Select image source</string>
+    <string name="take_photo">Take a photo</string>
+    <string name="choose_gallery">Choose from gallery</string>
+    <string name="processing_image">Processing image...</string>
+    <string name="unknown_merchant">Unknown merchant</string>
+    <string name="general_purchase">General purchase</string>
+    <string name="scanned_from_image">Scanned from image</string>
+    <string name="label_total_purchase">Total Purchase</string>
+    <string name="label_address">Address</string>
+    <string name="msg_saving">Saving...</string>
+    <string name="unknown_address">Address not found</string>
 
 
 

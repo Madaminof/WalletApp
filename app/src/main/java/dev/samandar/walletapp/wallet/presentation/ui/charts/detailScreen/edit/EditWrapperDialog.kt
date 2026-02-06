@@ -28,7 +28,7 @@ fun EditWrapperDialog(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .wrapContentHeight(),
-            shape = RoundedCornerShape(28.dp),
+            shape = RoundedCornerShape(20.dp),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             tonalElevation = 6.dp,
             shadowElevation = 10.dp
@@ -40,7 +40,7 @@ fun EditWrapperDialog(
             ) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.headlineSmall.copy(
+                    style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
                     )

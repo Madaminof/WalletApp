@@ -25,9 +25,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -53,7 +56,7 @@ fun CategoryItem(
     val animatedScale by animateFloatAsState(
         targetValue = when {
             isPressed -> 0.85f
-            isSelected -> 1.08f
+            isSelected -> 1.1f
             else -> 1f
         },
         animationSpec = spring(
@@ -61,6 +64,8 @@ fun CategoryItem(
             stiffness = Spring.StiffnessLow
         ), label = "mainScale"
     )
+
+    val haptic = LocalHapticFeedback.current
 
 
     Column(
@@ -74,7 +79,10 @@ fun CategoryItem(
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = onSelect
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onSelect()
+                }
             )
             .padding(vertical = 6.dp)
     ) {
@@ -86,18 +94,18 @@ fun CategoryItem(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .blur(30.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
                         .graphicsLayer {
-                            alpha = 0.5f
-                            scaleX = 1.2f
-                            scaleY = 1.2f
+                            alpha = 0.4f
+                            scaleX = 1.3f
+                            scaleY = 1.3f
                         }
                         .background(
                             brush = androidx.compose.ui.graphics.Brush.radialGradient(
-                                colors = listOf(primaryColor.copy(alpha = 0.4f), Color.Transparent)
+                                colors = listOf(primaryColor, Color.Transparent)
                             ),
                             shape = CircleShape
                         )
-                        .blur(24.dp)
                 )
             }
 

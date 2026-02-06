@@ -284,11 +284,15 @@
     <string name="period_all">Barchasi</string>
     <string name="period_monthly">Oylik</string>
     <string name="period_yearly">Yillik</string>
+    <string name="period_weekly">Haftalik</string>
 
     <string name="summary_balance_all">Umumiy balans</string>
     <string name="summary_balance_monthly">Oylik balans</string>
     <string name="summary_balance_yearly">Yillik balans</string>
     <string name="search_placeholder">Qidirish…</string>
+
+    <string name="today">Bugun</string>
+    <string name="yesterday">Kecha</string>
 
     //Reports Screen
     <string name="report_title_income">Daromad</string>
@@ -544,6 +548,18 @@
     <string name="tax_receipt_required">Soliq cheki bo\'lishi shart</string>
     <string name="fetching_data">Ma\'lumotlar olinmoqda...</string>
     <string name="please_wait">Iltimos, kuting</string>
+    <string name="scan_receipt_ocr">Chekni skanerlash (OCR)</string>
+    <string name="select_source">Rasm manbasini tanlang</string>
+    <string name="take_photo">Kameradan rasmga olish</string>
+    <string name="choose_gallery">Galereyadan tanlash</string>
+    <string name="processing_image">Rasm tahlil qilinmoqda...</string>
+    <string name="unknown_merchant">Noma\'lum do\'kon</string>
+    <string name="general_purchase">Umumiy xarid</string>
+    <string name="scanned_from_image">Tasvirdan skanerlandi</string>
+    <string name="label_total_purchase">Umumiy xarid</string>
+    <string name="label_address">Manzil</string>
+    <string name="msg_saving">Saqlanmoqda...</string>
+    <string name="unknown_address">Manzil aniqlanmadi</string>
 
 
 

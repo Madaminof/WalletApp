@@ -110,7 +110,7 @@ fun TransactionMainCard(
                         text = categoryName.toString(),
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
+                            color = MaterialTheme.colorScheme.onTertiary.copy(0.9f)
                         ),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -175,7 +175,6 @@ fun TransactionMainCard(
             if (activeEditType == EditType.DATE) {
                 PremiumDateTimePickerDialog(
                     initialDateTime = transaction.date,
-                    maxDate = System.currentTimeMillis(),
                     onConfirm = { newTimestamp ->
                         onEdit(transaction.copy(date = newTimestamp))
                         activeEditType = EditType.NONE

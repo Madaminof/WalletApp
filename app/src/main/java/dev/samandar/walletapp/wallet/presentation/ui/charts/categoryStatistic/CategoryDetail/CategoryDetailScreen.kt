@@ -1,27 +1,13 @@
 package dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.CategoryDetail
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +18,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.navigation.Screen
+import dev.samandar.walletapp.ui.theme.expenseColor
+import dev.samandar.walletapp.ui.theme.incomeColor
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.domain.model.TransactionType
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.CategoryDetail.viewmodel.CategoryDetailViewModel
@@ -41,8 +29,13 @@ import dev.samandar.walletapp.wallet.presentation.ui.charts.historyTransactions.
 import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.CustomTopBar
 import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.TimeFilter
 import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.categoryColors
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
-
+@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CategoryDetailScreen(
     categoryName: String,
@@ -50,21 +43,24 @@ fun CategoryDetailScreen(
     viewModel: CategoryDetailViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-
     LaunchedEffect(categoryName, transactionType) {
         viewModel.setCategoryParams(categoryName, transactionType)
     }
+
     val uiState by viewModel.detailUiState.collectAsState()
     val selectedFilter by viewModel.selectedFilter.collectAsState()
-
     var isFilterMenuExpanded by remember { mutableStateOf(false) }
-    val accentColor = categoryColors[categoryName] ?: MaterialTheme.colorScheme.primary
+    val accentColor = if (transactionType == TransactionType.EXPENSE) expenseColor else incomeColor
 
-    val categoryTransactions = uiState.transactions
-    val totalAmount = uiState.totalAmount
-    val avgAmount = uiState.avgAmount
-    val maxAmount = uiState.maxAmount
+    val transactions = uiState.transactions
 
+    val groupedTransactions = remember(transactions) {
+        transactions.groupBy { tx ->
+            Instant.ofEpochMilli(tx.date) // sening modelingdagi Long date
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -76,12 +72,9 @@ fun CategoryDetailScreen(
                         FilterActionButton(
                             onClick = { isFilterMenuExpanded = true },
                             icon = R.drawable.filter_ic,
-                            modifier = Modifier
-                                .padding(end = 12.dp)
-                                .size(32.dp),
+                            modifier = Modifier.padding(end = 12.dp).size(32.dp),
                             bgColor = Color.Transparent,
-                            icColor = MaterialTheme.colorScheme.onTertiary.copy(0.5f)
-
+                            icColor = MaterialTheme.colorScheme.onTertiary.copy(0.6f)
                         )
                         UniversalFilterMenu(
                             isExpanded = isFilterMenuExpanded,
@@ -95,93 +88,113 @@ fun CategoryDetailScreen(
                 }
             )
         },
-
         containerColor = MaterialTheme.colorScheme.primaryContainer
     ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            contentPadding = PaddingValues(bottom = 32.dp)
+            modifier = Modifier.fillMaxSize().padding(paddingValues),
+            contentPadding = PaddingValues(bottom = 40.dp)
         ) {
             item {
-                CategoryAnalysisHeader(
-                    totalAmount = totalAmount,
-                    count = categoryTransactions.size,
-                    avgAmount = avgAmount,
-                    maxAmount = maxAmount,
-                    color = accentColor,
-                    transactionType = transactionType
+                CategoryHeroCard(
+                    totalAmount = uiState.totalAmount,
+                    periodLabel = when(selectedFilter) {
+                        TimeFilter.WEEKLY -> stringResource(Strings.period_weekly)
+                        TimeFilter.MONTHLY -> stringResource(Strings.period_monthly)
+                        TimeFilter.YEARLY -> stringResource(Strings.period_yearly)
+                        else -> stringResource(Strings.period_all)
+                    },
+                    count = transactions.size,
+                    transactionType = transactionType,
+                    peakAmount = uiState.peakAmount,
+                    peakDate = uiState.peakDate,
                 )
             }
 
             item {
-                Column(modifier = Modifier.padding(vertical = 12.dp)) {
+                Column(modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)) {
                     Text(
-                        text = if (transactionType == TransactionType.EXPENSE) stringResource(
-                            Strings.expense_dynamics
-                        ) else stringResource(Strings.income_dynamics),
+                        text = if (transactionType == TransactionType.EXPENSE)
+                            stringResource(Strings.expense_dynamics)
+                        else stringResource(Strings.income_dynamics),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Gray,
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+                        color = MaterialTheme.colorScheme.onTertiary.copy(0.5f),
+                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
                     )
 
                     PremiumNativeChart(
-                        transactions = categoryTransactions,
+                        transactions = transactions,
                         lineColor = accentColor,
-                        modifier = Modifier
+                        modifier = Modifier.fillMaxWidth().height(180.dp).padding(horizontal = 16.dp)
                     )
                 }
             }
 
-            item {
-                Text(
-                    text = stringResource(Strings.all_transactions),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Gray,
-                    modifier = Modifier
-                        .padding(top = 28.dp, bottom = 12.dp)
-                        .padding(horizontal = 20.dp)
-                )
-            }
+            if (transactions.isEmpty()) {
+                item { EmptyStatePlaceholder() }
+            } else {
+                // TreeMap bo'yicha saralangan sanalar (Yangi kundan eski kunga)
+                val sortedDates = groupedTransactions.keys.sortedDescending()
 
-            itemsIndexed(
-                items = categoryTransactions,
-                key = { _, tx -> tx.id }
-            ) { index, transaction ->
-                Surface(
-                    color = Color.Transparent,
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                ) {
-                    ExpenseTransactionItem(
-                        transaction = transaction,
-                        onItemClick = {navController.navigate("${Screen.detailTransaction.route}/${transaction.id}")},
-                        showDivider = index < categoryTransactions.size - 1
-                    )
-                }
+                sortedDates.forEach { date ->
+                    stickyHeader {
+                        TransactionDateHeader(date = date)
+                    }
 
-                if (index < categoryTransactions.lastIndex) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 24.dp),
-                        color = Color.White.copy(0.05f),
-                        thickness = 0.5.dp
-                    )
-                }
-            }
-            if (categoryTransactions.isEmpty()) {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(stringResource(Strings.no_data_found), color = Color.Gray)
+                    itemsIndexed(groupedTransactions[date] ?: emptyList()) { index, transaction ->
+                        Surface(
+                            color = Color.Transparent,
+                            modifier = Modifier.padding(horizontal = 12.dp)
+                        ) {
+                            ExpenseTransactionItem(
+                                transaction = transaction,
+                                onItemClick = {
+                                    navController.navigate("${Screen.detailTransaction.route}/${transaction.id}")
+                                },
+                                showDivider = index < (groupedTransactions[date]?.size ?: 0) - 1
+                            )
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun TransactionDateHeader(date: LocalDate) {
+    val today = LocalDate.now()
+    val label = when (date) {
+        today -> stringResource(Strings.today)
+        today.minusDays(1) -> stringResource(Strings.yesterday)
+        else -> date.format(DateTimeFormatter.ofPattern("d MMMM, yyyy"))
+    }
+
+    Surface(
+        color = MaterialTheme.colorScheme.primaryContainer,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.ExtraBold,
+            color = MaterialTheme.colorScheme.onTertiary.copy(0.5f),
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
+        )
+    }
+}
+
+@Composable
+fun EmptyStatePlaceholder() {
+    Box(
+        modifier = Modifier.fillMaxWidth().height(300.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(Strings.no_data_found),
+            color = Color.Gray,
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }

@@ -14,9 +14,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.permissions.*
-import dev.samandar.walletapp.wallet.smartScann.*
-import dev.samandar.walletapp.wallet.smartScann.scannScreen.ReceiptScannerScreen
-import dev.samandar.walletapp.wallet.smartScann.scanReviewScreen.ScanReviewScreen
+import dev.samandar.walletapp.wallet.smartScannQR.*
+import dev.samandar.walletapp.wallet.smartScannQR.scannScreen.ReceiptScannerScreen
+import dev.samandar.walletapp.wallet.smartScannQR.scanReviewScreen.ScanReviewScreen
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPermissionsApi::class)
 fun NavGraphBuilder.scannerGraph(navController: NavHostController) {
@@ -47,7 +47,18 @@ fun NavGraphBuilder.scannerGraph(navController: NavHostController) {
         val reviewViewModel: ReviewViewModel = hiltViewModel(context)
         val state by reviewViewModel.uiState.collectAsState()
         state.receipt?.let {
-            ScanReviewScreen(state = state, onConfirmed = { reviewViewModel.saveFinalReceipt { navController.navigate(Screen.Home.route) { popUpTo(Screen.Home.route) { inclusive = true } } } }, viewModel = reviewViewModel)
+            ScanReviewScreen(
+                state = state,
+                onConfirmed = {
+                    reviewViewModel.saveFinalReceipt {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Home.route) { inclusive = true }
+                        }
+                    }
+                },
+                viewModel = reviewViewModel,
+                onBack = {navController.popBackStack()}
+            )
         } ?: Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
     }
 }

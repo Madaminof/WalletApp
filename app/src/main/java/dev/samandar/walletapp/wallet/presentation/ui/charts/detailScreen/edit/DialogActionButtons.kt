@@ -40,7 +40,7 @@ fun DialogActionButtons(
             modifier = Modifier
                 .weight(1f)
                 .height(52.dp),
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.textButtonColors(
                 contentColor = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.3f)
             )
@@ -60,7 +60,7 @@ fun DialogActionButtons(
             modifier = Modifier
                 .weight(1.2f)
                 .height(52.dp),
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(20.dp),
             contentPadding = PaddingValues(horizontal = 8.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,

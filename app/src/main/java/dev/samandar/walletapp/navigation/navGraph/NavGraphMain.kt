@@ -78,7 +78,9 @@ fun NavGraphMain(
                     listState = listState,
                     onNavigate = { route ->
                         navController.navigate(route) {
-                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
                             launchSingleTop = true
                             restoreState = true
                         }

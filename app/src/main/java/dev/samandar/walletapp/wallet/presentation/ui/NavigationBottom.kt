@@ -38,7 +38,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun Navigation(
     navController: NavController,
-    totalBalanceCardViewModel: TotalBalanceCardViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
 
@@ -126,7 +125,6 @@ fun Navigation(
                     HomeScreen(
                         onActionClick = { route -> navController.navigate(route) },
                         navController = navController,
-                        totalBalanceCardViewModel = totalBalanceCardViewModel,
                         listState = listState
                     )
                 }

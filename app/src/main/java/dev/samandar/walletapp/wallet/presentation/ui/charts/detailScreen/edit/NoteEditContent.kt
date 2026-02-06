@@ -57,7 +57,7 @@ fun NoteEditContent(
                     }
                 }
             },
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MaterialTheme.colorScheme.primary.copy(0.3f),
                 unfocusedBorderColor = Color.Transparent,
@@ -69,16 +69,6 @@ fun NoteEditContent(
                 unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
             ),
             textStyle = MaterialTheme.typography.bodyLarge,
-            supportingText = {
-                Text(
-                    text = "${text.length}/$maxLength",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = if (text.length >= maxLength) MaterialTheme.colorScheme.error
-                    else MaterialTheme.colorScheme.onTertiary.copy(0.5f)
-                )
-            },
             maxLines = 6
         )
 

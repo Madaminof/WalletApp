@@ -71,7 +71,6 @@ fun AliveFab(
             modifier = Modifier.fillMaxSize().clickable(interactionSource, null) { onClick() },
             shape = CircleShape,
             color = color,
-            shadowElevation = 8.dp,
             border = BorderStroke(1.dp, Color.White.copy(0.2f))
         ) {
             Box(contentAlignment = Alignment.Center) {

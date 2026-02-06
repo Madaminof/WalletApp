@@ -57,7 +57,7 @@ val categoryIcons = mapOf(
     "Dividends" to R.drawable.dividends_ic2,
     "Bonus" to R.drawable.bonus_ic2,
     "Cashback" to R.drawable.cashback_ic2,
-    "Grants/Scholarship" to R.drawable.grants_ic2,
+    "Grants" to R.drawable.grants_ic2,
     "Gifts" to R.drawable.gifts_ic2,
     "Other Income" to R.drawable.other_ic2,
     )
@@ -127,7 +127,7 @@ val categoryColors = mapOf(
     "Dividends" to Color(0xFF1B9CFC),       // High Blue
     "Bonus" to Color(0xFFA38B2B),           // Bright Gold
     "Cashback" to Color(0xFF3481B1),        // Sky Blue
-    "Grants/Scholarship" to Color(0xFF5E3E74), // Royal Purple
+    "Grants" to Color(0xFF5E3E74), // Royal Purple
     "Gifts" to Color(0xFF419AAD),           // Neon Blue
     "Other Income" to Color(0xFF496DBF)      // Modern Blue
 )

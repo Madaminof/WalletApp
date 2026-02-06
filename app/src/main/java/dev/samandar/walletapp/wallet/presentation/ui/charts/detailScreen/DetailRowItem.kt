@@ -31,7 +31,7 @@ fun DetailRowItem(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = MaterialTheme.colorScheme.onTertiary.copy(0.7f),
+                color = MaterialTheme.colorScheme.onTertiary.copy(0.6f),
                 fontWeight = FontWeight.Normal
             ),
             fontSize = 13.sp
@@ -45,7 +45,7 @@ fun DetailRowItem(
                 text = value,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium,
-                    color = if (showArrow) MaterialTheme.colorScheme.onTertiary.copy(0.7f) else textColor
+                    color = if (showArrow) MaterialTheme.colorScheme.onTertiary.copy(0.9f) else textColor
                 ),
                 fontSize = 13.sp
             )
@@ -53,7 +53,7 @@ fun DetailRowItem(
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onTertiary.copy(0.5f),
+                    tint = MaterialTheme.colorScheme.onTertiary.copy(0.6f),
                     modifier = Modifier
                         .size(20.dp)
                         .padding(start = 4.dp)

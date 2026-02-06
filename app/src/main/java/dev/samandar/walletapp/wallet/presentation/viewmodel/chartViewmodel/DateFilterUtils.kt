@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.wallet.domain.model.Transaction
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.temporal.TemporalAdjusters
@@ -19,36 +20,39 @@ enum class TimeFilter(val titleResId: Int) {
 }
 
 object DateFilterUtils {
+
+    // 1. Joriy davr uchun filtr
+    @RequiresApi(Build.VERSION_CODES.O)
     fun filterByTime(transactions: List<Transaction>, filter: TimeFilter): List<Transaction> {
-        val now = Calendar.getInstance()
-        return transactions.filter { transaction ->
-            val txDate = Calendar.getInstance().apply {
-                // Agar date Long bo'lsa:
-                time = Date(transaction.date)
-                // Agar date Date obyekt bo'lsa, shunchaki: time = transaction.date
-            }
+        if (filter == TimeFilter.ALL) return transactions
+
+        val now = LocalDate.now()
+        return transactions.filter { tx ->
+            val txDate = Instant.ofEpochMilli(tx.date).atZone(ZoneId.systemDefault()).toLocalDate()
             when (filter) {
-                TimeFilter.DAILY -> isSameDay(txDate, now)
+                TimeFilter.DAILY -> txDate.isEqual(now)
                 TimeFilter.WEEKLY -> isSameWeek(txDate, now)
-                TimeFilter.MONTHLY -> isSameMonth(txDate, now)
-                TimeFilter.YEARLY -> isSameYear(txDate, now)
+                TimeFilter.MONTHLY -> txDate.year == now.year && txDate.month == now.month
+                TimeFilter.YEARLY -> txDate.year == now.year
                 TimeFilter.ALL -> true
             }
         }
     }
 
-    private fun isSameDay(c1: Calendar, c2: Calendar) =
-        c1[Calendar.YEAR] == c2[Calendar.YEAR] &&
-                c1[Calendar.DAY_OF_YEAR] == c2[Calendar.DAY_OF_YEAR]
+    // Yordamchi funksiyalar: Hafta hisob-kitobi
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun isSameWeek(date1: LocalDate, date2: LocalDate): Boolean {
+        // Bir xil yil va bir xil hafta ekanini tekshirish
+        val week1 = date1.get(java.time.temporal.IsoFields.WEEK_OF_WEEK_BASED_YEAR)
+        val year1 = date1.get(java.time.temporal.IsoFields.WEEK_BASED_YEAR)
+        val week2 = date2.get(java.time.temporal.IsoFields.WEEK_OF_WEEK_BASED_YEAR)
+        val year2 = date2.get(java.time.temporal.IsoFields.WEEK_BASED_YEAR)
+        return week1 == week2 && year1 == year2
+    }
 
-    private fun isSameWeek(c1: Calendar, c2: Calendar) =
-        c1[Calendar.YEAR] == c2[Calendar.YEAR] &&
-                c1[Calendar.WEEK_OF_YEAR] == c2[Calendar.WEEK_OF_YEAR]
-
-    private fun isSameMonth(c1: Calendar, c2: Calendar) =
-        c1[Calendar.YEAR] == c2[Calendar.YEAR] &&
-                c1[Calendar.MONTH] == c2[Calendar.MONTH]
-
-    private fun isSameYear(c1: Calendar, c2: Calendar) =
-        c1[Calendar.YEAR] == c2[Calendar.YEAR]
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun isSamePreviousWeek(date: LocalDate, now: LocalDate): Boolean {
+        val previousWeekDate = now.minusWeeks(1)
+        return isSameWeek(date, previousWeekDate)
+    }
 }

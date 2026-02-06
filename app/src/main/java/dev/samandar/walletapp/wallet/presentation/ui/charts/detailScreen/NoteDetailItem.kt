@@ -39,7 +39,7 @@ fun NoteDetailItem(
             text = label,
             modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = MaterialTheme.colorScheme.onTertiary.copy(0.7f),
+                color = MaterialTheme.colorScheme.onTertiary.copy(0.6f),
                 fontWeight = FontWeight.Normal
             )
         )
@@ -55,7 +55,7 @@ fun NoteDetailItem(
                 text = displayNote,
                 modifier = Modifier.weight(1f, fill = false),
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = if (isPlaceholder) MaterialTheme.colorScheme.onTertiary.copy(0.7f) else MaterialTheme.colorScheme.onTertiary.copy(0.7f),
+                    color = if (isPlaceholder) MaterialTheme.colorScheme.onTertiary.copy(0.9f) else MaterialTheme.colorScheme.onTertiary.copy(0.7f),
                     fontWeight = FontWeight.Normal,
                     fontStyle = FontStyle.Italic,
                     fontSize = 13.sp
@@ -70,7 +70,7 @@ fun NoteDetailItem(
             Icon(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = "Edit note",
-                tint = MaterialTheme.colorScheme.onTertiary.copy(0.5f),
+                tint = MaterialTheme.colorScheme.onTertiary.copy(0.6f),
                 modifier = Modifier
                     .size(20.dp)
                     .padding(start = 4.dp)
