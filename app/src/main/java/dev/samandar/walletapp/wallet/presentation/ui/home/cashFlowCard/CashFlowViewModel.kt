@@ -15,6 +15,9 @@ import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
 import android.content.Context
+import dev.samandar.walletapp.wallet.data.currencyManagerApi.repository.CurrencyRepository
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.changeUpdateAmount.CurrencyEvaluator
 
 data class CashFlowUiState(
     val periodLabel: String,
@@ -30,8 +33,12 @@ data class CashFlowUiState(
 @HiltViewModel
 class CashFlowViewModel @Inject constructor(
     private val getAllTransactions: GetAllTransactions,
+    private val currencyRepository: CurrencyRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
+
+    private val ratesFlow = currencyRepository.allRates
+    private val currentCurrencyFlow = CurrencyManager.getCurrencyFlow()
 
     private val transactionsFlow: Flow<List<Transaction>> = getAllTransactions(type = null)
 
@@ -44,37 +51,54 @@ class CashFlowViewModel @Inject constructor(
     private val _selectedFilter = MutableStateFlow(defaultFilter)
     private val _isFilterDialogOpen = MutableStateFlow(false)
 
-    private val initialPeriodLabel by lazy { calculatePeriodBounds(Calendar.getInstance(), defaultFilter).third }
-    private val _cardState = MutableStateFlow(
-        CashFlowUiState(
+
+    val cardState: StateFlow<CashFlowUiState> = combine(
+        getAllTransactions(type = null),
+        _currentPeriodStart,
+        _selectedFilter,
+        _isFilterDialogOpen,
+        ratesFlow,
+        currentCurrencyFlow
+    ) { array: Array<Any> ->  // Massiv ko'rinishida qabul qilamiz
+        val transactions = array[0] as List<Transaction>
+        val periodStart = array[1] as Long
+        val filter = array[2] as String
+        val isDialogOpen = array[3] as Boolean
+        val rates = array[4] as List<dev.samandar.walletapp.wallet.data.currencyManagerApi.entities.CurrencyRateEntity>
+        val currentCurrency = array[5] as String
+
+        // 1. Valyuta konvertatsiyasi
+        val convertedTransactions = transactions.map { transaction ->
+            val displayAmount = CurrencyEvaluator.convert(
+                amount = transaction.amount,
+                currentCurrency = currentCurrency,
+                rates = rates
+            )
+            transaction.copy(amount = displayAmount)
+        }
+
+        // 2. Hisob-kitob
+        processCashFlow(convertedTransactions, periodStart, filter, isDialogOpen)
+            .copy(isLoading = false)
+
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = CashFlowUiState(
             isLoading = true,
-            periodLabel = initialPeriodLabel,
+            periodLabel = calculatePeriodBounds(Calendar.getInstance(), defaultFilter).third,
             selectedFilter = defaultFilter
         )
     )
-    val cardState: StateFlow<CashFlowUiState> = _cardState.asStateFlow()
 
-    init {
-        combine(
-            transactionsFlow,
-            _currentPeriodStart,
-            _selectedFilter,
-            _isFilterDialogOpen
-        ) { transactions, periodStart, filter, isDialogOpen ->
-            processCashFlow(transactions, periodStart, filter, isDialogOpen)
-        }.onEach { newState ->
-            _cardState.value = newState.copy(isLoading = false)
-        }.launchIn(viewModelScope)
-    }
 
+/*
     fun onFilterClick() { _isFilterDialogOpen.value = true }
-
     fun onFilterDismiss() { _isFilterDialogOpen.value = false }
 
     fun onPeriodNavigate(forward: Boolean) {
         val filter = _selectedFilter.value
         if (filter == FilterKeys.ALL) return
-
         val newCal = Calendar.getInstance().apply { timeInMillis = _currentPeriodStart.value }
         val amount = if (forward) 1 else -1
 
@@ -85,13 +109,14 @@ class CashFlowViewModel @Inject constructor(
             FilterKeys.YEAR -> newCal.add(Calendar.YEAR, amount)
         }
         _currentPeriodStart.value = calculatePeriodBounds(newCal, filter).first
-    }
+    }*/
+
+
 
     fun onFilterChange(newFilterKey: String) {
         _selectedFilter.value = newFilterKey
         _currentPeriodStart.value = calculatePeriodBounds(Calendar.getInstance(), newFilterKey).first
     }
-
 
     private fun processCashFlow(
         allTransactions: List<Transaction>,
@@ -99,32 +124,23 @@ class CashFlowViewModel @Inject constructor(
         filter: String,
         isDialogOpen: Boolean
     ): CashFlowUiState {
-
         val (startTime, endTime, label) = calculatePeriodBounds(periodStart, filter)
+        val filteredTransactions = allTransactions.filter { it.date in startTime..endTime }
 
-        val filteredTransactions = allTransactions.filter {
-            it.date >= startTime && it.date <= endTime
-        }
-
-        val income = filteredTransactions
-            .filter { it.type == TransactionType.INCOME }
-            .sumOf { it.amount }
-
-        val expenses = filteredTransactions
-            .filter { it.type == TransactionType.EXPENSE }
-            .sumOf { it.amount }
-
-        val total = income - expenses
+        val income = filteredTransactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
+        val expenses = filteredTransactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
 
         return CashFlowUiState(
             periodLabel = label,
             income = income,
             expenses = expenses,
-            total = total,
+            total = income - expenses,
             isFilterDialogOpen = isDialogOpen,
             selectedFilter = filter
         )
     }
+
+
 
 
     private fun calculatePeriodBounds(calendar: Calendar, filter: String): Triple<Long, Long, String> {

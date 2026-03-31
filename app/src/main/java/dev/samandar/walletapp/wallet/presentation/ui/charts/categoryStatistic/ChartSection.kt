@@ -10,11 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.samandar.walletapp.R
+import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.helper.getSafeIconId
 import dev.samandar.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.CategoryData
 
@@ -45,12 +47,21 @@ fun CategoryStatItem(
                     .size(38.dp)
                     .background(
                         color = category.color.copy(alpha = 0.12f),
-                        shape = RoundedCornerShape(11.dp)
+                        shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
             ) {
+                val context = LocalContext.current
+                val safeIconId = remember(category.iconResId) {
+                    val id = category.iconResId ?: 0
+                    if (id > 0) {
+                        getSafeIconId(context, id)
+                    } else {
+                        R.drawable.card_default_icon // Default ikonka
+                    }
+                }
                 Icon(
-                    painter = painterResource(category.iconResId ?: R.drawable.card_default_icon),
+                    painter = painterResource(id = safeIconId),
                     contentDescription = null,
                     tint = category.color,
                     modifier = Modifier.size(20.dp)

@@ -3,6 +3,8 @@ package dev.samandar.walletapp.wallet.data.local
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import dev.samandar.walletapp.R
+import dev.samandar.walletapp.wallet.data.local.entity.account.AccountEntity
+import dev.samandar.walletapp.wallet.data.local.entity.account.AccountType
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,18 +15,61 @@ class WalletDatabaseCallback @Inject constructor() : RoomDatabase.Callback() {
     override fun onCreate(db: SupportSQLiteDatabase) {
         super.onCreate(db)
         db.beginTransaction()
+        val currentTime = System.currentTimeMillis()
+
         try {
             val defaultAccounts = listOf(
-                Triple("Cash", 0.0, "#009688") to R.drawable.cash_icon2,      // Zumrad yashil
-                Triple("Card", 0.0, "#2980B9") to R.drawable.card_default_icon // Premium ko'k
+                AccountEntity(
+                    id = "default_cash", // Aniq ID bergan yaxshi
+                    name = "Cash",
+                    type = AccountType.CASH,
+                    balance = 0.0,
+                    amountCurrencyKonverter = 0.0,
+                    currencyCode = "UZS",
+                    colorHex = "#009688",
+                    iconResId = R.drawable.cash_icon2,
+                    isDefault = true,
+                    createdAt = currentTime
+                ),
+                AccountEntity(
+                    id = "default_card",
+                    name = "Card",
+                    type = AccountType.CARD,
+                    balance = 0.0,
+                    amountCurrencyKonverter = 0.0,
+                    currencyCode = "UZS",
+                    colorHex = "#2980B9",
+                    iconResId = R.drawable.card_default_icon,
+                    isDefault = false,
+                    cardProvider = "UZCARD", // Default sifatida
+                    createdAt = currentTime
+                )
             )
 
-            defaultAccounts.forEach { (triple, icon) ->
-                val (name, balance, colorHex) = triple
-                val escapedName = name.replace("'", "''")
+            defaultAccounts.forEach { account ->
+                val escapedName = account.name.replace("'", "''")
+
                 db.execSQL(
-                    "INSERT INTO accounts (id, name, balance, colorHex, iconResId) " +
-                            "VALUES ('${UUID.randomUUID()}', '$escapedName', $balance, '$colorHex', $icon)"
+                    """
+        INSERT OR IGNORE INTO accounts (
+            id, name, type, balance, currencyCode, 
+            colorHex, iconResId, cardNumber, cardProvider, 
+            bankName, isDefault, createdAt
+        ) VALUES (
+            '${account.id}', 
+            '$escapedName', 
+            '${account.type.name}', 
+            ${account.balance}, 
+            '${account.currencyCode}', 
+            '${account.colorHex}', 
+            ${account.iconResId ?: "NULL"}, 
+            ${account.cardNumber?.let { "'$it'" } ?: "NULL"}, 
+            ${account.cardProvider?.let { "'$it'" } ?: "NULL"}, 
+            ${account.bankName?.let { "'$it'" } ?: "NULL"}, 
+            ${if (account.isDefault) 1 else 0}, 
+            ${account.createdAt}
+        )
+        """.trimIndent()
                 )
             }
 

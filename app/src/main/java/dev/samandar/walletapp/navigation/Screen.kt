@@ -12,7 +12,11 @@ sealed class Screen(val route: String) {
     object Budgets : Screen("budgets")
     object ShoppingLists : Screen("shopping_lists")
     object Goals : Screen("goals")
-    object ExpenseList: Screen("expense_list")
+
+    object ExpenseList : Screen("expense_list") {
+        // Slash (/) emas, so'roq belgisi (?) ishlatamiz
+        fun createRoute(accountId: String) = "expense_list?accountId=$accountId"
+    }
     object DebtsScreen: Screen("debts_screen")
     object SettingScreen: Screen("settings")
     object CategoryStatisticsScreen: Screen("categoryStatistic")
@@ -46,4 +50,12 @@ sealed class Screen(val route: String) {
 
     object Onboarding:Screen("onBoarding")
 
+    object SplitBill : Screen("split_bill_screen") {
+        // Navigatsiya qilishda ishlatish uchun yordamchi funksiya
+        fun createRoute(billId: String? = null): String {
+            return if (billId != null) "split_bill_screen?billId=$billId"
+            else "split_bill_screen"
+        }
+    }
+    object SplitBillList : Screen("split_bill_list")
 }

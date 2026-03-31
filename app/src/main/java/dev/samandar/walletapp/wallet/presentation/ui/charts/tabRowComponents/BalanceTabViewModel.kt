@@ -3,7 +3,7 @@ package dev.samandar.walletapp.wallet.presentation.ui.charts.tabRowComponents
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.samandar.walletapp.R
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.domain.model.account.Account
 import dev.samandar.walletapp.wallet.domain.model.Transaction
 import dev.samandar.walletapp.wallet.domain.model.TransactionType
 import dev.samandar.walletapp.wallet.domain.usecase.account.GetAllAccounts
@@ -175,7 +175,7 @@ class BalanceTabViewModel @Inject constructor(
             )
         }
 
-        val initialBalance = accounts.sumOf { it.initialBalance }
+        val initialBalance = accounts.sumOf { it.balance }
         val sortedTransactions = transactions.sortedBy { it.date }
 
         var startBalance = initialBalance

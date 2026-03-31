@@ -48,4 +48,17 @@ class BudgetRepositoryImpl @Inject constructor(
         return budjetTransactionDao.getSumOfExpensesForBudget(categoryId, startDate, endDate)
             .map { sum -> sum.orZero }
     }
+
+
+
+    override suspend fun getAllBudgetsOnce(): List<Budget> {
+        return budgetDao.getAllBudgetsWithCategoryOnce().mapNotNull { it.toDomain() }
+    }
+
+    override suspend fun updateBudgets(budgets: List<Budget>): Result<Unit> {
+        return runCatching {
+            val entities = budgets.map { it.toEntity() }
+            budgetDao.updateBudgets(entities)
+        }
+    }
 }

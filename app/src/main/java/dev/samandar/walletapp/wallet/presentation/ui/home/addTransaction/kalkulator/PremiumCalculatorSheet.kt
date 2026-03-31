@@ -121,7 +121,7 @@ fun PremiumCalculatorSheet(
                                 .weight(1f)
                                 .aspectRatio(if (label == "DONE_ICON") 1.2f else 1.3f),
                             onClick = {
-                                SoundManager.playClick()
+                                /*SoundManager.playClick()*/
                                 haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
 
                                 when (label) {

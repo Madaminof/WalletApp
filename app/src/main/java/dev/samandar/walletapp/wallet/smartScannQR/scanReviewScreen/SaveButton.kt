@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,18 +44,19 @@ fun BottomActionArea(
     onConfirmed: () -> Unit,
 ) {
     val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
+    val backgroundColor = MaterialTheme.colorScheme.primaryContainer
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .background(
                 brush = Brush.verticalGradient(
                     0.0f to Color.Transparent,
-                    0.3f to MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f),
-                    1.0f to MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.98f)
+                    0.2f to backgroundColor.copy(alpha = 0.5f),
+                    0.4f to backgroundColor,
+                    1.0f to backgroundColor
                 )
             )
-            .padding(horizontal = 24.dp)
-            .padding(top = 32.dp, bottom = 20.dp)
     ) {
         Button(
             onClick = {
@@ -63,59 +65,61 @@ fun BottomActionArea(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .padding(horizontal = 24.dp)
+                .padding(top = 48.dp)
+                .navigationBarsPadding()
+                .padding(bottom = 12.dp)
+                .height(56.dp)
                 .graphicsLayer {
-                    shadowElevation = 24f
-                    shape = RoundedCornerShape(20.dp)
+                    shadowElevation = if (enabled && !isSaving) 12f else 0f
+                    shape = RoundedCornerShape(16.dp)
                     clip = true
                 },
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(16.dp),
             enabled = !isSaving && enabled,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = Color.White,
-                disabledContainerColor = Color.Gray.copy(alpha = 0.2f)
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+            ),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 4.dp,
+                pressedElevation = 8.dp
             )
         ) {
             AnimatedContent(
                 targetState = isSaving,
                 transitionSpec = {
-                    (fadeIn(animationSpec = tween(250)) + scaleIn(initialScale = 0.9f))
-                        .togetherWith(fadeOut(animationSpec = tween(100)))
+                    (fadeIn(animationSpec = tween(200)) + scaleIn(initialScale = 0.85f))
+                        .togetherWith(fadeOut(animationSpec = tween(150)))
                 },
                 label = "SaveButtonAnimation"
             ) { saving ->
-                if (saving) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    if (saving) {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            color = Color.Gray,
-                            strokeWidth = 2.5.dp
+                            modifier = Modifier.size(22.dp),
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            strokeWidth = 3.dp
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = stringResource(Strings.msg_saving),
-                            style = MaterialTheme.typography.titleSmall.copy(
-                                fontWeight = FontWeight.SemiBold,
-                                letterSpacing = 0.5.sp,
-                                color = MaterialTheme.colorScheme.onTertiary.copy(0.5f)
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 0.5.sp
                             )
                         )
-                    }
-                } else {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
+                    } else {
                         Text(
                             text = stringResource(Strings.btn_save).uppercase(),
                             style = MaterialTheme.typography.titleMedium.copy(
-                                fontWeight = FontWeight.Black,
-                                letterSpacing = 2.sp,
-                                color = Color.White
+                                fontWeight = FontWeight.ExtraBold,
+                                letterSpacing = 1.5.sp
                             )
                         )
                     }

@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
@@ -130,11 +131,13 @@ fun AppleTextField(
     label: String,
     placeholder: String,
     isError: Boolean = false,
+    enabled: Boolean = true, // 👈 Yangi parametr
     errorText: String? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingText: String? = null,
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    val alpha = if (enabled) 1f else 0.5f
+    Column(modifier = Modifier.fillMaxWidth().alpha(alpha)) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelMedium.copy(
@@ -152,6 +155,7 @@ fun AppleTextField(
             },
             singleLine = true,
             isError = isError,
+            enabled = enabled,
             keyboardOptions = keyboardOptions,
             modifier = Modifier
                 .fillMaxWidth()
@@ -164,9 +168,12 @@ fun AppleTextField(
 
                 focusedContainerColor = MaterialTheme.colorScheme.onTertiary.copy(0.05f),
                 unfocusedContainerColor = MaterialTheme.colorScheme.onTertiary.copy(0.03f),
-                errorContainerColor = MaterialTheme.colorScheme.error.copy(0.08f),
+                errorContainerColor =  MaterialTheme.colorScheme.onTertiary.copy(0.03f),
                 focusedTextColor = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
                 unfocusedTextColor = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+
+
+                disabledTextColor = MaterialTheme.colorScheme.onTertiary.copy(0.8f), // 👈 Bloklanganda ham o'z rangi qolsin
 
                 cursorColor = MaterialTheme.colorScheme.primary
             ),

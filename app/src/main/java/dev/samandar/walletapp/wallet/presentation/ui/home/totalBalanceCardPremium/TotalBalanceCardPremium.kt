@@ -23,6 +23,7 @@ import kotlin.math.absoluteValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.FilterActionButton
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.EmptyChartView
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard.PeriodNavigationButton
@@ -37,7 +38,7 @@ fun TotalBalanceCardPremium(
     viewModel: TotalBalanceViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-    val state by viewModel.cardState.collectAsState()
+    val state by viewModel.cardState.collectAsStateWithLifecycle()
     var isMenuExpanded by remember { mutableStateOf(false) }
 
     val balanceColor = if (state.netBalance >= 0) incomeColor else expenseColor

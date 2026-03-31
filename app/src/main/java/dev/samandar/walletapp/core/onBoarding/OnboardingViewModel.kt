@@ -13,10 +13,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import android.content.Context
-import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 
-enum class OnboardingStep { LANGUAGE, CURRENCY, PAGER }
+// Currency qadami butunlay olib tashlandi yoki izohga olindi
+enum class OnboardingStep { LANGUAGE, PAGER }
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
@@ -40,15 +39,17 @@ class OnboardingViewModel @Inject constructor(
             val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(langCode)
             AppCompatDelegate.setApplicationLocales(appLocale)
 
-            currentStep = OnboardingStep.CURRENCY
+            // Til tanlangandan keyin to'g'ridan-to'g'ri Pager-ga o'tamiz
+            currentStep = OnboardingStep.PAGER
         }
     }
 
+    /* Kelajak uchun: Valyuta tanlash qadami
     fun onCurrencySelected(context: Context, currencyCode: String) {
         CurrencyManager.saveCurrency(context, currencyCode)
-
         currentStep = OnboardingStep.PAGER
     }
+    */
 
     fun completeOnboarding(onFinish: () -> Unit) {
         viewModelScope.launch {
@@ -57,12 +58,10 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-
-    // OnboardingViewModel ichida
+    // Orqaga qaytish mantiqini ham yangi qadamlarga moslab qo'yamiz
     fun navigateBack() {
         currentStep = when (currentStep) {
-            OnboardingStep.CURRENCY -> OnboardingStep.LANGUAGE
-            OnboardingStep.PAGER -> OnboardingStep.CURRENCY
+            OnboardingStep.PAGER -> OnboardingStep.LANGUAGE
             else -> OnboardingStep.LANGUAGE
         }
     }

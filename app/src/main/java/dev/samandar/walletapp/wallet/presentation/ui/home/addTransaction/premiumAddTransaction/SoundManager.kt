@@ -22,13 +22,13 @@ object SoundManager {
                 .build()
 
             // Ovozni yuklash
-            clickSoundId = soundPool?.load(context, R.raw.click_sound4, 1) ?: -1
+            clickSoundId = soundPool?.load(context, R.raw.button_sound, 1) ?: -1
         }
     }
 
     // Ovozni ijro etish funksiyasi
     fun playClick() {
-        soundPool?.play(clickSoundId, 0.07f, 0.07f, 1, 0, 2f)
+        soundPool?.play(clickSoundId, 0.07f, 0.07f, 1, 0, 1.8f)
     }
 
     // Xotirani bo'shatish

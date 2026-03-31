@@ -20,10 +20,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.samandar.walletapp.wallet.domain.model.Category
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
+import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.helper.getSafeIconId
 
 
 @Composable
@@ -78,16 +81,25 @@ fun OptimalCategoryGridItem(
             contentAlignment = Alignment.Center
         ) {
             val iconSize = 20.dp
-            if (category.iconResId != null && category.iconResId != 0) {
+            val context = LocalContext.current
+            val safeIconId = remember(category.iconResId) {
+                val id = category.iconResId ?: 0
+                if (id != 0) {
+                    getSafeIconId(context, id)
+                } else {
+                    0
+                }
+            }
+            if (safeIconId != 0) {
                 Icon(
-                    painter = painterResource(id = category.iconResId),
+                    painter = painterResource(id = safeIconId),
                     contentDescription = category.name,
                     tint = customCategoryColor,
                     modifier = Modifier.size(iconSize)
                 )
             } else {
                 Icon(
-                    Icons.Default.Category,
+                    imageVector = Icons.Default.Category,
                     contentDescription = category.name,
                     tint = customCategoryColor,
                     modifier = Modifier.size(iconSize)

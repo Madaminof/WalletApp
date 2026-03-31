@@ -32,6 +32,7 @@ import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premium
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.snackbar.MySnackbarVisuals
 import dev.samandar.walletapp.wallet.presentation.ui.features.debts.DebtEvent
 import dev.samandar.walletapp.wallet.presentation.ui.features.debts.DebtsViewModel
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 import dev.samandar.walletapp.wallet.presentation.ui.topbars.addTopbar.AddTopBar
 
 
@@ -72,6 +73,7 @@ fun AddEditDebtScreen(
             }
         }
     }
+    val activeCurrency by CurrencyManager.currentCurrency
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -91,7 +93,8 @@ fun AddEditDebtScreen(
                             onSuccess = {
                                 navController.popBackStack()
                             },
-                            description = ""
+                            description = "",
+                            inputCurrency = activeCurrency
                         )
                     }
                 )

@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.navigation.Screen
@@ -46,8 +47,7 @@ fun CategoryDetailScreen(
     LaunchedEffect(categoryName, transactionType) {
         viewModel.setCategoryParams(categoryName, transactionType)
     }
-
-    val uiState by viewModel.detailUiState.collectAsState()
+    val uiState by viewModel.detailUiState.collectAsStateWithLifecycle()
     val selectedFilter by viewModel.selectedFilter.collectAsState()
     var isFilterMenuExpanded by remember { mutableStateOf(false) }
     val accentColor = if (transactionType == TransactionType.EXPENSE) expenseColor else incomeColor

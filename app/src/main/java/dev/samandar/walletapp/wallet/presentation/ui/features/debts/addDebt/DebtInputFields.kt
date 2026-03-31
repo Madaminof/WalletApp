@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -50,7 +51,7 @@ fun DebtInputFields(
             modifier = Modifier.fillMaxWidth(),
             colors = debtTextFieldColors(accentColor),
             leadingIcon = {
-                Icon(Icons.Default.Person, null, tint = accentColor, modifier = Modifier.size(22.dp))
+                Icon(painter = painterResource(R.drawable.person_ic), null, tint = accentColor, modifier = Modifier.size(22.dp))
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
@@ -86,7 +87,7 @@ fun DebtInputFields(
             ),
             leadingIcon = {
                 Icon(
-                    Icons.Default.AttachMoney,
+                    painter = painterResource(R.drawable.cash_ic1),
                     null,
                     tint = accentColor,
                     modifier = Modifier.size(24.dp)

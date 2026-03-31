@@ -1,6 +1,7 @@
 package dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.note
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.samandar.walletapp.ui.theme.defaultColor
 import dev.samandar.walletapp.utils.Strings
 
 @Composable
@@ -27,40 +29,61 @@ fun NoteSelectionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val noteShape = RoundedCornerShape(
+        topStart = 14.dp,
+        topEnd = 14.dp,
+        bottomEnd = 14.dp,
+        bottomStart = 14.dp // Mana bu burchak vizual urg'u beradi
+    )
     Surface(
         onClick = onClick,
-        modifier = modifier
-            .padding(horizontal = 20.dp),
-        shape = CircleShape,
-        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f),
+        modifier = modifier,
+        shape = noteShape,
+        color = defaultColor.copy(0.05f),
         border = BorderStroke(
-            width = 0.5.dp,
-            color = Color.White.copy(alpha = 0.1f)
+            width = 1.dp,
+            color = defaultColor.copy(0.08f)
         )
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 14.dp, vertical = 6.dp),
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Start
         ) {
-            Icon(
-                imageVector = Icons.Default.Edit,
-                contentDescription = null,
-                modifier = Modifier.size(14.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
             Spacer(Modifier.width(8.dp))
+
             Text(
                 text = note.ifEmpty { stringResource(Strings.add_note_label) },
-                style = MaterialTheme.typography.labelMedium.copy(
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontStyle = FontStyle.Normal
+                style = MaterialTheme.typography.labelLarge.copy(
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onTertiary.copy(0.6f),
+                color = if (note.isEmpty())
+                    MaterialTheme.colorScheme.onTertiary.copy(0.4f)
+                else MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+                modifier = Modifier.weight(1f)
             )
         }
     }

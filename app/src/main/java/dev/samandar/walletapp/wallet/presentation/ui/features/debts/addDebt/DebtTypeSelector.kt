@@ -1,5 +1,6 @@
 package dev.samandar.walletapp.wallet.presentation.ui.features.debts.addDebt
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import dev.samandar.walletapp.R
 
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun DebtTypeSelector(
     selectedType: DebtType,

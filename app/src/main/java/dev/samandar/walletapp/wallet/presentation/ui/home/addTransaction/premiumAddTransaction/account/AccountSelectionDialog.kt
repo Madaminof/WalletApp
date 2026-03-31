@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,11 +27,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
+import androidx.navigation.NavController
 import dev.samandar.walletapp.R
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.navigation.Screen
+import dev.samandar.walletapp.ui.theme.defaultColor
+import dev.samandar.walletapp.ui.theme.expenseColor
+import dev.samandar.walletapp.wallet.domain.model.account.Account
+import dev.samandar.walletapp.wallet.presentation.ui.account.accountScreen.getCurrencySymbol
+import dev.samandar.walletapp.wallet.presentation.ui.account.addAccount.SelectAccountTypeBottomSheet
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.SoundManager
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
 import dev.samandar.walletapp.wallet.presentation.utils.FormatAmount
+import dev.samandar.walletapp.wallet.presentation.utils.FormatAmountAccount
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,6 +46,7 @@ fun AccountSelectionDialog(
     accounts: List<Account>,
     selectedAccountId: String?,
     onAccountSelect: (Account) -> Unit,
+    navController: NavController,
     onDismiss: () -> Unit
 ) {
     val haptic = LocalHapticFeedback.current
@@ -46,11 +55,13 @@ fun AccountSelectionDialog(
         skipPartiallyExpanded = true,
         confirmValueChange = { true }
     )
+    var showTypeSelectionSheet by remember { mutableStateOf(false) }
+
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        dragHandle = { BottomSheetDefaults.DragHandle(color = MaterialTheme.colorScheme.onTertiary.copy(0.1f)) },
+        dragHandle = { BottomSheetDefaults.DragHandle(color = defaultColor.copy(0.5f)) },
         containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
         tonalElevation = 0.dp,
@@ -60,20 +71,47 @@ fun AccountSelectionDialog(
                 .fillMaxWidth()
                 .padding(bottom = 20.dp)
         ) {
-            Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 6.dp)) {
-                Text(
-                    text = stringResource(R.string.title_select_wallet),
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.Black,
-                        letterSpacing = (-1).sp
-                    ),
-                    color = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
-                )
-                Text(
-                    text = stringResource(R.string.subtitle_select_wallet),
-                    fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.onTertiary.copy(0.4f)
-                )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 6.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Chap tomondagi matnlar
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.title_select_wallet),
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.Black,
+                            letterSpacing = (-1).sp
+                        ),
+                        color = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
+                    )
+                    Text(
+                        text = stringResource(R.string.subtitle_select_wallet),
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colorScheme.onTertiary.copy(0.4f)
+                    )
+                }
+                Surface(
+                    onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        showTypeSelectionSheet = true
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f),
+                    modifier = Modifier.size(42.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = Icons.Rounded.Add, // Import: androidx.compose.material.icons.rounded.Add
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onTertiary.copy(0.8f),
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
             }
 
             LazyColumn(
@@ -95,6 +133,15 @@ fun AccountSelectionDialog(
                 }
             }
         }
+        if (showTypeSelectionSheet) {
+            SelectAccountTypeBottomSheet(
+                onTypeSelected = { type ->
+                    showTypeSelectionSheet = false
+                    navController.navigate("${Screen.addAccound.route}/${type.name}")
+                },
+                onDismiss = { showTypeSelectionSheet = false }
+            )
+        }
     }
 }
 
@@ -103,11 +150,17 @@ private fun AccountPremiumItem(
     acc: Account,
     index: Int,
     isSelected: Boolean,
-    onSelect: (Account) -> Unit
+    onSelect: (Account) -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val accountName = getTranslatedName(acc.name)
+
+
+    val amountColor =
+        if (acc.balance < 0) expenseColor else MaterialTheme.colorScheme.onTertiary.copy(
+            0.6f
+        )
 
 
     val animatedAlpha = animateFloatAsState(
@@ -128,15 +181,15 @@ private fun AccountPremiumItem(
 
     Surface(
         onClick = {
-            SoundManager.playClick()
+           /* SoundManager.playClick()*/
             onSelect(acc)
         },
         interactionSource = interactionSource,
         shape = RoundedCornerShape(20.dp),
-        color = if (isSelected) accColor.copy(alpha = 0.08f) else MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.02f),
+        color = if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(0.8f) else MaterialTheme.colorScheme.primaryContainer.copy(0.8f),
         border = BorderStroke(
-            width = 0.5.dp,
-            color = if (isSelected) accColor.copy(0.3f) else MaterialTheme.colorScheme.onTertiary.copy(0.05f)
+            width = 1.dp,
+            color = if (isSelected) accColor.copy(0.8f) else Color.Transparent
         ),
         modifier = Modifier
             .fillMaxWidth()
@@ -154,14 +207,14 @@ private fun AccountPremiumItem(
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(accColor.copy(alpha = 0.15f), CircleShape),
+                    .background(accColor.copy(alpha = 0.1f), RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(id = acc.iconResId ?: R.drawable.ic_card_default),
                     contentDescription = null,
                     tint = accColor,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(26.dp)
                 )
             }
 
@@ -175,9 +228,9 @@ private fun AccountPremiumItem(
                     fontSize = 14.sp
                 )
                 Text(
-                    text = FormatAmount(acc.initialBalance),
+                    text = "${FormatAmountAccount(acc.balance)} ${getCurrencySymbol(acc.currencyCode)}",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onTertiary.copy(0.4f),
+                    color = amountColor,
                     fontSize = 10.sp
                 )
             }
@@ -192,4 +245,5 @@ private fun AccountPremiumItem(
             }
         }
     }
+
 }

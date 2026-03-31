@@ -1,7 +1,6 @@
 package dev.samandar.walletapp.wallet.presentation.ui.drawableMenu
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,8 +16,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.navigation.Screen
-import dev.samandar.walletapp.ui.theme.CurrencyRates
 import dev.samandar.walletapp.ui.theme.Home
 import dev.samandar.walletapp.ui.theme.Records
 import dev.samandar.walletapp.ui.theme.Settings
@@ -45,8 +41,8 @@ import dev.samandar.walletapp.ui.theme.Statistics
 import dev.samandar.walletapp.ui.theme.budjets
 import dev.samandar.walletapp.ui.theme.debts
 import dev.samandar.walletapp.ui.theme.shoppingList
+import dev.samandar.walletapp.ui.theme.splitBill
 import dev.samandar.walletapp.utils.Strings
-import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencySelectionDialog
 
 
 data class NavItem(
@@ -54,7 +50,7 @@ data class NavItem(
     val labelRes: Int,
     val color: Color,
     val route: String? = null,
-    val isDialog: Boolean = false
+    val isDialog: Boolean = false,
 )
 
 @Composable
@@ -69,17 +65,48 @@ fun DrawerBody(
     val menuGroups = remember {
         listOf(
             listOf(
-                NavItem(R.drawable.home_icon, Strings.drawer_menu_title_home, Home, Screen.Home.route),
-                NavItem(R.drawable.account_icon, Strings.title_account, Records, Screen.Wallet.route),
-                NavItem(R.drawable.statistic_icon, Strings.title_statistics, Statistics, Screen.CategoryStatisticsScreen.route)
+                NavItem(
+                    R.drawable.home_icon,
+                    Strings.drawer_menu_title_home,
+                    Home,
+                    Screen.Home.route
+                ),
+                NavItem(
+                    R.drawable.account_icon,
+                    Strings.title_account,
+                    Records,
+                    Screen.Wallet.route
+                ),
+                NavItem(
+                    R.drawable.statistic_icon,
+                    Strings.title_statistics,
+                    Statistics,
+                    Screen.CategoryStatisticsScreen.route
+                )
             ),
             listOf(
                 NavItem(R.drawable.budget_ic, Strings.title_budgets, budjets, Screen.Budgets.route),
-                NavItem(R.drawable.shopp_list_ic, Strings.title_shopping_lists, shoppingList, Screen.ShoppingLists.route),
+                NavItem(
+                    R.drawable.shopp_list_ic,
+                    Strings.title_shopping_lists,
+                    shoppingList,
+                    Screen.ShoppingLists.route
+                ),
+                NavItem(
+                    R.drawable.splitt_bill_ic,
+                    Strings.quick_split_bill,
+                    splitBill,
+                    Screen.SplitBillList.route
+                ),
                 NavItem(R.drawable.debt_ic2, Strings.title_debts, debts, Screen.DebtsScreen.route),
             ),
             listOf(
-                NavItem(R.drawable.setting_icon, Strings.title_settings, Settings, Screen.SettingScreen.route)
+                NavItem(
+                    R.drawable.setting_icon,
+                    Strings.title_settings,
+                    Settings,
+                    Screen.SettingScreen.route
+                )
             )
         )
     }
@@ -94,7 +121,9 @@ fun DrawerBody(
         DrawerHeader() // Header endi Column ichida
 
         menuGroups.forEachIndexed { index, group ->
-            Column(modifier = Modifier.padding(horizontal = 16.dp).padding(top = 4.dp)) {
+            Column(modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .padding(top = 4.dp)) {
                 group.forEach { item ->
                     val isSelected = currentRoute == item.route
                     val isLocked = item.labelRes == Strings.title_currency_rates // Locked logikasi
@@ -132,7 +161,7 @@ fun DrawerMenuItem(
     item: NavItem,
     isSelected: Boolean,
     isLocked: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Surface(
         onClick = onClick,
@@ -152,7 +181,9 @@ fun DrawerMenuItem(
                 painter = painterResource(item.icon),
                 contentDescription = null,
                 tint = if (isSelected) MaterialTheme.colorScheme.primary else item.color,
-                modifier = Modifier.size(26.dp).alpha(if (isLocked) 0.4f else 1f)
+                modifier = Modifier
+                    .size(26.dp)
+                    .alpha(if (isLocked) 0.4f else 1f)
             )
 
             Spacer(Modifier.width(16.dp))

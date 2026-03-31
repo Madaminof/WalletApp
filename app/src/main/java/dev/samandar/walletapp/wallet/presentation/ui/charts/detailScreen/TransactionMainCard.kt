@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.ui.theme.expenseColor
 import dev.samandar.walletapp.ui.theme.incomeColor
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.domain.model.account.Account
 import dev.samandar.walletapp.wallet.domain.model.Category
 import dev.samandar.walletapp.wallet.domain.model.Transaction
 import dev.samandar.walletapp.wallet.domain.model.TransactionType

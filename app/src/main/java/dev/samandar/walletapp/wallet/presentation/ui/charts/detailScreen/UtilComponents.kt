@@ -11,26 +11,40 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.wallet.domain.model.Transaction
+import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.helper.getSafeIconId
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
 @Composable
 fun IconBox(iconRes: Int?, color: Color) {
+    val context = LocalContext.current
+
+    // 1. Kelgan ID ni xavfsiz holatga keltiramiz
+    val safeIconId = remember(iconRes) {
+        val id = iconRes ?: 0
+        if (id > 0) {
+            getSafeIconId(context, id)
+        } else {
+            R.drawable.default_category // Agar bazada ID bo'lmasa default
+        }
+    }
     Surface(
         modifier = Modifier.size(48.dp),
         shape = RoundedCornerShape(12.dp),
         color = color.copy(0.1f)
     ) {
         Icon(
-            painter = painterResource(id = iconRes ?: R.drawable.ic_wallet_2),
+            painter = painterResource(id = safeIconId),
             contentDescription = null,
             tint = color,
             modifier = Modifier.padding(10.dp)

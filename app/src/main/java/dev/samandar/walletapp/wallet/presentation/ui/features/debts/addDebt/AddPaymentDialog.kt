@@ -2,7 +2,7 @@ package dev.samandar.walletapp.wallet.presentation.ui.features.debts.addDebt
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Composable
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.domain.model.account.Account
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

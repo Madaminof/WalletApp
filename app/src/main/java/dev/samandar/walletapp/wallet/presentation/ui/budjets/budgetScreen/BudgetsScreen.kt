@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.samandar.walletapp.R
@@ -53,7 +54,7 @@ fun BudgetsScreen(
     viewModel: BudgetViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val budgetStatuses by viewModel.activeBudgetStatuses.collectAsState()
+    val budgetStatuses by viewModel.activeBudgetStatuses.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -65,8 +66,8 @@ fun BudgetsScreen(
         if (message != null) {
             var mediaPlayer: MediaPlayer? = null
             try {
-                mediaPlayer = MediaPlayer.create(context, R.raw.transaction_save)
-                mediaPlayer?.setVolume(0.3f, 0.3f)
+                mediaPlayer = MediaPlayer.create(context, R.raw.add_transaction_sound)
+                mediaPlayer?.setVolume(0.5f, 0.5f)
                 mediaPlayer?.start()
 
                 val snackJob = launch {

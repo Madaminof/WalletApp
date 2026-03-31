@@ -1,5 +1,6 @@
 package dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories
 
+import android.R.attr.category
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.ui.theme.defaultColor
 import dev.samandar.walletapp.wallet.domain.model.Category
+import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.helper.getSafeIconId
 
 
 @Composable
@@ -124,8 +127,19 @@ fun CategoryItem(
                 shadowElevation = if (isSelected) 12.dp else 0.dp
             ) {
                 Box(contentAlignment = Alignment.Center) {
+                    val context = LocalContext.current
+
+                    val safeIconId = remember(cat.iconResId) {
+                        val id = cat.iconResId ?: 0
+                        if (id != 0) {
+                            getSafeIconId(context, id)
+                        } else {
+                            R.drawable.default_category // Default
+                        }
+                    }
+
                     Icon(
-                        painter = painterResource(id = cat.iconResId ?: R.drawable.cash_icon2),
+                        painter = painterResource(id = safeIconId),
                         contentDescription = null,
                         tint = if (isSelected) primaryColor else defaultColor,
                         modifier = Modifier

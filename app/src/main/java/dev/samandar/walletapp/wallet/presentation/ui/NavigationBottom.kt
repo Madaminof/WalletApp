@@ -59,8 +59,8 @@ fun Navigation(
 
             var mediaPlayer: MediaPlayer? = null
             try {
-                mediaPlayer = MediaPlayer.create(context, R.raw.transaction_save)
-                mediaPlayer?.setVolume(0.3f, 0.3f)
+                mediaPlayer = MediaPlayer.create(context, R.raw.add_transaction_sound)
+                mediaPlayer?.setVolume(0.5f, 0.5f)
                 mediaPlayer?.start()
 
                 scope.launch {

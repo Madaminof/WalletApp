@@ -1,14 +1,15 @@
 package dev.samandar.walletapp.wallet.data.repository.impl
 
-import dev.samandar.walletapp.wallet.data.local.dao.TransactionDao
+import  dev.samandar.walletapp.wallet.data.local.dao.TransactionDao
 import dev.samandar.walletapp.wallet.data.local.entity.TransactionEntity
 import dev.samandar.walletapp.wallet.data.mapper.toDomain
 import dev.samandar.walletapp.wallet.data.mapper.toEntity
 import dev.samandar.walletapp.wallet.domain.model.Transaction
 import dev.samandar.walletapp.wallet.domain.model.TransactionType
-import dev.samandar.walletapp.wallet.domain.repository.AccountRepository
+import dev.samandar.walletapp.wallet.domain.repository.account.AccountRepository
 import dev.samandar.walletapp.wallet.domain.repository.CategoryRepository
 import dev.samandar.walletapp.wallet.domain.repository.TransactionRepository
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.exportData.data.ExportConfig
 import kotlinx.coroutines.Dispatchers // Dispatchers for IO thread
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn // Function to change Flow dispatcher
@@ -113,5 +114,35 @@ class TransactionRepositoryImpl @Inject constructor(
         val account = accountRepository.getAccountById(entity.accountId).getOrThrow()
 
         entity.toDomain(category, account)
+
+
+    }
+
+
+    override suspend fun getFilteredTransactions(config: ExportConfig): List<TransactionEntity> {
+        val start = config.startDate ?: 0L
+        val end = config.endDate ?: System.currentTimeMillis()
+
+        return transactionDao.getFilteredTransactions(
+            start = start,
+            end = end,
+            catId = config.categoryId,
+            accId = config.accountId
+        )
+    }
+
+    override suspend fun getAllTransactionsOnce(): List<Transaction> {
+        val entities = transactionDao.getAllTransactionsOnce()
+        return entities.map { entity ->
+            val category = categoryRepository.getCategoryById(entity.categoryId).getOrThrow()
+            val account = accountRepository.getAccountById(entity.accountId).getOrThrow()
+            entity.toDomain(category, account)
+        }
+    }
+
+    override suspend fun updateTransactions(transactions: List<Transaction>): Result<Unit> = runCatching {
+        // Domain Model'larni qaytadan Entity'ga o'giramiz
+        val entities = transactions.map { it.toEntity() }
+        transactionDao.updateTransactions(entities)
     }
 }

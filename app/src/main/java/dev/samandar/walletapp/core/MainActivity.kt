@@ -20,15 +20,14 @@ import dev.samandar.walletapp.core.onBoarding.OnboardingViewModel
 import dev.samandar.walletapp.navigation.NavGraphMain
 import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.ui.theme.WalletAppTheme
-import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
-import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.viewmodel.CategoryStatisticsViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.SoundManager
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.exportData.viewmodel.ExportViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.SettingsViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.numFormat.NumberFormatManager
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.themes.ThemeManager
-import dev.samandar.walletapp.wallet.presentation.viewmodel.*
 import java.util.Locale
+import dev.samandar.walletapp.wallet.data.currencyManagerApi.currencySyncWorker.setupCurrencySync // Worker funksiyasi
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -47,8 +46,11 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val context = LocalContext.current
 
-            val onboardingViewModel: OnboardingViewModel = hiltViewModel()
-            val settingsViewModel: SettingsViewModel = hiltViewModel()
+            // 1. ViewModel'larni chaqirganda ularga aniq 'key' beramiz.
+            // Bu 'Multiple entries with same key' xatosini 100% yo'qotadi.
+            val onboardingViewModel: OnboardingViewModel = hiltViewModel(key = "onboarding_vm")
+            val settingsViewModel: SettingsViewModel = hiltViewModel(key = "settings_vm")
+            val exportViewModel: ExportViewModel = hiltViewModel(key = "export_vm")
 
             val langCode by settingsViewModel.currentLanguageCode.collectAsStateWithLifecycle()
             val isOnboardingRequired by onboardingViewModel.isOnboardingRequired.collectAsStateWithLifecycle()
@@ -60,16 +62,18 @@ class MainActivity : AppCompatActivity() {
             WalletAppTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     isOnboardingRequired?.let { required ->
-                        val startRoute = remember {
+                        val startRoute = remember(required) {
                             if (required) Screen.Onboarding.route else Screen.Splash.route
                         }
 
+                        // 2. NavGraphMain ichidagi hiltViewModel() larni ham key bilan ta'minlaymiz
                         NavGraphMain(
-                            viewModel = hiltViewModel(),
-                            addAccountViewModel = hiltViewModel(),
-                            budgetViewModel = hiltViewModel(),
-                            categoryViewModel = hiltViewModel(),
-                            startDestination = startRoute
+                            viewModel = hiltViewModel(key = "main_vm"),
+                            addAccountViewModel = hiltViewModel(key = "add_account_vm"),
+                            budgetViewModel = hiltViewModel(key = "budget_vm"),
+                            categoryViewModel = hiltViewModel(key = "category_vm"),
+                            startDestination = startRoute,
+                            exportViewModel = exportViewModel
                         )
                     }
                 }
@@ -77,6 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
     override fun onDestroy() {
         super.onDestroy()
         SoundManager.release() // Ilova yopilganda xotirani tozalash

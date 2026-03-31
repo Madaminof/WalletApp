@@ -10,14 +10,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.utils.Strings
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.domain.model.account.Account
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
+import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.helper.getSafeIconId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -128,12 +130,20 @@ fun AccountSelectionField(
                                     .background(accountColor.copy(0.1f), RoundedCornerShape(12.dp)),
                                 contentAlignment = Alignment.Center
                             ){
+                                val context = LocalContext.current
+                                val safeIconId = remember(account.iconResId) {
+                                    val id = account.iconResId ?: 0
+                                    if (id > 0) {
+                                        getSafeIconId(context, id)
+                                    } else {
+                                        R.drawable.ic_card_default // Default ikonka
+                                    }
+                                }
                                 Icon(
-                                    painter = painterResource(account.iconResId?: R.drawable.ic_card_default),
+                                    painter = painterResource(id = safeIconId),
                                     tint = accountColor,
                                     contentDescription = null,
-                                    modifier = Modifier
-                                        .size(20.dp)
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
 

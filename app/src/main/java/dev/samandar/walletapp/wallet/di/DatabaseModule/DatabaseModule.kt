@@ -2,15 +2,24 @@ package dev.samandar.walletapp.wallet.di
 
 import android.content.Context
 import androidx.room.Room
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import dev.samandar.walletapp.core.onBoarding.OnboardingManager
+import dev.samandar.walletapp.wallet.data.currencyManagerApi.dao.CurrencyDao
 import dev.samandar.walletapp.wallet.data.local.AppDatabase
 import dev.samandar.walletapp.wallet.data.local.WalletDatabaseCallback
-import dev.samandar.walletapp.wallet.data.local.dao.AccountDao
+import dev.samandar.walletapp.wallet.data.local.dao.account.AccountDao
 import dev.samandar.walletapp.wallet.data.local.dao.CategoryDao
-import dev.samandar.walletapp.wallet.data.local.dao.debtDao.DebtDao
 import dev.samandar.walletapp.wallet.data.local.dao.ShoppingDao
 import dev.samandar.walletapp.wallet.data.local.dao.TransactionDao
 import dev.samandar.walletapp.wallet.data.local.dao.budjetDao.BudgetDao
 import dev.samandar.walletapp.wallet.data.local.dao.budjetDao.BudjetTransactionDao
+import dev.samandar.walletapp.wallet.data.local.dao.debtDao.DebtDao
+import dev.samandar.walletapp.wallet.data.local.dao.smartScannDao.ReceiptDao
+import dev.samandar.walletapp.wallet.data.local.migrations.DatabaseMigrations
 import dev.samandar.walletapp.wallet.domain.repository.ShoppingRepository
 import dev.samandar.walletapp.wallet.domain.usecase.shopping.AddItemUseCase
 import dev.samandar.walletapp.wallet.domain.usecase.shopping.CreateListUseCase
@@ -22,13 +31,6 @@ import dev.samandar.walletapp.wallet.domain.usecase.shopping.GetShoppingListById
 import dev.samandar.walletapp.wallet.domain.usecase.shopping.ShoppingUseCases
 import dev.samandar.walletapp.wallet.domain.usecase.shopping.UpdateItemUseCase
 import dev.samandar.walletapp.wallet.domain.usecase.shopping.UpdateListUseCase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import dev.samandar.walletapp.core.onBoarding.OnboardingManager
-import dev.samandar.walletapp.wallet.data.local.dao.smartScannDao.ReceiptDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
@@ -45,13 +47,14 @@ object DatabaseModule {
     @Singleton
     fun provideAppDatabase(
         @ApplicationContext context: Context,
-        callback: WalletDatabaseCallback
+        callback: WalletDatabaseCallback,
     ): AppDatabase = Room.databaseBuilder(
         context,
         AppDatabase::class.java,
         AppDatabase.DATABASE_NAME
     )
         .addCallback(callback)
+        .addMigrations(*DatabaseMigrations.getAllMigrations())
         .build()
 
     @Provides
@@ -63,22 +66,24 @@ object DatabaseModule {
     @Provides
     fun provideAccountDao(db: AppDatabase): AccountDao = db.accountDao()
 
+
     @Provides
     fun provideBudgetDao(db: AppDatabase): BudgetDao = db.budgetDao()
 
     @Provides
-    fun provideBudjetTransactionDao(db: AppDatabase): BudjetTransactionDao = db.budjetTransactionDao()
+    fun provideBudjetTransactionDao(db: AppDatabase): BudjetTransactionDao =
+        db.budjetTransactionDao()
 
     @Provides
     @Singleton
     fun provideShoppingRepositoryDao(
-        db: AppDatabase
+        db: AppDatabase,
     ): ShoppingDao = db.shoppingDao()
 
     @Provides
     @Singleton
     fun provideDebtsRepositoryDao(
-        db: AppDatabase
+        db: AppDatabase,
     ): DebtDao = db.debtDao()
 
     @Provides
@@ -91,7 +96,7 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideShoppingUseCases(
-        repo: ShoppingRepository
+        repo: ShoppingRepository,
     ): ShoppingUseCases {
         return ShoppingUseCases(
             getAllLists = GetAllListsUseCase(repo),
@@ -110,7 +115,11 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideOnboardingManager(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): OnboardingManager = OnboardingManager(context)
+
+
+    @Provides
+    fun provideCurrencyDao(db: AppDatabase): CurrencyDao = db.currencyDao()
 
 }

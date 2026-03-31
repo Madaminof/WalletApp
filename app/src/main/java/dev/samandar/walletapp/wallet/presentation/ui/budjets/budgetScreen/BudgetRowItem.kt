@@ -45,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -62,6 +63,7 @@ import dev.samandar.walletapp.wallet.presentation.ui.budjets.PremiumCustomLinear
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.editBudget.EditBudgetSheet
 import dev.samandar.walletapp.wallet.presentation.ui.charts.expenseListComponents.DeleteConfirmationDialog
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
+import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.helper.getSafeIconId
 import dev.samandar.walletapp.wallet.presentation.utils.FormatAmount
 import dev.samandar.walletapp.wallet.presentation.utils.FormatDate
 import kotlinx.coroutines.delay
@@ -156,8 +158,18 @@ fun BudgetRowItem(
                         .background(Color(status.budget.category.colorArgb).copy(0.1f)),
                     contentAlignment = Alignment.Center
                 ) {
+                    val context = LocalContext.current
+
+                    val safeIconId = remember(status.budget.category.iconResId) {
+                        val originalId = status.budget.category.iconResId ?: 0
+                        if (originalId > 0) {
+                            getSafeIconId(context, originalId)
+                        } else {
+                            R.drawable.default_category // Agar bazada ID umuman bo'lmasa default
+                        }
+                    }
                     Icon(
-                        painter = painterResource(id = status.budget.category.iconResId?: R.drawable.ic_wallet_2),
+                        painter = painterResource(id = safeIconId),
                         contentDescription = stringResource(R.string.budget_icon_content_description_category),
                         tint = Color(status.budget.category.colorArgb),
                         modifier = Modifier.size(20.dp),

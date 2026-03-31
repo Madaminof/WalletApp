@@ -1,5 +1,7 @@
 package dev.samandar.walletapp.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.*
 import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,32 +26,37 @@ import dev.samandar.walletapp.wallet.presentation.ui.features.debts.debtScreen.D
 import dev.samandar.walletapp.wallet.presentation.ui.features.goals.GoalsScreen
 import dev.samandar.walletapp.wallet.presentation.ui.features.shoppingLists.shoppingListDetail.ShoppingListDetailScreen
 import dev.samandar.walletapp.wallet.presentation.ui.features.shoppingLists.shoppingListScreen.ShoppingListScreen
+import dev.samandar.walletapp.wallet.presentation.ui.features.splittingBill.presentation.view.SplitBillScreen
+import dev.samandar.walletapp.wallet.presentation.ui.features.splittingBill.presentation.view.listScreen.SplitBillListScreen
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.AddTransactionScreenPremium
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.exportData.viewmodel.ExportViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.SettingsScreen
 import dev.samandar.walletapp.wallet.presentation.viewmodel.AccountViewModel
 import dev.samandar.walletapp.wallet.presentation.viewmodel.HomeViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.featuresGraph(
     navController: NavHostController,
     viewModel: HomeViewModel,
     addAccountViewModel: AccountViewModel,
-    categoryViewModel: CategoryStatisticsViewModel
+    categoryViewModel: CategoryStatisticsViewModel,
+    export: ExportViewModel
 ) {
     val zoomScreens = listOf(
         Screen.Charts.route,
         Screen.Wallet.route,
         Screen.ShoppingLists.route,
         Screen.Goals.route,
-        Screen.ExpenseList.route,
         Screen.Category.route,
-        Screen.addTransaction.route
+        Screen.addTransaction.route,
+        Screen.SplitBillList.route
     )
 
     zoomScreens.forEach { route ->
-        composable(route = route) { backStackEntry ->
+        composable(route = route) {
             val accounts by viewModel.accounts.collectAsState()
-            when (backStackEntry.destination.route) {
+            when (route) {
                 Screen.Wallet.route -> WalletScreen(
                     accounts = accounts,
                     navController = navController,
@@ -57,10 +64,56 @@ fun NavGraphBuilder.featuresGraph(
                 )
                 Screen.ShoppingLists.route -> ShoppingListScreen(navController = navController)
                 Screen.Goals.route -> GoalsScreen(navController)
-                Screen.ExpenseList.route -> HistorytransactionScreen(navController = navController)
+                Screen.SplitBillList.route -> SplitBillListScreen(
+                    onAddNewSplit = {
+                        navController.navigate(Screen.SplitBill.createRoute())
+                    },
+                    onViewDetail = { billId ->
+                        navController.navigate(Screen.SplitBill.createRoute(billId))
+                    },
+                    navController = navController,
+                )
                 else -> {}
             }
         }
+    }
+
+    // zoomScreens ichidan Screen.SplitBill.route ni olib tashlang
+
+// Keyin NavHost ichida alohida e'lon qiling:
+    composable(
+        route = Screen.SplitBill.route + "?billId={billId}", // billId ixtiyoriy (optional)
+        arguments = listOf(
+            navArgument("billId") {
+                type = NavType.StringType
+                nullable = true
+                defaultValue = null
+            }
+        )
+    ) { backStackEntry ->
+        val billId = backStackEntry.arguments?.getString("billId")
+
+        SplitBillScreen(
+            billId = billId,
+            onBack = { navController.popBackStack() }
+        )
+    }
+
+    composable(
+        route = Screen.ExpenseList.route + "?accountId={accountId}",
+        arguments = listOf(
+            navArgument("accountId") {
+                type = NavType.StringType
+                nullable = true
+                defaultValue = null
+            }
+        )
+    ) { backStackEntry ->
+        val accountId = backStackEntry.arguments?.getString("accountId")
+        HistorytransactionScreen(
+            navController = navController,
+            accountId = accountId
+        )
     }
 
     composable(
@@ -75,22 +128,28 @@ fun NavGraphBuilder.featuresGraph(
             },
             onBack = {
                 navController.popBackStack()
-            }
+            },
+            navController = navController
         )
     }
 
     // 2. Account Management (SHU YERDA CRASH BERAYOTGAN EDI)
     composable(
-        route = Screen.addAccound.route,
+        route = Screen.addAccound.route + "/{accountType}",
         enterTransition = { ModalEnterTransition },
-        exitTransition = { ModalExitTransition }
-    ) {
+        exitTransition = { ModalExitTransition },
+        arguments = listOf(
+            navArgument("accountType") { type = NavType.StringType }
+        )
+    ) { backStackEntry ->
+        val accountType = backStackEntry.arguments?.getString("accountType") ?: "CARD"
         val accounts by viewModel.accounts.collectAsState()
+
         AddAccountScreen(
             navController = navController,
+            accountType = accountType,
             onSave = { account ->
                 addAccountViewModel.addAccount(account)
-                navController.popBackStack()
             },
             existingAccounts = accounts
         )
@@ -101,7 +160,7 @@ fun NavGraphBuilder.featuresGraph(
         arguments = listOf(navArgument("accountId") { type = NavType.StringType })
     ) { backStackEntry ->
         val accountId = backStackEntry.arguments?.getString("accountId")
-        val state by addAccountViewModel.cardState.collectAsState()
+        val state by addAccountViewModel.uiState.collectAsState()
         val accountToEdit = state.accounts.find { it.id == accountId }
 
         accountToEdit?.let { account ->
@@ -124,12 +183,16 @@ fun NavGraphBuilder.featuresGraph(
         val transactions by viewModel.transactions.collectAsState()
         val transaction = transactions.find { it.id == transactionId }
 
-        transaction?.let {
+        transaction?.let { it ->
             TransactionDetailScreen(
                 transaction = it,
                 onBack = { navController.popBackStack() },
                 onEdit = { updated -> viewModel.updateTransaction(updated) },
-                onDelete = { viewModel.deleteTransaction(it.id); navController.popBackStack() }
+                onDelete = {
+                    // 'it.id' o'rniga butun 'it' obyektini yuboramiz
+                    viewModel.deleteTransaction(it)
+                    navController.popBackStack()
+                }
             )
         }
     }
@@ -192,5 +255,8 @@ fun NavGraphBuilder.featuresGraph(
     }
 
     // 7. Settings
-    composable(Screen.SettingScreen.route) { SettingsScreen(navController) }
+    composable(Screen.SettingScreen.route) { SettingsScreen(
+        navController,
+        viewModel = export
+    ) }
 }

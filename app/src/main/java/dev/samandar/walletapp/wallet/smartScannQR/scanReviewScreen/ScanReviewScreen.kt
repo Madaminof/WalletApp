@@ -118,8 +118,7 @@ fun ScanReviewScreen(
                     isSaving = state.isSaving,
                     enabled = uiState.selectedAccount != null && uiState.selectedCategory != null,
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .navigationBarsPadding(),
+                        .align(Alignment.BottomCenter),
                     onConfirmed = onConfirmed
                 )
             }

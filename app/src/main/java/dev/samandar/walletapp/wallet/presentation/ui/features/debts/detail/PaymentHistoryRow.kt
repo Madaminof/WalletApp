@@ -16,14 +16,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.samandar.walletapp.R
+import dev.samandar.walletapp.wallet.data.currencyManagerApi.entities.CurrencyRateEntity
 import dev.samandar.walletapp.wallet.domain.model.debt.DebtTransaction
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager.currentCurrency
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.changeUpdateAmount.CurrencyEvaluator
 import dev.samandar.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun PaymentHistoryRow(transaction: DebtTransaction, accentColor: Color) {
+fun PaymentHistoryRow(transaction: DebtTransaction, accentColor: Color,ratesList: List<CurrencyRateEntity>,currentCurrency: String,) {
     val dateFormatter = remember { SimpleDateFormat("dd MMMM, HH:mm", Locale.getDefault()) }
+
+    val convertedAmount = remember(transaction.amount, currentCurrency, ratesList) {
+        CurrencyEvaluator.convert(transaction.amount, currentCurrency, ratesList)
+    }
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -61,7 +68,7 @@ fun PaymentHistoryRow(transaction: DebtTransaction, accentColor: Color) {
             }
 
             Text(
-                text = "+ " + formatAmountWithCurrency(transaction.amount),
+                text = formatAmountWithCurrency(convertedAmount),
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
                 color = accentColor
             )

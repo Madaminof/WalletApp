@@ -1,7 +1,5 @@
 package dev.samandar.walletapp.wallet.presentation.utils
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -9,26 +7,11 @@ import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.numFormat.NumberFormatManager
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.Currency
 import java.util.Date
 import java.util.Locale
 import kotlin.math.absoluteValue
 
-// UZS -> so'm
-/*@Composable
-fun getCurrencySymbol(currencyCode: String): String {
-    return remember(currencyCode) {
-        try {
-            val locale = if (currencyCode == "UZS") Locale("uz", "UZ") else Locale.getDefault()
-            Currency.getInstance(currencyCode).getSymbol(locale)
-        } catch (e: Exception) {
-            currencyCode
-        }
-    }
-}*/
 @Composable
 fun getCurrencySymbol(currencyCode: String): String {
     return remember(currencyCode) {
@@ -50,7 +33,7 @@ fun getCurrencySymbol(currencyCode: String): String {
 
 @Composable
 fun rememberNumberFormatter(
-    maximumFractionDigits: Int
+    maximumFractionDigits: Int,
 ): (Double) -> String {
 
     val numberLocale = NumberFormatManager.getCurrentLocale()
@@ -68,11 +51,11 @@ fun rememberNumberFormatter(
     }
 }
 
-
+// Global UI uchun
 @Composable
 fun formatAmountWithCurrency(
     amount: Double,
-    includeFraction: Boolean = false
+    includeFraction: Boolean = false,
 ): String {
 
     val maxFraction = if (includeFraction) 2 else 0
@@ -88,10 +71,29 @@ fun formatAmountWithCurrency(
     return "$sign$formattedAmount $activeCurrencySymbol"
 }
 
+// Account uchun
+@Composable
+fun formatAmountWithCurrencyAccount(
+    amount: Double,
+    includeFraction: Boolean = false,
+): String {
+
+    val maxFraction = if (includeFraction) 2 else 0
+
+    val formatNumber = rememberNumberFormatter(maximumFractionDigits = maxFraction)
+
+    val formattedAmount = formatNumber(amount.absoluteValue)
+    val sign = if (amount < 0) "-" else ""
+
+    // Natija: 1 000 000.00 so'm ko'rinishi
+    return "$sign$formattedAmount"
+}
+
+
 @Composable
 fun NumFormat(
     amount: Double,
-    includeFraction: Boolean = false
+    includeFraction: Boolean = false,
 ): String {
     val maxFraction = if (includeFraction) 2 else 0
 
@@ -103,13 +105,26 @@ fun NumFormat(
 
 @Composable
 fun FormatAmount(
-    amount: Double
+    amount: Double,
 ): String {
     return formatAmountWithCurrency(
         amount = amount,
         includeFraction = false
     )
 }
+
+
+@Composable
+fun FormatAmountAccount(
+    amount: Double,
+): String {
+    return formatAmountWithCurrencyAccount(
+        amount = amount,
+        includeFraction = false
+    )
+}
+
+
 
 fun FormatDate(timestamp: Long): String {
     val baseLocale = NumberFormatManager.getCurrentLocale()

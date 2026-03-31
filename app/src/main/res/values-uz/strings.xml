@@ -275,7 +275,6 @@
     <string name="content_description_filter">Filtr tugmasi</string>
 
     <string name="no_data_available">Ma\'lumotlar mavjud emas</string>
-    <string name="total_label">Jami</string>
     <string name="add_transactions_to_see_chart">Grafikni ko\'rish uchun tranzaksiyalar qo\'shing</string>
 
     <string name="no_transactions_title">Tranzaksiyalar mavjud emas</string>
@@ -573,9 +572,123 @@
     <string name="btn_get_started">Boshlash</string>
     <string name="ob_title_4">Aqlli QR Skaner</string>
     <string name="ob_desc_4">Cheklarni skaner qiling va tranzaksiyalarni bir soniyada qo\'shing. Raqamlarni qo\'lda yozib o\'tirmang!</string>
+    <string name="ob_title_split">Hisobni bo\'lish</string>
+    <string name="ob_desc_split">Do\'stlar bilan umumiy hisoblarni oson va adolatli taqsimlang</string>
 
     <string name="onboarding_currency_title">Asosiy valyuta</string>
     <string name="onboarding_currency_description">Barcha hisob-kitoblaringiz uchun\nasosiy valyutani tanlang</string>
-
     <string name="coming_soon">Tez kunda</string>
+
+
+
+    <string name="export_header_title">Hisobot</string>
+    <string name="export_header_subtitle">Barcha moliyaviy ma’\lumotlar bir faylda</string>
+    <string name="export_header">Hisobot shakllantirish</string>
+    <string name="section_period">Hisobot davri</string>
+    <string name="section_transaction_type">Tranzaksiya turi</string>
+    <string name="section_category">Kategoriya</string>
+    <string name="section_account">Hamyon</string>
+
+
+    <string name="btn_select">Tanlash</string>
+    <string name="btn_cancel">Bekor qilish</string>
+    <string name="type_all">Barchasi</string>
+    <string name="type_income">Kirim</string>
+    <string name="type_expense">Chiqim</string>
+    <string name="btn_export_pdf">PDF Hisobotni yuklash</string>
+    <string name="error_no_data">Eksport qilish uchun ma\'lumot topilmadi</string>
+    <string name="export_select_format">FORMATNI TANLANG</string>
+    <string name="export_action">Eksport qilish</string>
+    <string name="export_cancel">Bekor qilish</string>
+    <string name="export_pdf_desc">Hujjat (PDF)</string>
+    <string name="export_excel_desc">Jadval (XLSX)</string>
+    <string name="export_csv_desc">Ma’lumotlar (CSV)</string>
+
+    <string name="filter_cards">Kartalar</string>
+    <string name="filter_cash">Naqd pullar</string>
+
+    <string name="account_properties">Xususiyatlar</string>
+    <string name="transaction_history">Tranzaksiyalar tarixi</string>
+
+    <string name="account_name">Hisob nomi</string>
+    <string name="placeholder_account_name">Masalan: Oylik kartam</string>
+
+    <string name="title_select_account_type">Hisob turini tanlang</string>
+    <string name="type_card_title">Plastik karta</string>
+    <string name="type_card_subtitle">Uzcard, Humo, Visa, Mastercard</string>
+    <string name="type_cash_title">Naqd pul</string>
+    <string name="type_cash_subtitle">Hamyon yoki naqd pullar uchun</string>
+    <string name="add_card">Karta qo\'shish</string>
+    <string name="add_cash">Naqd pul qo\'shish</string>
+    <string name="card_name">Karta nomi</string>
+    <string name="wallet_name">Hamyon nomi</string>
+    <string name="card_number">Karta raqami</string>
+    <string name="account_type">Hisob turi</string>
+    <string name="card">Karta</string>
+    <string name="cash">Naqd pul</string>
+    <string name="balance_and_currency">Balans va valyuta</string>
+    <string name="select_icon">Belgini tanlang</string>
+    <string name="select_color">Rangni tanlang</string>
+    <string name="save_account">Hisobni saqlash</string>
+
+    <string name="quick_split_bill">Hisobni bo\'lish</string>
+
+    // Hisobni bo'lish funksiyasi
+    <string name="history_title">Hisoblar tarixi</string>
+    <string name="no_bills_yet">Hali hisoblar yo\'q</string>
+    <string name="add_bill_hint">Yangi hisob qo\'shish uchun + tugmasini bosing</string>
+    <string name="unnamed_bill">Nomsiz hisob</string>
+
+    <string name="bill_name_label">Hisob nomi</string>
+    <string name="bill_name_placeholder">Masalan: Do\'stlar bilan choyxona</string>
+    <string name="who_is_there">Kimlar bor?</string>
+    <string name="no_participants">Ishtirokchilar yo\'q</string>
+    <string name="assign_items">Mahsulotlarni tayinlash</string>
+    <string name="no_items_added">Mahsulotlar qo\'shilmagan</string>
+    <string name="add_item_button">Mahsulot qo\'shish</string>
+
+    <string name="extra_charges">Qo\'shimcha harajatlar</string>
+    <string name="service_charge">Xizmat (%)</string>
+    <string name="tax_charge">Soliq (%)</string>
+    <string name="discount_label">Chegirma</string>
+
+    <string name="new_item_title">Yangi mahsulot</string>
+    <string name="new_item_desc">Ro\'yxatga kiritish uchun ma\'lumotlarni to\'ldiring</string>
+    <string name="item_name">Mahsulot nomi</string>
+    <string name="item_price">Narxi</string>
+    <string name="item_qty">Soni</string>
+    <string name="add_to_list">Ro\'yxatga qo\'shish</string>
+
+    <string name="new_participant_title">Yangi ishtirokchi</string>
+    <string name="new_participant_desc">Ishtirokchi ismini kiriting</string>
+    <string name="participant_name">Ism</string>
+    <string name="participant_name_placeholder">Masalan: Samandar</string>
+    <string name="add_participant">Ishtirokchini qo\'shish</string>
+
+    <string name="delete_bill_title">Hisobni o\'chirish</string>
+    <string name="delete_bill_desc">Hisob o\'chirib tashlanadi. Buni ortga qaytarib bo\'lmaydi.</string>
+
+    <string name="invoice_title">HISOB-FAKTURA</string>
+    <string name="subtotal">Kichik Jami:</string>
+    <string name="service_fee">Xizmat haqi</string>
+    <string name="tax_fee">Soliq</string>
+    <string name="discount_fee">Chegirma</string>
+    <string name="total_payment">JAMI TO\'LOV</string>
+    <string name="total_all">Jami</string>
+    <string name="footer_text">Wallet Analyst orqali hisoblandi</string>
+    <string name="select_currency">Valyutani tanlang</string>
+    <string name="currency_status_syncing">Yangilanmoqda…</string>
+    <string name="currency_status_offline">Internet aloqasi yo‘q</string>
+    <string name="currency_status_default">Markaziy bank kurslari</string>
+
+
+    <string name="per_person">KISHI BOSHIGA</string>
+    <string name="select_participant">Ishtirokchini tanlang</string>
+    <string name="participants_assigned">kishi biriktirildi</string>
+    <string name="unit_quantity">dona</string>
+    <string name="total_label">JAMI</string>
+    <string name="all_participants">Hamma uchun</string>
+
+
+
 </resources>

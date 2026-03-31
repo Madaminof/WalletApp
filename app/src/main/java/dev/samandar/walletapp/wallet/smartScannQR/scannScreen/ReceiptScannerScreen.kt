@@ -86,7 +86,7 @@ fun ReceiptScannerScreen(
                 cameraControl?.enableTorch(isEnabled)
             }
         )
-
+/*
         // 6. Pastki Premium OCR qismi
         Box(
             modifier = Modifier
@@ -97,7 +97,7 @@ fun ReceiptScannerScreen(
                 viewModel = viewModel,
                 isProcessing = uiState.isProcessing
             )
-        }
+        }*/
     }
 }
 

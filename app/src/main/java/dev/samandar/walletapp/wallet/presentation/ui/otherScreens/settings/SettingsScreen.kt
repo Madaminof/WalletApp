@@ -2,15 +2,31 @@ package dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,12 +35,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.ui.theme.CurrencyRates
@@ -35,10 +51,15 @@ import dev.samandar.walletapp.ui.theme.numberFormat
 import dev.samandar.walletapp.ui.theme.theme
 import dev.samandar.walletapp.utils.Strings
 import dev.samandar.walletapp.wallet.presentation.ui.drawableMenu.FollowUsDialog
-import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencySelectionDialog
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.exportData.view.ExportBottomSheet
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.exportData.shareFile.shareFile
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.exportData.viewmodel.ExportResult
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.exportData.viewmodel.ExportViewModel
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencySelectionBottomSheet
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.language.LanguageSelectionDialog
 import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.numFormat.NumberFormatSelectionDialog
 import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.CustomTopBar
+import java.io.File
 
 
 data class SettingItem(
@@ -47,25 +68,54 @@ data class SettingItem(
     val iconTint: Color,
     val isLocked: Boolean = false,
     val route: String? = null,
-    val action: (() -> Unit)? = null
+    val action: (() -> Unit)? = null,
 )
 
 @Composable
-fun SettingsScreen(navController: NavController) {
+fun SettingsScreen(navController: NavController, viewModel: ExportViewModel) {
     val scrollState = rememberScrollState()
+    val context = androidx.compose.ui.platform.LocalContext.current // Contextni oldik
 
     var showThemeDialog by remember { mutableStateOf(false) }
-    var showCurrencyDialog by remember { mutableStateOf(false) }
+    var showCurrencySheet by remember { mutableStateOf(false) }
     var showformatNumberDialog by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }
     var showFollowUseDialog by remember { mutableStateOf(false) }
+    var showExportSheet by remember { mutableStateOf(false) }
+
+    val exportState by viewModel.exportState.collectAsStateWithLifecycle()
+    LaunchedEffect(exportState) {
+        when (val result = exportState) {
+            is ExportResult.Success -> {
+                val file: File = result.file
+
+                // 1. PDFni ulashish (Share) funksiyasini chaqiramiz
+                shareFile(context, file)
+
+                // 2. Statni reset qilamiz
+                viewModel.resetExportState()
+            }
+
+            is ExportResult.Error -> {
+                // Foydalanuvchiga xatoni ko'rsatamiz
+                android.widget.Toast.makeText(context, result.message, android.widget.Toast.LENGTH_LONG).show()
+                viewModel.resetExportState()
+            }
+
+            is ExportResult.Loading -> {
+                // Bu yerda xohlasang kichik Toast chiqar: "Eksport qilinmoqda..."
+            }
+
+            is ExportResult.Idle -> {}
+        }
+    }
 
 
     Scaffold(
         topBar = {
             CustomTopBar(
                 title = stringResource(Strings.title_settings),
-                onBackClick = {navController.popBackStack()},
+                onBackClick = { navController.popBackStack() },
             )
 
         },
@@ -99,22 +149,23 @@ fun SettingsScreen(navController: NavController) {
                             stringResource(Strings.setting_language_title),
                             R.drawable.setting_language,
                             language,
-                            action = {showLanguageDialog = true}
-                        ),
-                        SettingItem(
-                            stringResource(Strings.setting_currency_title),
-                            R.drawable.currency_rates_icon,
-                            CurrencyRates,
-                            isLocked = true,
-                            action = { }
+                            action = { showLanguageDialog = true }
                         ),
                         SettingItem(
                             stringResource(Strings.export_title),
                             R.drawable.export_ic,
                             Export,
-                            isLocked = true,
-                            action = { }
+                            isLocked = false,
+                            action = { showExportSheet = true }
                         ),
+                        /*SettingItem(
+                            stringResource(Strings.setting_currency_title),
+                            R.drawable.currency_rates_icon,
+                            CurrencyRates,
+                            isLocked = false,
+                            action = { showCurrencySheet = true }
+                        ),*/
+
                     ),
                     navController = navController
                 )
@@ -125,10 +176,11 @@ fun SettingsScreen(navController: NavController) {
             SettingsSection(title = stringResource(Strings.setting_Card_title2)) {
                 SettingCard(
                     items = listOf(
-                        SettingItem(stringResource(Strings.title_follow_us),
+                        SettingItem(
+                            stringResource(Strings.title_follow_us),
                             R.drawable.setting_follow_us,
                             followUs,
-                            action = {showFollowUseDialog = true}
+                            action = { showFollowUseDialog = true }
                         ),
                     ),
                     navController = navController
@@ -145,9 +197,9 @@ fun SettingsScreen(navController: NavController) {
                 onDismiss = { showThemeDialog = false }
             )
         }
-        if (showCurrencyDialog) {
-            CurrencySelectionDialog(
-                onDismiss = { showCurrencyDialog = false }
+        if (showCurrencySheet) {
+            CurrencySelectionBottomSheet(
+                onDismiss = { showCurrencySheet = false }
             )
         }
         if (showformatNumberDialog) {
@@ -163,6 +215,19 @@ fun SettingsScreen(navController: NavController) {
         if (showFollowUseDialog) {
             FollowUsDialog(
                 onDismiss = { showFollowUseDialog = false }
+            )
+        }
+
+        if (showExportSheet) {
+            ExportBottomSheet(
+                viewModel = viewModel,
+                onDismiss = { showExportSheet = false },
+                onExportClick = { config ->
+                    // MANA BU JOYDA VIEWMODELNI CHAQIRISH KERAK!
+                    viewModel.startExport(config)
+                    // Sheetni yopish (ixtiyoriy, export tugaguncha kutsa ham bo'ladi)
+                    showExportSheet = false
+                }
             )
         }
     }
@@ -187,7 +252,11 @@ fun SettingCard(items: List<SettingItem>, navController: NavController) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.6f)),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                0.6f
+            )
+        ),
     ) {
         Column {
             items.forEachIndexed { index, item ->

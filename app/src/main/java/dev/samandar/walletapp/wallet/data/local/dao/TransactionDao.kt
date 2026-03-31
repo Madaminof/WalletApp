@@ -38,4 +38,28 @@ interface TransactionDao {
         endDateMillis: Long
     ): Int
 
+
+
+    @Query("""
+        SELECT * FROM transactions 
+        WHERE (:catId IS NULL OR categoryId = :catId)
+        AND (:accId IS NULL OR accountId = :accId)
+        AND (date BETWEEN :start AND :end)
+        ORDER BY date DESC
+    """)
+    suspend fun getFilteredTransactions(
+        start: Long,
+        end: Long,
+        catId: String?,
+        accId: String?
+    ): List<TransactionEntity>
+
+
+    @Query("SELECT * FROM transactions")
+    suspend fun getAllTransactionsOnce(): List<TransactionEntity>
+
+    @Update
+    suspend fun updateTransactions(transactions: List<TransactionEntity>)
+
+
 }

@@ -22,15 +22,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import dev.samandar.walletapp.utils.Strings
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.domain.model.account.Account
 import dev.samandar.walletapp.wallet.domain.model.Category
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
+import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.helper.getSafeIconId
 import dev.samandar.walletapp.wallet.smartScannQR.ReviewUiState
 
 @Composable
@@ -41,6 +43,7 @@ fun MainFinanceSelection(
     onAccountSelected: (Account) -> Unit,
     onCategorySelected: (Category) -> Unit,
 ) {
+    val context = LocalContext.current
     var showCategoryDialog by remember { mutableStateOf(false) }
     var showAccountDialog by remember { mutableStateOf(false) }
 
@@ -50,37 +53,45 @@ fun MainFinanceSelection(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        state.selectedAccount?.iconResId?.let {
-            state.selectedAccount.colorHex?.let { it1 ->
-                FinanceCard(
-                    modifier = Modifier.weight(1f),
-                    icon = it,
-                    label = stringResource(Strings.icon_content_description_account),
-                    value = getTranslatedName(state.selectedAccount.name).toString(),
-                    onClick = { showAccountDialog = true },
-                    color = remember(state.selectedAccount.colorHex) {
-                        try {
-                            Color(
-                                state.selectedAccount.colorHex?.toColorInt() ?: 0xFF6200EE.toInt()
-                            )
-                        } catch (e: Exception) {
-                            Color(0xFF6200EE.toInt())
-                        }
-                    }
-                )
+        // --- SELECTED ACCOUNT CARD ---
+        state.selectedAccount?.let { account ->
+            val safeAccountIcon = remember(account.iconResId) {
+                getSafeIconId(context, account.iconResId ?: 0)
             }
-        }
-        state.selectedCategory?.iconResId?.let {
+            val cardColor = remember(account.colorHex) {
+                try {
+                    Color(account.colorHex?.toColorInt() ?: 0xFF6200EE.toInt())
+                } catch (e: Exception) {
+                    Color(0xFF6200EE.toInt())
+                }
+            }
             FinanceCard(
                 modifier = Modifier.weight(1f),
-                icon = it,
+                icon = safeAccountIcon,
+                label = stringResource(Strings.icon_content_description_account),
+                value = getTranslatedName(account.name).toString(),
+                onClick = { showAccountDialog = true },
+                color = cardColor
+            )
+        }
+
+        // --- SELECTED CATEGORY CARD ---
+        state.selectedCategory?.let { category ->
+            val safeCategoryIcon = remember(category.iconResId) {
+                getSafeIconId(context, category.iconResId ?: 0)
+            }
+            FinanceCard(
+                modifier = Modifier.weight(1f),
+                icon = safeCategoryIcon,
                 label = stringResource(Strings.category_label_title),
-                value = getTranslatedName(state.selectedCategory.name).toString(),
+                value = getTranslatedName(category.name).toString(),
                 onClick = { showCategoryDialog = true },
-                color = Color(state.selectedCategory.colorArgb)
+                color = Color(category.colorArgb)
             )
         }
     }
+
+    // --- ACCOUNT SELECTION DIALOG ---
     if (showAccountDialog) {
         PremiumSelectionDialog(
             title = stringResource(Strings.title_select_wallet),
@@ -89,25 +100,26 @@ fun MainFinanceSelection(
             onItemSelected = onAccountSelected,
             onDismiss = { showAccountDialog = false },
             itemContent = { account, isSelected ->
-                account.iconResId?.let {
-                    SelectionItemContent(
-                        name = getTranslatedName(account.name).toString(),
-                        isSelected = isSelected,
-                        icon = it,
-                        color = remember(account.colorHex) {
-                            try {
-                                Color(account.colorHex?.toColorInt() ?: 0xFF6200EE.toInt())
-                            } catch (e: Exception) {
-                                Color(0xFF6200EE.toInt())
-                            }
-                        }
-                    )
+                val safeItemIcon = remember(account.iconResId) {
+                    getSafeIconId(context, account.iconResId ?: 0)
                 }
+                SelectionItemContent(
+                    name = getTranslatedName(account.name).toString(),
+                    isSelected = isSelected,
+                    icon = safeItemIcon,
+                    color = remember(account.colorHex) {
+                        try {
+                            Color(account.colorHex?.toColorInt() ?: 0xFF6200EE.toInt())
+                        } catch (e: Exception) {
+                            Color(0xFF6200EE.toInt())
+                        }
+                    }
+                )
             }
         )
     }
 
-    // KATEGORIYA TANLASH DIALOGI
+    // --- CATEGORY SELECTION DIALOG ---
     if (showCategoryDialog) {
         PremiumSelectionDialog(
             title = stringResource(Strings.category_label_placeholder),
@@ -116,14 +128,15 @@ fun MainFinanceSelection(
             onItemSelected = onCategorySelected,
             onDismiss = { showCategoryDialog = false },
             itemContent = { category, isSelected ->
-                category.iconResId?.let {
-                    SelectionItemContent(
-                        name = getTranslatedName(category.name).toString(),
-                        isSelected = isSelected,
-                        icon = it,
-                        color = Color(category.colorArgb),
-                    )
+                val safeItemIcon = remember(category.iconResId) {
+                    getSafeIconId(context, category.iconResId ?: 0)
                 }
+                SelectionItemContent(
+                    name = getTranslatedName(category.name).toString(),
+                    isSelected = isSelected,
+                    icon = safeItemIcon,
+                    color = Color(category.colorArgb),
+                )
             }
         )
     }

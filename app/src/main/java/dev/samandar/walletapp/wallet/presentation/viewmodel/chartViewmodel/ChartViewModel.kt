@@ -7,8 +7,14 @@ import dev.samandar.walletapp.wallet.domain.model.TransactionType
 import dev.samandar.walletapp.wallet.domain.usecase.transaction.GetAllTransactions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.samandar.walletapp.R
+import dev.samandar.walletapp.wallet.data.local.dao.TransactionDao
+import dev.samandar.walletapp.wallet.data.local.entity.TransactionEntity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
+import kotlin.random.Random
 
 data class CategoryData(
     val categoryName: String,
@@ -141,7 +147,7 @@ fun getCategoryColor(categoryName: String): Color {
 
 @HiltViewModel
 class ChartViewModel @Inject constructor(
-    private val getAllTransactions: GetAllTransactions
+    private val getAllTransactions: GetAllTransactions,
 ) : ViewModel() {
 
     // 1. Ma'lumotlarni bitta UI State ichida birlashtiramiz
@@ -186,5 +192,6 @@ class ChartViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = ChartUiState()
         )
+
 
 }

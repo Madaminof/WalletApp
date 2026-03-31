@@ -279,7 +279,6 @@
     <string name="content_description_filter">Filter button</string>
 
     <string name="no_data_available">No data available</string>
-    <string name="total_label">Total</string>
     <string name="add_transactions_to_see_chart">Add transactions to see chart</string>
 
     <string name="no_transactions_title">No transactions found</string>
@@ -575,9 +574,120 @@
     <string name="btn_get_started">Get Started</string>
     <string name="ob_title_4">Smart QR Scanner</string>
     <string name="ob_desc_4">Scan receipts and add transactions in a second. No more manual data entry!</string>
-
+    <string name="ob_title_split">Split the Bill</string>
+    <string name="ob_desc_split">Share common expenses with friends easily and fairly</string>
     <string name="onboarding_currency_title">Base Currency</string>
     <string name="onboarding_currency_description">Select the base currency\nfor all your calculations</string>
     <string name="coming_soon">Coming soon</string>
+
+
+    <string name="export_header_title">Report</string>
+    <string name="export_header_subtitle">All financial data in a single file</string>
+    <string name="export_header">Generate Report</string>
+    <string name="section_period">Report Period</string>
+    <string name="section_transaction_type">Transaction Type</string>
+    <string name="section_category">Category</string>
+    <string name="section_account">Wallet</string>
+
+    <string name="btn_select">Select</string>
+    <string name="btn_cancel">Cancel</string>
+
+    <string name="type_all">All</string>
+    <string name="type_income">Income</string>
+    <string name="type_expense">Expense</string>
+
+    <string name="btn_export_pdf">Download PDF Report</string>
+    <string name="error_no_data">No data found to export</string>
+    <string name="export_select_format">SELECT FORMAT</string>
+    <string name="export_action">Export Data</string>
+    <string name="export_cancel">Cancel</string>
+    <string name="export_pdf_desc">Document (PDF)</string>
+    <string name="export_excel_desc">Spreadsheet (XLSX)</string>
+    <string name="export_csv_desc">Data Set (CSV)</string>
+
+    <string name="filter_cards">Cards</string>
+    <string name="filter_cash">Cash</string>
+
+    <string name="account_properties">Properties</string>
+    <string name="transaction_history">Transaction History</string>
+
+    <string name="account_name">Account Name</string>
+    <string name="placeholder_account_name">e.g. My Salary Card</string>
+
+    <string name="title_select_account_type">Select Account Type</string>
+    <string name="type_card_title">Bank Card</string>
+    <string name="type_card_subtitle">Uzcard, Humo, Visa, Mastercard</string>
+    <string name="type_cash_title">Cash</string>
+    <string name="type_cash_subtitle">For wallet or physical cash</string>
+    <string name="add_card">Add Card</string>
+    <string name="add_cash">Add Cash</string>
+    <string name="card_name">Card Name</string>
+    <string name="wallet_name">Wallet Name</string>
+    <string name="card_number">Card Number</string>
+    <string name="account_type">Account Type</string>
+    <string name="card">Card</string>
+    <string name="cash">Cash</string>
+    <string name="balance_and_currency">Balance and Currency</string>
+    <string name="select_icon">Select Icon</string>
+    <string name="select_color">Select Color</string>
+    <string name="save_account">Save Account</string>
+
+    <string name="quick_split_bill">Split Bill</string>
+
+
+    // hisobni bo'lish funksiyasi
+    <string name="history_title">Bill History</string>
+    <string name="no_bills_yet">No bills yet</string>
+    <string name="add_bill_hint">Press + to add a new bill</string>
+    <string name="unnamed_bill">Unnamed Bill</string>
+
+    <string name="bill_name_label">Bill Title</string>
+    <string name="bill_name_placeholder">e.g. Dinner with friends</string>
+    <string name="who_is_there">Who\'s here?</string>
+    <string name="no_participants">No participants</string>
+    <string name="assign_items">Assign Items</string>
+    <string name="no_items_added">No items added</string>
+    <string name="add_item_button">Add Item</string>
+
+    <string name="extra_charges">Extra Charges</string>
+    <string name="service_charge">Service (%)</string>
+    <string name="tax_charge">Tax (%)</string>
+    <string name="discount_label">Discount</string>
+
+    <string name="new_item_title">New Item</string>
+    <string name="new_item_desc">Fill in the details to add to the list</string>
+    <string name="item_name">Item Name</string>
+    <string name="item_price">Price</string>
+    <string name="item_qty">Qty</string>
+    <string name="add_to_list">Add to List</string>
+
+    <string name="new_participant_title">New Participant</string>
+    <string name="new_participant_desc">Enter participant name</string>
+    <string name="participant_name">Name</string>
+    <string name="participant_name_placeholder">e.g. Samandar</string>
+    <string name="add_participant">Add Participant</string>
+
+    <string name="delete_bill_title">Delete Bill</string>
+    <string name="delete_bill_desc">The bill will be deleted. This cannot be undone.</string>
+
+    <string name="invoice_title">INVOICE</string>
+    <string name="subtotal">Subtotal:</string>
+    <string name="service_fee">Service Fee</string>
+    <string name="tax_fee">Tax</string>
+    <string name="discount_fee">Discount</string>
+    <string name="total_payment">TOTAL PAYMENT</string>
+    <string name="total_all">Total</string>
+    <string name="footer_text">Calculated via Wallet Analyst</string>
+    <string name="select_currency">Select currency</string>
+    <string name="currency_status_syncing">Updating…</string>
+    <string name="currency_status_offline">No internet connection</string>
+    <string name="currency_status_default">Central Bank rates</string>
+
+    <string name="per_person">PER PERSON</string>
+    <string name="select_participant">Select a participant</string>
+    <string name="participants_assigned">assigned</string>
+    <string name="unit_quantity">pcs</string>
+    <string name="total_label">TOTAL</string>
+    <string name="all_participants">For everyone</string>
 
 </resources>

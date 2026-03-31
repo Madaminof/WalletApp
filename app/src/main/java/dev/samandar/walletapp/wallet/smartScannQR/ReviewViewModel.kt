@@ -3,7 +3,8 @@ package dev.samandar.walletapp.wallet.smartScannQR
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.data.currencyManagerApi.repository.CurrencyRepository
+import dev.samandar.walletapp.wallet.domain.model.account.Account
 import dev.samandar.walletapp.wallet.domain.model.Category
 import dev.samandar.walletapp.wallet.domain.model.Transaction
 import dev.samandar.walletapp.wallet.domain.model.TransactionType
@@ -24,7 +25,8 @@ class ReviewViewModel @Inject constructor(
     private val saveReceiptUseCase: SaveReceiptUseCase,
     private val saveTransaction: SaveTransaction,
     private val getAccountsUseCase: GetAllAccounts,
-    private val getCategoriesUseCase: GetCategoriesByType
+    private val getCategoriesUseCase: GetCategoriesByType,
+    private val currencyRepository: CurrencyRepository // 👈 Kurslar uchun
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ReviewUiState())
@@ -95,18 +97,27 @@ class ReviewViewModel @Inject constructor(
 
             val result = withContext(Dispatchers.IO) {
                 runCatching {
+                    // 1. Unikal ID yaratish
                     val transactionId = UUID.randomUUID().toString()
 
+                    // 2. Eslatma (Note) tayyorlash
                     val transactionNote = buildString {
                         append("QR Scanner: ${receipt.merchantName}")
                         if (!receipt.note.isNullOrBlank()) {
-                            append("\n\nMahsulotlar:\n${receipt.note}")
+                            append("\n\nBatafsil:\n${receipt.note}")
                         }
                     }
 
+                    // 3. Tranzaksiya obyektini yaratish
+                    // DIQQAT: SaveTransaction UseCase-ing 'amount'ni UZSda qabul qilib,
+                    // uni account valyutasiga o'zi o'giradi.
                     val transaction = Transaction(
                         id = transactionId,
-                        amount = receipt.totalAmount,
+                        amount = receipt.totalAmount,        // Bazaviy summa (UZS)
+                        amountInBase = receipt.totalAmount,  // Statistika uchun (UZS)
+                        originalAmount = receipt.totalAmount,
+                        originalCurrency = "UZS",            // QR cheklar doim so'mda
+                        exchangeRate = 1.0,
                         type = TransactionType.EXPENSE,
                         note = transactionNote,
                         date = receipt.date,
@@ -115,23 +126,29 @@ class ReviewViewModel @Inject constructor(
                         originalUrl = receipt.originalUrl
                     )
 
+                    // 4. Chek obyektini yangilangan ID bilan tayyorlash
                     val finalReceipt = receipt.copy(
                         transactionId = transactionId,
                         items = receipt.items.map { it.copy(categoryId = category.id) }
                     )
 
+                    // 5. Ma'lumotlarni ketma-ket saqlash
+                    // SaveTransaction balansni yangilaydi, SaveReceiptUseCase chek detalini saqlaydi
                     saveTransaction(transaction).getOrThrow()
                     saveReceiptUseCase(finalReceipt)
                 }
             }
 
-            if (result.isSuccess) {
-                onSuccess()
-                _uiState.update { it.copy(isSaving = false) }
-            } else {
+            // 6. Natijani UI-ga qaytarish
+            result.onSuccess {
+                withContext(Dispatchers.Main) {
+                    _uiState.update { it.copy(isSaving = false) }
+                    onSuccess()
+                }
+            }.onFailure { error ->
                 _uiState.update { it.copy(
                     isSaving = false,
-                    errorMessage = "Xatolik yuz berdi. Qayta urinib ko'ring."
+                    errorMessage = error.message ?: "Saqlashda kutilmagan xato yuz berdi"
                 ) }
             }
         }

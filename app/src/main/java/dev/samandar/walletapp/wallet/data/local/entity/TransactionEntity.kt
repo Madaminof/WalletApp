@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import dev.samandar.walletapp.wallet.data.local.entity.account.AccountEntity
 
 @Entity(
     tableName = "transactions",
@@ -22,7 +23,11 @@ import androidx.room.PrimaryKey
 data class TransactionEntity(
     @PrimaryKey
     val id: String,
-    val amount: Double,
+    val amount: Double, // UZS ga aylantirib saqlanadiga amount
+    val originalAmount: Double,   // Foydalanuvchi kiritgan (masalan: 15.0) $
+    val originalCurrency: String, // Valyuta kodi (masalan: "USD")
+    val amountInBase: Double,
+    val exchangeRate: Double, // O'sha paytdagi kurs (masalan: 12850.0)
     val type: String,
     val categoryId: String,
     val accountId: String,
@@ -38,14 +43,4 @@ data class CategoryEntity(
     val type: String,
     val iconResId: Int? = null,
     val colorArgb: Long
-)
-
-@Entity(tableName = "accounts")
-data class AccountEntity(
-    @PrimaryKey val id: String,
-    val name: String,
-    val balance: Double = 0.0,
-    val colorHex: String? = null,
-    val iconResId: Int? = null
-
 )

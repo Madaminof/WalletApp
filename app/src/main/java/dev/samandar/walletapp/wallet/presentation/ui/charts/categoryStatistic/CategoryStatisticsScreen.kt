@@ -1,6 +1,8 @@
 package dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic
 
 import CommonTabRow
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -29,14 +31,16 @@ import dev.samandar.walletapp.wallet.presentation.ui.topbars.topbarScreen.Custom
 import dev.samandar.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import java.net.URLEncoder
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.TimeFilter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CategoryStatisticsScreen(
     categoryViewModel: CategoryStatisticsViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val uiState by categoryViewModel.statisticsUiState.collectAsState()
+    val uiState by categoryViewModel.statisticsUiState.collectAsStateWithLifecycle()
     val selectedFilter by categoryViewModel.selectedFilter.collectAsState()
     val selectedTabType by categoryViewModel.selectedTab.collectAsState()
 

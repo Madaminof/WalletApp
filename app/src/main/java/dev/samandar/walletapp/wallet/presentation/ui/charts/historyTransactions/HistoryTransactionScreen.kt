@@ -56,6 +56,7 @@ enum class TabItem(val titleResId: Int) {
 fun HistorytransactionScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navController: NavController,
+    accountId: String? = null
 ) {
     val transactions by viewModel.transactions.collectAsState()
     var isSortMenuExpanded by remember { mutableStateOf(false) }
@@ -66,21 +67,23 @@ fun HistorytransactionScreen(
     var isSearchActive by remember { mutableStateOf(false) }
 
     // Tanlangan vaqtga qarab filtrlash
-    val filteredTransactions = remember(transactions, currentPeriod, searchQuery) {
+    val filteredTransactions = remember(transactions, currentPeriod, searchQuery, accountId) {
         transactions.filter { transaction ->
-            // Avval vaqt bo'yicha filtrlaymiz
+            // 1. Agar accountId kelsa, faqat o'sha account tranzaksiyalarini olamiz
+            val matchesAccount = accountId == null || transaction.account.id == accountId
+
+            // 2. Vaqt bo'yicha filtr
             val isInPeriod = when (currentPeriod) {
                 TransactionPeriod.ALL -> true
                 TransactionPeriod.MONTHLY -> DateFilterUtils.isSameMonth(transaction.date)
                 TransactionPeriod.YEARLY -> DateFilterUtils.isSameYear(transaction.date)
             }
 
-            // Keyin qidiruv matni bo'yicha (kategoriya yoki eslatma orqali)
-            val matchesSearch =
-                transaction.category.name.contains(searchQuery, ignoreCase = true) ||
-                        (transaction.note?.contains(searchQuery, ignoreCase = true) ?: false)
+            // 3. Search bo'yicha filtr
+            val matchesSearch = transaction.category.name.contains(searchQuery, ignoreCase = true) ||
+                    (transaction.note?.contains(searchQuery, ignoreCase = true) ?: false)
 
-            isInPeriod && matchesSearch
+            matchesAccount && isInPeriod && matchesSearch
         }.sortedByDescending { it.date }
     }
     val all = stringResource(Strings.summary_balance_all)
@@ -192,7 +195,7 @@ fun HistorytransactionScreen(
                         .fillMaxWidth()
                         .weight(1f),
                     verticalArrangement = Arrangement.spacedBy(6.dp),
-                    contentPadding = PaddingValues(bottom = 60.dp, top = 6.dp)
+                    contentPadding = PaddingValues(bottom = 70.dp, top = 6.dp)
                 ) {
                     groupedTransactions.forEach { (date, dailyItems) ->
                         item(key = date) {

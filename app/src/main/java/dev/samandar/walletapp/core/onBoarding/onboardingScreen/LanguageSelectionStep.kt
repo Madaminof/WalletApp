@@ -96,8 +96,17 @@ fun LanguageSelectionStep(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     availableLanguages.forEach { lang ->
+                        // Har bir til uchun mos bayroqni aniqlaymiz
+                        val flag = when (lang.code) {
+                            "uz" -> "🇺🇿"
+                            "ru" -> "🇷🇺"
+                            "en" -> "🇺🇸"
+                            else -> "🏳️"
+                        }
+
                         LanguageCard(
                             label = lang.displayName,
+                            flag = flag, // Bayroqni uzatamiz
                             onClick = { onLanguageSelected(lang.code) }
                         )
                     }
@@ -112,6 +121,7 @@ fun LanguageSelectionStep(
 @Composable
 fun LanguageCard(
     label: String,
+    flag: String, // Yangi parametr
     onClick: () -> Unit
 ) {
     var isPressed by remember { mutableStateOf(false) }
@@ -140,16 +150,23 @@ fun LanguageCard(
     ) {
         Row(
             modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            // Bayroq uchun Emoji (Shrift va rangga ta'sir qilmaydi)
+            Text(
+                text = flag,
+                fontSize = 24.sp,
+                modifier = Modifier.padding(end = 16.dp)
+            )
+
             Text(
                 text = label,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 ),
-                color = MaterialTheme.colorScheme.onTertiary
+                color = MaterialTheme.colorScheme.onTertiary,
+                modifier = Modifier.weight(1f) // Textni markazga surish uchun
             )
 
             Icon(

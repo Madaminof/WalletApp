@@ -12,12 +12,15 @@ android {
     namespace = "dev.samandar.walletapp"
     compileSdk = 35
 
-    defaultConfig { 
+    ndkVersion = "28.0.12433566"
+
+
+    defaultConfig {
         applicationId = "dev.samandar.walletapp"
         minSdk = 24
         targetSdk = 35 // Android 15 qo'llab-quvvatlash
-        versionCode = 17 // Google Console uchun doim oshirib boring
-        versionName = "1.13"
+        versionCode = 33 // Google Console uchun doim oshirib boring
+        versionName = "1.28"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -61,17 +64,38 @@ android {
     bundle {
         language.enableSplit = false
     }
+
+    packaging {
+        resources {
+            // Dublikat bo'lishi mumkin bo'lgan barcha litsenziya fayllari
+            excludes += "META-INF/LGPL-2.1.md"
+            excludes += "META-INF/LGPL-2.1.txt"
+            excludes += "META-INF/MPL-2.0.txt"
+            excludes += "META-INF/AL2.0"
+            excludes += "META-INF/LGPL2.1"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/NOTICE.md"
+
+            // Agar yana shunga o'xshash xato chiqsa, barcha litsenziyalarni rad etish:
+            excludes += "META-INF/LICENSE*"
+            excludes += "META-INF/NOTICE*"
+            excludes += "META-INF/ASL2.0"
+        }
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
 }
 
 dependencies {
     // --- Compose & UI ---
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
-    implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.foundation)
-    implementation(libs.play.services.mlkit.barcode.scanning)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.androidx.compose.ui.text)
     debugImplementation(libs.androidx.ui.tooling)
     implementation("androidx.compose.material:material-icons-extended")
 
@@ -90,6 +114,7 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.common)
     implementation(libs.androidx.hilt.work)
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
 
     // --- Firebase ---
     implementation(platform(libs.firebase.bom))
@@ -119,8 +144,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout.compose)
 
 
-    implementation ("com.google.mlkit:text-recognition:16.0.0")
-    val camerax_version = "1.3.1"
+    val camerax_version = "1.4.1"
     implementation ("androidx.camera:camera-core:${camerax_version}")
     implementation ("androidx.camera:camera-camera2:${camerax_version}")
     implementation ("androidx.camera:camera-lifecycle:${camerax_version}")
@@ -134,9 +158,8 @@ dependencies {
 
     implementation("org.jsoup:jsoup:1.17.2")
     implementation("com.google.mlkit:text-recognition:16.0.1")
-    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0") // Bu yaxshi, lekin toml-dan kelsa yaxshiroq
 
-    
 
     // --- Google Services ---
     implementation(libs.play.services.location)
@@ -147,12 +170,16 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation(libs.androidx.material3)
 
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
-    implementation(libs.firebase.crashlytics) // Toml ichidagi SDK'ni chaqiradi
     implementation("com.google.firebase:firebase-analytics")
+
+    implementation("com.github.librepdf:openpdf:1.3.30")
+
+    implementation("net.sourceforge.jexcelapi:jxl:2.6.12")
+
 
 
 }

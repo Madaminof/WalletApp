@@ -1,6 +1,7 @@
 package dev.samandar.walletapp.wallet.presentation.ui.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -20,7 +21,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,11 +42,14 @@ import dev.samandar.walletapp.navigation.Screen
 import dev.samandar.walletapp.ui.theme.budjets
 import dev.samandar.walletapp.ui.theme.debts
 import dev.samandar.walletapp.ui.theme.shoppingList
+import dev.samandar.walletapp.ui.theme.splitBill
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.home.budgetCard.BudgetCard
 import dev.samandar.walletapp.wallet.presentation.ui.home.cardStatistics.ExpenseStatisticCardPremium
 import dev.samandar.walletapp.wallet.presentation.ui.home.quickCards.QuickInCards
 import dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCardPremium.TotalBalanceCardPremium
+import dev.samandar.walletapp.wallet.presentation.viewmodel.HomeViewModel
+import dev.samandar.walletapp.wallet.presentation.viewmodel.chartViewmodel.ChartViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("SuspiciousIndentation")
@@ -55,6 +61,8 @@ fun HomeScreen(
     listState: LazyListState,
 ) {
     val budgetState by budgetViewModel.budgetCardState.collectAsState()
+    val viewModel: ChartViewModel = hiltViewModel()
+
     val homeItems = remember(budgetState) {
         listOf<@Composable () -> Unit>(
             { TotalBalanceCardPremium() },
@@ -95,7 +103,7 @@ fun HomeScreen(
                 }
             }
             item {
-                Spacer(modifier = Modifier.height(60.dp))
+                Spacer(modifier = Modifier.height(70.dp))
             }
         }
     }
@@ -161,6 +169,7 @@ fun QuickActionsRow(onActionClick: (String) -> Unit) {
                 R.string.quick_shoppingList,
                 Screen.ShoppingLists.route
             ),
+            Triple(R.drawable.splitt_bill_ic, R.string.quick_split_bill, Screen.SplitBillList.route),
             Triple(R.drawable.debt_ic2, R.string.quick_Debts, Screen.DebtsScreen.route),
             Triple(
                 R.drawable.statistic_icon,
@@ -176,6 +185,7 @@ fun QuickActionsRow(onActionClick: (String) -> Unit) {
                 color = when (action.second) {
                     R.string.quick_budjets -> budjets
                     R.string.quick_shoppingList -> shoppingList
+                    R.string.quick_split_bill -> splitBill // Split uchun yashilroq/yangiroq rang
                     R.string.quick_Debts -> debts
                     else -> MaterialTheme.colorScheme.primary
                 },

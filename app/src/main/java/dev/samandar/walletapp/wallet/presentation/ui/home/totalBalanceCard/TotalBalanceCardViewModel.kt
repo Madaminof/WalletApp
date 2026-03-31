@@ -3,7 +3,7 @@ package dev.samandar.walletapp.wallet.presentation.ui.home.totalBalanceCard
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.domain.model.account.Account
 import dev.samandar.walletapp.wallet.domain.model.Transaction
 import dev.samandar.walletapp.wallet.domain.model.TransactionType
 import dev.samandar.walletapp.wallet.domain.usecase.account.GetAllAccounts

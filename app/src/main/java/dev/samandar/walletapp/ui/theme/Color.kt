@@ -19,7 +19,7 @@ val budjets = Color(0xFF786FA6)         // Yumshoq binafsha (Muted Purple)
 val balance = Color(0xFF26DE81)         // Yangi pul rangi (Fresh Green)
 val shoppingList = Color(0xFFE76E6D)    // Mayin marjon (Soft Coral)
 val debts = Color(0xFFC65C7A)           // To'q pushti (Old Rose)
-val goals = Color(0xFF3DC1D3)           // Firuza (Cyan Pastel)
+val splitBill = Color(0xFF4759C1)           // Firuza (Cyan Pastel)
 
 // --- NAVIGATSIYA VA TAHLIL (Navigation & Analysis) ---
 val Home = Color(0xFF778BEB)            // Ishonchli moviy (Soft Blue)

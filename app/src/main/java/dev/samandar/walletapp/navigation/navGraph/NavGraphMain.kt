@@ -20,6 +20,7 @@ import dev.samandar.walletapp.wallet.presentation.viewmodel.AccountViewModel
 import dev.samandar.walletapp.wallet.presentation.viewmodel.HomeViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.charts.categoryStatistic.viewmodel.CategoryStatisticsViewModel
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.exportData.viewmodel.ExportViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalAnimationApi::class)
@@ -29,11 +30,12 @@ fun NavGraphMain(
     addAccountViewModel: AccountViewModel,
     budgetViewModel: BudgetViewModel,
     categoryViewModel: CategoryStatisticsViewModel,
-    startDestination: String
+    startDestination: String,
+    exportViewModel: ExportViewModel
 ) {
     val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentRoute = navBackStackEntry?.destination?.route?.substringBefore("?")
     val listState = rememberLazyListState()
     var showAddSheet by remember { mutableStateOf(false) }
 
@@ -59,7 +61,10 @@ fun NavGraphMain(
             }
 
             homeAndBudgetGraph(navController, budgetViewModel)
-            featuresGraph(navController, viewModel, addAccountViewModel, categoryViewModel)
+            featuresGraph(
+                navController, viewModel, addAccountViewModel, categoryViewModel,
+                export = exportViewModel
+            )
             scannerGraph(navController)
         }
 

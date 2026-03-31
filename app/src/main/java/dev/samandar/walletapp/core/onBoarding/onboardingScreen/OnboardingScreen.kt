@@ -60,14 +60,14 @@ fun OnboardingScreen(
                         }
                     )
                 }
-                OnboardingStep.CURRENCY -> {
+                /*OnboardingStep.CURRENCY -> {
                     CurrencySelectionStep(
                         onCurrencySelected = { currencyCode ->
                             viewModel.onCurrencySelected(context, currencyCode)
                         },
                         onBack = { viewModel.navigateBack() } // UI dagi orqaga tugmasi uchun
                     )
-                }
+                }*/
                 OnboardingStep.PAGER -> {
                     OnboardingPagerStep(
                         onFinish = {

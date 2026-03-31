@@ -1,8 +1,14 @@
 package dev.samandar.walletapp.wallet.domain.model
 
+import dev.samandar.walletapp.wallet.domain.model.account.Account
+
 data class Transaction(
     val id: String,
-    val amount: Double,
+    val amount: Double, // UZS ga aylantirib saqlanadiga amount
+    val originalAmount: Double,   // Foydalanuvchi kiritgan (masalan: 15.0) $
+    val originalCurrency: String, // Valyuta kodi (masalan: "USD")
+    val amountInBase: Double,
+    val exchangeRate: Double, // O'sha paytdagi kurs (masalan: 12850.0)
     val type: TransactionType,
     val category: Category,
     val account: Account,
@@ -17,15 +23,6 @@ data class Category(
     val iconResId: Int? = null,
     val colorArgb: Long
 )
-data class Account(
-    val id: String,
-    val name: String,
-    val initialBalance: Double,
-    val colorHex: String? = null,
-    val iconResId: Int? = null
-
-)
-
 enum class TransactionType {
     INCOME, EXPENSE
 }

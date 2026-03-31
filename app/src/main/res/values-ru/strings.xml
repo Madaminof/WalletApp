@@ -271,7 +271,6 @@
     <string name="content_description_filter">Кнопка фильтра</string>
 
     <string name="no_data_available">Нет доступных данных</string>
-    <string name="total_label">Итого</string>
     <string name="add_transactions_to_see_chart">Добавьте транзакции, чтобы увидеть график</string>
 
     <string name="no_transactions_title">Транзакции не найдены</string>
@@ -307,7 +306,8 @@
     <string name="sort_option_date_desc">Дата (Новые)</string>
     <string name="sort_option_amount_desc">Сумма (Макс.)</string>
     <string name="sort_option_amount_asc">Сумма (Мин.)</string>
-    <string name="sort_button_save">Сохранить (%s)</string> <string name="sort_content_desc_selected">Выбрано</string>
+    <string name="sort_button_save">Сохранить (%s)</string>
+    <string name="sort_content_desc_selected">Выбрано</string>
     <string name="sort_state_date_desc">Дата Новые</string>
     <string name="sort_state_amount_desc">Сумма Макс</string>
     <string name="sort_state_amount_asc">Сумма Мин</string>
@@ -472,7 +472,6 @@
     <string name="title_edit_note">Изменить заметку</string>
 
 
-
     // Categorylar
     <string name="acc_cash">Наличные</string>
     <string name="acc_card">Карта</string>
@@ -552,7 +551,6 @@
     <string name="unknown_address">Адрес не определен</string>
 
 
-
     // onBoarding
     <string name="ob_title_1">Умные бюджеты</string>
     <string name="ob_desc_1">Устанавливайте лимиты на расходы и полностью контролируйте, куда уходят ваши деньги.</string>
@@ -563,12 +561,121 @@
     <string name="btn_get_started">Начать</string>
     <string name="ob_title_4">Умный QR Сканер</string>
     <string name="ob_desc_4">Сканируйте чеки и добавляйте транзакции за секунду. Больше не нужно вводить цифры вручную!</string>
-
+    <string name="ob_title_split">Разделение счета</string>
+    <string name="ob_desc_split">Легко и честно распределяйте общие расходы с друзьями</string>
     <string name="onboarding_currency_title">Основная валюта</string>
     <string name="onboarding_currency_description">Выберите основную валюту\nдля всех ваших расчетов</string>
 
     <string name="coming_soon">Скоро</string>
 
+    <string name="export_header_title">Отчет</string>
+    <string name="export_header_subtitle">Все финансовые данные в одном файле</string>
+    <string name="export_header">Формирование отчета</string>
+    <string name="section_period">Период отчета</string>
+    <string name="section_transaction_type">Тип транзакции</string>
+    <string name="section_category">Категория</string>
+    <string name="section_account">Кошелек</string>
+
+
+    <string name="btn_select">Выбрать</string>
+    <string name="btn_cancel">Отмена</string>
+
+    <string name="type_all">Все</string>
+    <string name="type_income">Доход</string>
+    <string name="type_expense">Расход</string>
+
+    <string name="btn_export_pdf">Скачать PDF отчет</string>
+    <string name="error_no_data">Данные для экспорта не найдены</string>
+    <string name="export_select_format">ВЫБERИТЕ ФОРМАТ</string>
+    <string name="export_action">Экспортировать</string>
+    <string name="export_cancel">Отмена</string>
+    <string name="export_pdf_desc">Документ (PDF)</string>
+    <string name="export_excel_desc">Таблица (XLSX)</string>
+    <string name="export_csv_desc">Данные (CSV)</string>
+
+    <string name="filter_cards">Карты</string>
+    <string name="filter_cash">Наличные</string>
+
+    <string name="account_properties">Свойства</string>
+    <string name="transaction_history">История транзакций</string>
+
+    <string name="account_name">Название счета</string>
+    <string name="placeholder_account_name">Например: Моя зарплатная карта</string>
+
+    <string name="title_select_account_type">Выберите тип счета</string>
+    <string name="type_card_title">Пластиковая карта</string>
+    <string name="type_card_subtitle">Uzcard, Humo, Visa, Mastercard</string>
+    <string name="type_cash_title">Наличные</string>
+    <string name="type_cash_subtitle">Для кошелька или наличных денег</string>
+    <string name="add_card">Добавить карту</string>
+    <string name="add_cash">Добавить наличные</string>
+    <string name="card_name">Название карты</string>
+    <string name="wallet_name">Название кошелька</string>
+    <string name="card_number">Номер карты</string>
+    <string name="account_type">Тип счета</string>
+    <string name="card">Карта</string>
+    <string name="cash">Наличные</string>
+    <string name="balance_and_currency">Баланс и валюта</string>
+    <string name="select_icon">Выберите иконку</string>
+    <string name="select_color">Выберите цвет</string>
+    <string name="save_account">Сохранить счет</string>
+
+    <string name="quick_split_bill">Разделить счет</string>
+
+    // hisobni bolish funksiyasi
+    <string name="history_title">История счетов</string>
+    <string name="no_bills_yet">Счетов пока нет</string>
+    <string name="add_bill_hint">Нажмите кнопку +, чтобы добавить новый счет</string>
+    <string name="unnamed_bill">Без названия</string>
+
+    <string name="bill_name_label">Название счета</string>
+    <string name="bill_name_placeholder">Например: Чайхана с друзьями</string>
+    <string name="who_is_there">Кто участвует?</string>
+    <string name="no_participants">Участников нет</string>
+    <string name="assign_items">Распределить товары</string>
+    <string name="no_items_added">Товары не добавлены</string>
+    <string name="add_item_button">Добавить товар</string>
+
+    <string name="extra_charges">Дополнительные расходы</string>
+    <string name="service_charge">Сервис (%)</string>
+    <string name="tax_charge">Налог (%)</string>
+    <string name="discount_label">Скидка</string>
+
+    <string name="new_item_title">Новый товар</string>
+    <string name="new_item_desc">Заполните данные для добавления в список</string>
+    <string name="item_name">Название товара</string>
+    <string name="item_price">Цена</string>
+    <string name="item_qty">Кол-во</string>
+    <string name="add_to_list">Добавить в список</string>
+
+    <string name="new_participant_title">Новый участник</string>
+    <string name="new_participant_desc">Введите имя участника</string>
+    <string name="participant_name">Имя</string>
+    <string name="participant_name_placeholder">Например: Самандар</string>
+    <string name="add_participant">Добавить участника</string>
+
+    <string name="delete_bill_title">Удалить счет</string>
+    <string name="delete_bill_desc">Счет будет удален навсегда. Это действие нельзя отменить.</string>
+
+    <string name="invoice_title">СЧЕТ-ФАКТУРА</string>
+    <string name="subtotal">Промежуточный итог:</string>
+    <string name="service_fee">Обслуживание</string>
+    <string name="tax_fee">Налог</string>
+    <string name="discount_fee">Скидка</string>
+    <string name="total_payment">ИТОГО К ОПЛАТЕ</string>
+    <string name="total_all">Всего</string>
+    <string name="footer_text">Рассчитано через Wallet Analyst</string>
+    <string name="select_currency">Выберите валюту</string>
+    <string name="currency_status_syncing">Обновление…</string>
+    <string name="currency_status_offline">Нет соединения с интернетом</string>
+    <string name="currency_status_default">Курсы Центрального банка</string>
+
+    <string name="per_person">НА ЧЕЛОВЕКА</string>
+    <string name="select_participant">Выберите участника</string>
+    <string name="participants_assigned">Привязано:</string>
+    <string name="unit_quantity">шт.</string>
+    <string name="total_label">ИТОГО</string>
+    <string name="all_participants">Для всех</string>
 
 
 </resources>

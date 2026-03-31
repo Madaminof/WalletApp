@@ -1,5 +1,7 @@
 package dev.samandar.walletapp.wallet.presentation.ui.budjets.addBudget
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
@@ -21,6 +23,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.wallet.domain.model.BudgetPeriod
@@ -29,11 +32,16 @@ import dev.samandar.walletapp.wallet.presentation.ui.budjets.BudgetViewModel
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.snackbar.ModernSnackbar
 import kotlinx.coroutines.delay
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddBudgetScreen(
     navController: NavController,
     viewModel: BudgetViewModel = hiltViewModel()
 ) {
+
+    val budgetState by viewModel.budgetCardState.collectAsStateWithLifecycle()
+    val currentCurrency = budgetState.currencySymbol
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()

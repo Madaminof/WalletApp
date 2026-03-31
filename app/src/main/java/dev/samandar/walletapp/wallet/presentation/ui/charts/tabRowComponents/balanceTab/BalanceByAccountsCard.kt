@@ -45,7 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.samandar.walletapp.R
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.domain.model.account.Account
 import dev.samandar.walletapp.wallet.presentation.ui.charts.tabRowComponents.CircularIconButton
 import dev.samandar.walletapp.wallet.presentation.ui.charts.tabRowComponents.getAccountColor
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
@@ -115,7 +115,7 @@ fun PremiumStackedAccountBar(
     isDarkBackground: Boolean = false
 ) {
 
-    val activeAccounts = remember(accounts) { accounts.filter { it.initialBalance.absoluteValue > 0.0 } }
+    val activeAccounts = remember(accounts) { accounts.filter { it.balance.absoluteValue > 0.0 } }
 
     val safeTotalBalance = if (totalBalance <= 0) 0.0001 else totalBalance
 
@@ -124,7 +124,7 @@ fun PremiumStackedAccountBar(
             .map { account ->
                 Triple(
                     getAccountColor(account, primaryColor),
-                    (account.initialBalance / safeTotalBalance).toFloat().coerceIn(0f, 1f),
+                    (account.balance / safeTotalBalance).toFloat().coerceIn(0f, 1f),
                     account
                 )
             }
@@ -204,7 +204,7 @@ fun PremiumStackedAccountBar(
                     )
                 }
                 Text(
-                    formatAmountWithCurrency(account.initialBalance),
+                    formatAmountWithCurrency(account.balance),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 13.sp,
                     color = textColor,

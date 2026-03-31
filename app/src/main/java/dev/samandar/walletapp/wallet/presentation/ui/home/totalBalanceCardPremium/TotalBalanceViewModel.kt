@@ -7,11 +7,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.utils.FilterKeys
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.data.currencyManagerApi.repository.CurrencyRepository
+import dev.samandar.walletapp.wallet.domain.model.account.Account
 import dev.samandar.walletapp.wallet.domain.model.Transaction
 import dev.samandar.walletapp.wallet.domain.model.TransactionType
 import dev.samandar.walletapp.wallet.domain.usecase.account.GetAllAccounts
 import dev.samandar.walletapp.wallet.domain.usecase.transaction.GetAllTransactions
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.CurrencyManager
+import dev.samandar.walletapp.wallet.presentation.ui.otherScreens.settings.items.currency.changeUpdateAmount.CurrencyEvaluator
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -42,8 +45,12 @@ data class TotalBalanceUiStatePremium(
 class TotalBalanceViewModel @Inject constructor(
     private val getAllTransactions: GetAllTransactions,
     private val getAllAccounts: GetAllAccounts,
+    private val currencyRepository: CurrencyRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
+
+    private val ratesFlow = currencyRepository.allRates
+    private val currentCurrencyFlow = CurrencyManager.getCurrencyFlow() // Biz boya yaratgan Flow
 
     private val filterAllTimeLabel by lazy { context.getString(R.string.filter_all) }
 
@@ -53,8 +60,46 @@ class TotalBalanceViewModel @Inject constructor(
     private val _accountFilterState = MutableStateFlow(Pair(emptyList<Account>(), emptySet<String>()))
     private val _isFilterDialogOpen = MutableStateFlow(false)
 
-    private val _cardState = MutableStateFlow(TotalBalanceUiStatePremium())
-    val cardState: StateFlow<TotalBalanceUiStatePremium> = _cardState.asStateFlow()
+
+    val cardState: StateFlow<TotalBalanceUiStatePremium> = combine(
+        getAllTransactions(null),
+        _selectedFilter,
+        _currentPeriodStart,
+        _accountFilterState,
+        _isFilterDialogOpen,
+        ratesFlow,
+        currentCurrencyFlow
+    ) { array ->
+        val transactions = array[0] as List<Transaction>
+        val filter = array[1] as String
+        val periodStart = array[2] as Long
+        val accountPair = array[3] as Pair<List<Account>, Set<String>>
+        val isDialogOpen = array[4] as Boolean
+        val rates = array[5] as List<dev.samandar.walletapp.wallet.data.currencyManagerApi.entities.CurrencyRateEntity>
+        val currentCurrency = array[6] as String
+
+        val convertedTransactions = transactions.map { transaction ->
+            val displayAmount = CurrencyEvaluator.convert(
+                amount = transaction.amount,
+                currentCurrency = currentCurrency,
+                rates = rates
+            )
+            transaction.copy(amount = displayAmount)
+        }
+
+        processBalanceData(
+            allTransactions = convertedTransactions,
+            filter = filter,
+            periodStart = periodStart,
+            accountPair = accountPair,
+            isDialogOpen = isDialogOpen
+        ).copy(isLoading = false)
+
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = TotalBalanceUiStatePremium(isLoading = true)
+    )
 
     init {
         // 1. Hisoblarni yuklash va boshlang'ich tanlovni o'rnatish
@@ -66,19 +111,6 @@ class TotalBalanceViewModel @Inject constructor(
         }
 
         // 2. Barcha oqimlarni birlashtirib ma'lumotni qayta ishlash
-        combine(
-            getAllTransactions(null), // null - hamma turdagi tranzaksiyalar
-            _selectedFilter,
-            _currentPeriodStart,
-            _accountFilterState,
-            _isFilterDialogOpen
-        ) { transactions, filter, periodStart, accountPair, isDialogOpen ->
-
-            processBalanceData(transactions, filter, periodStart, accountPair, isDialogOpen)
-
-        }.onEach { newState ->
-            _cardState.value = newState.copy(isLoading = false)
-        }.launchIn(viewModelScope)
     }
 
     private fun processBalanceData(

@@ -21,6 +21,8 @@ import dev.samandar.walletapp.wallet.domain.model.TransactionType
 import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.getTranslatedName
 import dev.samandar.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.platform.LocalContext
+import dev.samandar.walletapp.wallet.presentation.ui.home.addTransaction.premiumAddTransaction.categories.helper.getSafeIconId
 
 
 data class Category(val name: String, val iconResId: Int?)
@@ -48,14 +50,24 @@ fun ExpenseTransactionItem(
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // --- Icon Box (O'zgarmadi) ---
             Box(
                 modifier = Modifier
                     .size(40.dp)
                     .background(iconColor.copy(0.1f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
+                val context = LocalContext.current
+                val safeIconId = remember(category.iconResId) {
+                    val id = category.iconResId ?: 0
+                    if (id > 0) {
+                        getSafeIconId(context, id)
+                    } else {
+                        R.drawable.ic_other
+                    }
+                }
                 Icon(
-                    painter = painterResource(id = category.iconResId ?: R.drawable.ic_other),
+                    painter = painterResource(id = safeIconId),
                     contentDescription = null,
                     tint = iconColor,
                     modifier = Modifier.size(22.dp)
@@ -64,6 +76,7 @@ fun ExpenseTransactionItem(
 
             Spacer(modifier = Modifier.width(14.dp))
 
+            // --- Category & Account Info (O'zgarmadi) ---
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = displayName.toString(),
@@ -71,28 +84,41 @@ fun ExpenseTransactionItem(
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onTertiary,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    lineHeight = 16.sp
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = accountName.toString(),
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onTertiary.copy(0.5f),
-                    maxLines = 1,
-                    lineHeight = 16.sp
+                    maxLines = 1
                 )
             }
 
-            val amountPrefix = if (transaction.type == TransactionType.EXPENSE) "-" else "+"
-            val amountColor = if (transaction.type == TransactionType.EXPENSE) expenseColor else incomeColor
+            // --- Amount Section (YANGILANDI) ---
+            Column(horizontalAlignment = Alignment.End) {
+                val amountPrefix = if (transaction.type == TransactionType.EXPENSE) "-" else "+"
+                val amountColor = if (transaction.type == TransactionType.EXPENSE) expenseColor else incomeColor
 
-            Text(
-                text = "$amountPrefix${formatAmountWithCurrency(transaction.amount)}",
-                fontSize = 13.sp,
-                color = amountColor,
-                fontWeight = FontWeight.Bold
-            )
+                // 1. Asosiy Balans (UZS da)
+                Text(
+                    text = "$amountPrefix${formatAmountWithCurrency(transaction.amount)}",
+                    fontSize = 13.sp,
+                    color = amountColor,
+                    fontWeight = FontWeight.Bold
+                )
+
+                // 2. Original Valyuta (Faqat UZS bo'lmasa ko'rsatiladi)
+                if (transaction.originalCurrency != "UZS") {
+                    Text(
+                        text = "$amountPrefix${transaction.originalAmount} ${transaction.originalCurrency}",
+                        fontSize = 10.sp,
+                        color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.4f),
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
         }
+
         if (showDivider) {
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 16.dp),

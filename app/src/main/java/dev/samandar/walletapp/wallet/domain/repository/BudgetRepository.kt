@@ -16,4 +16,7 @@ interface BudgetRepository {
         startDate: Long,
         endDate: Long
     ): Flow<Double>
+
+    suspend fun getAllBudgetsOnce(): List<Budget>
+    suspend fun updateBudgets(budgets: List<Budget>): Result<Unit>
 }

@@ -1,8 +1,7 @@
 [versions]
 # --- Core ---
-agp = "8.7.2"
+agp = "8.6.0"
 kotlin = "2.0.21"
-
 # --- AndroidX ---
 coreKtx = "1.15.0"
 appcompat = "1.7.1"
@@ -15,7 +14,7 @@ navigation = "2.8.5"
 work = "2.10.0"
 
 # --- Data & DB ---
-room = "2.6.1" # 2.7.0-alpha o'rniga barqaror versiya
+room = "2.6.1"
 hilt = "2.52"
 hiltCommon = "1.2.0"
 datastore = "1.1.1"
@@ -42,7 +41,8 @@ espresso = "3.6.1"
 playServicesMlkitBarcodeScanning = "18.3.1"
 
 googleFirebaseCrashlyticsPlugin = "3.0.2"
-firebaseCrashlyticsSdk = "19.3.0" # Oxirgi barqaror versiya
+firebaseCrashlyticsSdk = "19.3.0"
+uiText = "1.10.3" # Oxirgi barqaror versiya
 
 [libraries]
 # Kotlin Coroutines
@@ -107,6 +107,7 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 play-services-mlkit-barcode-scanning = { group = "com.google.android.gms", name = "play-services-mlkit-barcode-scanning", version.ref = "playServicesMlkitBarcodeScanning" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlyticsSdk" }
+androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
 
 
 [plugins]

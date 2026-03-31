@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.samandar.walletapp.R
 import dev.samandar.walletapp.utils.Strings
-import dev.samandar.walletapp.wallet.domain.model.Account
+import dev.samandar.walletapp.wallet.domain.model.account.Account
 import dev.samandar.walletapp.wallet.presentation.ui.charts.tabRowComponents.balanceTab.BalanceByAccountsCard
 import dev.samandar.walletapp.wallet.presentation.ui.charts.tabRowComponents.balanceTab.BalanceTrendCard
 import java.text.DecimalFormat

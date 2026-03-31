@@ -24,7 +24,12 @@ import dev.samandar.walletapp.wallet.domain.model.debt.Debt
 import dev.samandar.walletapp.wallet.presentation.utils.formatAmountWithCurrency
 
 @Composable
-fun DebtProgressCard(debt: Debt, accentColor: Color) {
+fun DebtProgressCard(
+    debt: Debt,
+    accentColor: Color,
+    totalConverted: Double,     // Konvertatsiya qilingan (masalan: 400.0)
+    remainingConverted: Double, // Konvertatsiya qilingan (masalan: 100.0)
+    ) {
     val progress = if (debt.totalAmount > 0)
         ((debt.totalAmount - debt.remainingAmount) / debt.totalAmount).toFloat().coerceIn(0f, 1f)
     else 0f
@@ -53,11 +58,9 @@ fun DebtProgressCard(debt: Debt, accentColor: Color) {
                         color = MaterialTheme.colorScheme.onTertiary.copy(0.6f)
                     )
                     Text(
-                        formatAmountWithCurrency(debt.remainingAmount),
-                        style = MaterialTheme.typography.headlineMedium.copy(
-                            fontWeight = FontWeight.Black,
-                            fontSize = 26.sp
-                        ),
+
+                        text = formatAmountWithCurrency(remainingConverted),
+                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
                         color = accentColor
                     )
                 }
@@ -93,7 +96,12 @@ fun DebtProgressCard(debt: Debt, accentColor: Color) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                DetailMiniInfo(stringResource(R.string.total_amount_label), formatAmountWithCurrency(debt.totalAmount))
+
+                DetailMiniInfo(
+                    stringResource(R.string.total_amount_label),
+                    formatAmountWithCurrency(totalConverted)
+                )
+
                 if (debt.isSettled) {
                     StatusBadge(stringResource(R.string.debt_status_settled), incomeColor)
                 } else {

@@ -9,6 +9,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
@@ -50,8 +51,8 @@ fun BudgetCard(
     spentAmount: Double = 0.0,
     navController: NavController
 ) {
-    val budgetPrimary = budjets.copy(0.15f)
-    val budgetSecondary = budjets.copy(0.15f)
+    val budgetPrimary = budjets.copy(0.08f)
+    val budgetSecondary = budjets.copy(0.08f)
 
     val progress = if (budgetLimit > 0) min((spentAmount / budgetLimit).toFloat(), 1.0f) else 0.0f
 
@@ -119,7 +120,7 @@ fun BudgetCard(
                             brush = Brush.verticalGradient(
                                 listOf(budgetPrimary, budgetSecondary)
                             ),
-                            shape = RoundedCornerShape(16.dp)
+                            shape = CircleShape
                         ),
                     contentAlignment = Alignment.Center
                 ) {

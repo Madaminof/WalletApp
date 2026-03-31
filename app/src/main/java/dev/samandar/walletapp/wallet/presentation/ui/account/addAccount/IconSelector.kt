@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,12 +28,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.samandar.walletapp.R
+import dev.samandar.walletapp.ui.theme.defaultColor
+import dev.samandar.walletapp.utils.Strings
 
 
 // Ikonkalar ro'yxati
@@ -49,28 +54,65 @@ val extendedColors = listOf(
 )
 val a = Color(0xFF009688)
 
-
 @Composable
 fun IconSelector(
     selectedIcon: Int,
+    selectedColor: Color,
     onIconSelected: (Int) -> Unit
 ) {
-    SelectorWrapper(title = stringResource(R.string.add_account_select_icon)) {
+    SelectorWrapper(title = stringResource(Strings.select_icon)) {
         items(extendedIcons) { iconRes ->
-            SelectionItem(
+            IconSelectionItem(
                 isSelected = iconRes == selectedIcon,
                 onClick = { onIconSelected(iconRes) },
-                content = {
-                    Icon(
-                        painter = painterResource(id = iconRes),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                        modifier = Modifier.size(32.dp)
-                    )
-                },
-                activeColor = MaterialTheme.colorScheme.primary
+                iconRes = iconRes,
+                activeColor = selectedColor
             )
         }
+    }
+}
+
+@Composable
+private fun IconSelectionItem(
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    iconRes: Int,
+    activeColor: Color
+) {
+    val scale by animateFloatAsState(
+        targetValue = if (isSelected) 1.1f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessLow
+        ),
+        label = "iconScale"
+    )
+
+    Box(
+        modifier = Modifier
+            .size(48.dp)
+            .scale(scale)
+            .clip(CircleShape)
+            .background(
+                if (isSelected) activeColor.copy(alpha = 0.12f)
+                else MaterialTheme.colorScheme.onTertiary.copy(0.03f)
+            )
+            .then(
+                if (isSelected) Modifier.border(
+                    width = 1.5.dp,
+                    color = activeColor.copy(alpha = 0.4f),
+                    shape = CircleShape
+                ) else Modifier
+            )
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(id = iconRes),
+            contentDescription = null,
+            tint = if (isSelected) activeColor else defaultColor,
+            modifier = Modifier.size(28.dp)
+        )
     }
 }
 
@@ -79,38 +121,14 @@ fun ColorSelector(
     selectedColor: Color,
     onColorSelected: (Color) -> Unit
 ) {
-    SelectorWrapper(title = stringResource(R.string.add_account_select_color)) {
+    SelectorWrapper(title = stringResource(Strings.select_color)) {
         items(extendedColors) { color ->
             SelectionItem(
                 isSelected = color == selectedColor,
                 onClick = { onColorSelected(color) },
-                content = {
-                    Box(modifier = Modifier.fillMaxSize().padding(8.dp).clip(RoundedCornerShape(16.dp)).background(color))
-                },
                 activeColor = color
             )
         }
-    }
-}
-
-
-@Composable
-private fun SelectorWrapper(
-    title: String,
-    content: LazyListScope.() -> Unit
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-            color = Color.Gray.copy(alpha = 0.8f),
-            modifier = Modifier.padding(start = 4.dp)
-        )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
-            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
-            content = content
-        )
     }
 }
 
@@ -118,29 +136,73 @@ private fun SelectorWrapper(
 private fun SelectionItem(
     isSelected: Boolean,
     onClick: () -> Unit,
-    content: @Composable () -> Unit,
     activeColor: Color
 ) {
     val scale by animateFloatAsState(
-        targetValue = if (isSelected) 1.15f else 1f,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        targetValue = if (isSelected) 1.1f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessLow
+        ),
         label = "scale"
     )
 
     Box(
         modifier = Modifier
-            .size(60.dp)
+            .size(48.dp)
             .scale(scale)
-            .clip(RoundedCornerShape(16.dp))
-            .background(if (isSelected) activeColor.copy(0.3f) else MaterialTheme.colorScheme.onPrimaryContainer.copy(0.04f))
-            .border(
-                width = if (isSelected) 2.dp else 0.dp,
-                color = activeColor.copy(0.4f),
-                shape = RoundedCornerShape(16.dp)
-            )
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.onTertiary.copy(0.03f))
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
-        content()
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(
+                        width = 2.dp,
+                        color = activeColor.copy(alpha = 0.3f),
+                        shape = CircleShape
+                    )
+            )
+        }
+        Box(
+            modifier = Modifier
+                .size(if (isSelected) 32.dp else 36.dp)
+                .clip(CircleShape)
+                .background(activeColor)
+                .then(
+                    if (isSelected) Modifier.shadow(
+                        elevation = 8.dp,
+                        shape = CircleShape,
+                        ambientColor = activeColor,
+                        spotColor = activeColor
+                    ) else Modifier
+                )
+        )
+    }
+}
+
+@Composable
+private fun SelectorWrapper(
+    title: String,
+    content: LazyListScope.() -> Unit
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelMedium.copy(
+                fontWeight = FontWeight.Bold,
+                color = Color.Gray
+            ),
+            modifier = Modifier.padding(start = 4.dp, bottom = 8.dp)
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+            content = content
+        )
     }
 }

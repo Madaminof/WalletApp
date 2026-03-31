@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import dev.samandar.walletapp.wallet.data.local.entity.AccountEntity
+import dev.samandar.walletapp.wallet.data.local.entity.account.AccountEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -36,4 +36,13 @@ interface AccountDao {
 
     @Query("SELECT * FROM accounts WHERE id = :id")
     suspend fun getAccountEntityById(id: String): AccountEntity?
+
+
+    @Query("SELECT * FROM accounts")
+    suspend fun getAllAccountsOnce(): List<AccountEntity>
+
+    // 2. Ommaviy yangilash (Batch Update)
+    // Room hamma accountlarni ID-si bo'yicha topib, yangi balanslarni yozib chiqadi
+    @Update
+    suspend fun updateAccounts(accounts: List<AccountEntity>)
 }
